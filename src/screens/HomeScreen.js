@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useAsyncRetry } from 'react-use';
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,8 +6,17 @@ import {
   Link,
   useParams
 } from "react-router-dom"
-import { storeItem, multiGet, getAll, getItem } from '../constants/Store'
 import { newProject, newTimer } from '../constants/Models'
+
+import Gun from 'gun/gun'
+
+const port = '8765'
+const address = 'localhost'
+const peers = [`http://${address}:${port}/gun`]
+
+const gun = new Gun({
+  peers: peers,
+})
 
 export default function HomeScreen() {
   return (
@@ -37,8 +45,6 @@ export default function HomeScreen() {
           <Route path="/timers">
             <Timers />
           </Route>
-          <Route path="/timer/:id" children={<TimersChild />} />
-          <Route path="/project/:id" children={<ProjectsChild />} />
         </Switch>
       </div>
     </Router >
@@ -49,10 +55,11 @@ function Home() {
   const [name, setName] = useState('')
   const [color, setColor] = useState('')
   const [project, setProject] = useState([])
-  useAsyncRetry(async () => {
-    const store = await storeItem(project)
-    return store
+
+  useEffect(() => {
+    gun.get('projects').get(project[0]).set(project[1], ack => ack.err ? ack.err : project)
   }, [project])
+
   return (
     <div>
       <h2>Home</h2>
@@ -64,124 +71,46 @@ function Home() {
         <br />
       </form>
       <button type='button' onClick={() => name.length > 0 && color.length > 0 ? setProject(newProject(name, color)) : alert('Need name and color')}>Submit</button>
-      <div> {JSON.stringify(project)} </div>
     </div>
   )
 }
 
 function Projects() {
-  const state = useAsyncRetry(async () => {
-    const result = await getAll(value => value.type === 'project' ? true : false)
-    return result
-  }, [])
+  const [online, setOnline] = useState(false)
+  const [projects, setProjects] = useState([])
+
+  // useEffect(() => {
+  //   gun.get('projects').once((data, key) => setOnline(true))
+  //   console.log()
+  //   return () => gun.get('projects').off()
+  // }, []);
+
+  useEffect(() => {
+    gun.get('projects').map().on((data, key) => setProjects(projects => [...projects, [key, data]])
+      , { change: true })
+    return () => gun.get('projects').off()
+  }, [online]);
+
   return (
     <div>
       <h2>Projects</h2>
-      <div>
-        {state.loading
-          ? <div>Loading...</div>
-          : state.error
-            ? <div>Error: {state.error.message}</div>
-            : <div>Value: <ul>{
-              state.value.map(item => {
-                return (
-                  <li><Link to={`/project/${item[0]}`}>{item[1].name}</Link></li>
-                )
-              })
-            }</ul></div>
-        }
-      </div>
+      <div>Value: <ul>
+        {projects.map(item => {
+          return (
+            <li>{item[0]}</li>
+          )
+        })}
+      </ul></div>
     </div>
   )
 }
 
 function Timers() {
-  const state = useAsyncRetry(async () => {
-    const result = await getAll(value => value.type === 'timer' ? true : false)
-    return result
-  }, [])
+
   return (
     <div>
       <h2>Timers</h2>
-      <div>
-        {state.loading
-          ? <div>Loading...</div>
-          : state.error
-            ? <div>Error: {state.error.message}</div>
-            : <div>Value: {JSON.stringify(state.value)}</div>
-        }
-      </div>
-    </div>
-  )
-}
 
-function ProjectsChild() {
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
-  let { id } = useParams();
-  const [newtimers, setNewtimers] = useState([])
-  const state = useAsyncRetry(async () => {
-    const timerEntries = await getAll(value => value.type === 'timer' ? true : false)
-    console.log('timerEntries', timerEntries)
-    const projectTimers = timerEntries.filter(timer => timer[1].project === id ? true : false)
-    console.log('projectTimers', projectTimers)
-    return projectTimers
-  }, [])
-
-  return (
-    <div>
-      <h2>ID: {id}</h2>
-      <button type='button' onClick={async () => {
-        let timer = newTimer({ project: id })
-        setNewtimers([...newtimers, timer])
-        console.log(newtimers)
-        await storeItem(timer)
-      }}>New Timer</button>
-      <h3>Timers</h3>
-      <div>
-        {state.loading
-          ? <div>Loading...</div>
-          : state.error
-            ? <div>Error: {state.error.message}</div>
-            : <div>Value: <ul>{
-              state.value.map(timer => {
-                return (
-                  <li><Link to={`/timer/${timer[0]}`}>{`${timer[1].status}, ${timer[1].created}`}</Link></li>
-                )
-              })
-            }
-              {newtimers.map(timer => {
-                return (
-                  timer ? <li><Link to={`/timer/${timer[0]}`}>{`${timer[1].status}, ${timer[1].created}`}</Link></li> : null
-                )
-              })}
-            </ul></div>
-        }
-      </div>
-    </div>
-  );
-}
-function TimersChild() {
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
-  let { id } = useParams();
-  const state = useAsyncRetry(async () => {
-    const timer = await getItem(id)
-    return timer
-  }, [])
-
-
-  return (
-    <div>
-      <h2>Timer : {id}</h2>
-      <div>
-        {state.loading
-          ? <div>Loading...</div>
-          : state.error
-            ? <div>Error: {state.error.message}</div>
-            : <div>Value: {JSON.stringify(state.value)}</div>
-        }
-      </div>
     </div>
   )
 }
