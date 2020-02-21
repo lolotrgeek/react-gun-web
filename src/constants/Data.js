@@ -7,3 +7,5 @@ const peers = [`http://${address}:${port}/gun`]
 export const gun = new Gun({
   peers: peers,
 })
+
+

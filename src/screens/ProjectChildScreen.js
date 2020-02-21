@@ -1,12 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams
-} from "react-router-dom"
-import { newProject, newTimer, updateTimer, updateProject } from '../constants/Models'
+import React, { useState, useEffect } from 'react'
+import {Link,useParams} from "react-router-dom"
+import { newTimer, updateProject } from '../constants/Models'
 import { trimSoul } from '../constants/Store'
 import {gun} from '../constants/Data'
 

@@ -1,17 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams
-} from "react-router-dom"
-import { newProject, newTimer, updateTimer, updateProject } from '../constants/Models'
+import React, { useState, useEffect } from 'react'
+import { Link } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import {gun} from '../constants/Data'
+import { gun } from '../constants/Data'
 
 
-export default function TimerScreen () {
+export default function TimerScreen() {
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
 
