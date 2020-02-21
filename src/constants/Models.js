@@ -11,7 +11,7 @@ export const newTimerValue = (projectId) => ({
     energy: 50,
 })
 
-export const newTimer = ({project, value}) => {
+export const newTimer = ({ project, value } = {}) => {
     const hashids = new Hashids()
     let key = hashids.encode(Date.now().toString())
     let new_value = value ? value : newTimerValue(project)
@@ -19,8 +19,8 @@ export const newTimer = ({project, value}) => {
 }
 
 export const updateTimer = (timer) => {
-        timer[1].ended = new Date().toString()
-        timer[1].status ='done'
+    timer[1].ended = new Date().toString()
+    timer[1].status = 'done'
     return timer
 }
 
@@ -37,15 +37,10 @@ export const newProject = (name, color) => {
     return [key, value]
 }
 
-export const updateProject = (key, created, name, color, time) => {
-    const value = {
-        created: created,
-        type: 'project',
-        name: name,
-        color: color,
-        time: typeof time === 'string' && time.length > 0 ? parseInt(time) : time
-    }
-    return [key, value]
+export const updateProject = (project) => {
+    let update = project
+    update[1].edited = new Date().toString()
+    return update
 }
 
 export const navigation = (project, running, lastscreen) => ({

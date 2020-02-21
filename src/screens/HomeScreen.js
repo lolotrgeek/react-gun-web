@@ -6,7 +6,7 @@ import {
   Link,
   useParams
 } from "react-router-dom"
-import { newProject, newTimer, updateTimer } from '../constants/Models'
+import { newProject, newTimer, updateTimer, updateProject } from '../constants/Models'
 import { trimSoul } from '../constants/Store'
 
 import Gun from 'gun/gun'
@@ -80,10 +80,24 @@ function Home() {
 
 function Projects() {
   const [online, setOnline] = useState(false)
+  const [name, setName] = useState('')
+  const [color, setColor] = useState('')
   const [projects, setProjects] = useState([])
 
+  const createProject = () => {
+    const project = newProject(name, color)
+    gun.get('projects').get(project[0]).set(project[1])
+  }
+
   useEffect(() => {
-    gun.get('projects').map().on((data, key) => setProjects(projects => [...projects, [key, data]])
+    gun.get('projects').map().on((projectId, projectKey) => {
+      const values = []
+      gun.get('projects').get(projectKey).map().on((projectValue, projectGunKey) => {
+        console.log(projectValue)
+        values.push(trimSoul(projectValue))
+      })
+      setProjects(projects => [...projects, [projectKey, values[values.length - 1]]])
+    }
       , { change: true })
     return () => gun.get('projects').off()
   }, [online])
@@ -91,13 +105,25 @@ function Projects() {
   return (
     <div>
       <h2>Projects</h2>
-      <div>Value: <ul>
-        {projects.map(project => {
-          return (
-            <li><Link to={`/project/${project[0]}`}>{project[0]}</Link></li>
-          )
-        })}
-      </ul></div>
+      <div>
+        <h3>New Project</h3>
+        <form>
+          <label>Name : <input type="text" name="name" onChange={event => setName(event.target.value)} /></label>
+          <br />
+          <label>Color : <input type="text" name="color" onChange={event => setColor(event.target.value)} /></label>
+          <br />
+        </form>
+        <button type='button' onClick={() => name.length > 0 && color.length > 0 ? createProject() : alert('Need name and color')}>Submit</button>
+      </div>
+      <div>
+        <h3>Project List</h3>
+        <ul>
+          {projects.map(project => {
+            return (
+              <li key={project[0]}><Link to={`/project/${project[0]}`}>{`${project[0]} ${project[1].name}`}</Link></li>
+            )
+          })}
+        </ul></div>
     </div>
   )
 }
@@ -127,8 +153,10 @@ function Timers() {
         <ol>
           {timers.map(timer => {
             return (
-              <li><Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link></li>
-              // <li><Link to={`/timer/${timer[0]}`}>{`${timer[1].status}, ${timer[1].created}`}</Link></li>
+              <li key={timer[0]}>
+                <Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
+              </li>
+              // <li key={project[0]}><Link to={`/timer/${timer[0]}`}>{`${timer[1].status}, ${timer[1].created}`}</Link></li>
             )
           })}
         </ol></div>
@@ -140,11 +168,25 @@ function ProjectsChild() {
   const { id } = useParams()
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
+  const [edits, setEdits] = useState([])
+
+  const createProject = (project) => {
+    const projectNew = updateProject(project)
+    gun.get('projects').get(id).set(projectNew[1])
+  }
+
+  useEffect(() => {
+    gun.get('projects').get(id).map().on((projectValue, projectGunKey) => {
+      console.log(projectValue)
+      setEdits(projects => [...projects, [id, trimSoul(projectValue), projectGunKey]])
+    }, { change: true })
+
+    return () => gun.get('projects').off()
+  }, [online]);
 
   const createTimer = () => {
     const timer = newTimer({ project: id })
     gun.get('timers').get(id).get(timer[0]).set(timer[1])
-    // setTimers(timers => [...timers, timer])
   }
 
   useEffect(() => {
@@ -165,12 +207,30 @@ function ProjectsChild() {
     <div>
       <h2>Project {id}</h2>
       <button type='button' onClick={() => createTimer()}>New Timer</button>
+      <h3>Edit History</h3>
+      <div>
+        <ol>
+          {edits.map(project => {
+            return (
+              <li key={project[2]}>
+                <Link to={`/project/${project[0]}`}>{`${JSON.stringify(project[1])}`}</Link>
+                <button type='button' onClick={() => {
+                  let update = project
+                  update[1].color = `#${Math.random()}`
+                  update[1].name =`${project[1].name} edited`
+                  console.log(update)
+                  createProject(update)
+                }}>Edit project</button>
+              </li>
+            )
+          })}
+        </ol></div>
       <h3>Timers</h3>
       <div>
         <ol>
           {timers.map(timer => {
             return (
-              <li><Link to={`/timer/${id},${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link></li>
+              <li key={timer[0]}><Link to={`/timer/${id},${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link></li>
             )
           })}
         </ol></div>
@@ -195,7 +255,7 @@ function TimersChild() {
   useEffect(() => {
     gun.get('timers').get(projectId.current).get(timerId.current).map().on((timerValue, timerGunId) => {
       console.log(timerValue)
-      setTimers(timers => [...timers, [timerId, trimSoul(timerValue)]])
+      setTimers(timers => [...timers, [timerId, trimSoul(timerValue), timerGunId]])
     }
       , { change: true })
     return () => gun.get('timers').off()
@@ -209,7 +269,7 @@ function TimersChild() {
         <ol>
           {timers.map(timer => {
             return (
-              <li>
+              <li key={timer[2]}>
                 <Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
                 <button type='button' onClick={() => createTimer(timer)}>Stop Timer</button>
               </li>
