@@ -1,9 +1,9 @@
 import React from 'react'
-import HomeScreen from './screens/HomeScreen'
+import AppRoutes from './routes/AppRoutes'
 
 function App() {
   return (
-    <HomeScreen />
+    <AppRoutes />
   );
 }
 
