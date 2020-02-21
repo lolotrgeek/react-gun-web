@@ -18,16 +18,10 @@ export const newTimer = ({project, value}) => {
     return [key, new_value]
 }
 
-export const updateTimer = (timer, { count, created, ended, energy, mood }) => {
-    let updated = {
-        created: created ? created.toString() : timer[1].created,
-        ended: ended ? ended.toString() : new Date().toString(),
-        energy: energy ? energy : timer[1].energy,
-        mood: mood ? mood : timer[1].mood,
-        total: count ? count : timer[1].total,
-        status: 'done',
-    }
-    return [timer[0], updated]
+export const updateTimer = (timer) => {
+        timer[1].ended = new Date().toString()
+        timer[1].status ='done'
+    return timer
 }
 
 export const newProject = (name, color) => {

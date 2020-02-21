@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,7 +6,7 @@ import {
   Link,
   useParams
 } from "react-router-dom"
-import { newProject, newTimer } from '../constants/Models'
+import { newProject, newTimer, updateTimer } from '../constants/Models'
 import { trimSoul } from '../constants/Store'
 
 import Gun from 'gun/gun'
@@ -149,10 +149,12 @@ function ProjectsChild() {
 
   useEffect(() => {
     gun.get('timers').get(id).map().once((timerId, timerKey) => {
+      let values = []
       gun.get('timers').get(id).get(timerKey).map().on((timerValue, timerGunId) => {
         console.log(timerValue)
-        setTimers(timers => [...timers, [timerKey, trimSoul(timerValue)]])
+        values.push(trimSoul(timerValue))
       })
+      setTimers(timers => [...timers, [timerKey, values[values.length - 1]]])
     }
       , { change: true })
     return () => gun.get('timers').off()
@@ -168,8 +170,7 @@ function ProjectsChild() {
         <ol>
           {timers.map(timer => {
             return (
-              <li><Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link></li>
-              // <li><Link to={`/timer/${timer[0]}`}>{`${timer[1].status}, ${timer[1].created}`}</Link></li>
+              <li><Link to={`/timer/${id},${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link></li>
             )
           })}
         </ol></div>
@@ -178,15 +179,43 @@ function ProjectsChild() {
 }
 
 function TimersChild() {
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
+  const { id } = useParams()
+  const [online, setOnline] = useState(false)
+  const [timers, setTimers] = useState([])
+
+  const idObject = useRef(id.split(','))
+  const projectId = useRef(idObject.current[0])
+  const timerId = useRef(idObject.current[1])
+
+  const createTimer = (timer) => {
+    const timerNew = updateTimer(timer)
+    gun.get('timers').get(projectId.current).get(timerId.current).set(timerNew[1])
+  }
+
+  useEffect(() => {
+    gun.get('timers').get(projectId.current).get(timerId.current).map().on((timerValue, timerGunId) => {
+      console.log(timerValue)
+      setTimers(timers => [...timers, [timerId, trimSoul(timerValue)]])
+    }
+      , { change: true })
+    return () => gun.get('timers').off()
+  }, [online]);
+
 
   return (
     <div>
-      <h2>Timer </h2>
+      <h2>Timer History {id} </h2>
       <div>
-
-      </div>
-    </div>
+        <ol>
+          {timers.map(timer => {
+            return (
+              <li>
+                <Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
+                <button type='button' onClick={() => createTimer(timer)}>Stop Timer</button>
+              </li>
+            )
+          })}
+        </ol></div>
+    </div >
   )
 }
