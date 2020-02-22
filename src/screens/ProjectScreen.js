@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
 import { newProject } from '../constants/Models'
 import { trimSoul } from '../constants/Store'
-import {gun} from '../constants/Data'
+import { gun } from '../constants/Data'
 
 
 export default function ProjecScreen() {
@@ -13,17 +13,15 @@ export default function ProjecScreen() {
 
   const createProject = () => {
     const project = newProject(name, color)
-    gun.get('projects').get(project[0]).set(project[1])
+    gun.get('history').get('projects').get(project[0]).set(project[1])
+    gun.get('projects').get(project[0]).put(project[1])
   }
 
   useEffect(() => {
-    gun.get('projects').map().on((projectId, projectKey) => {
-      const values = []
-      gun.get('projects').get(projectKey).map().on((projectValue, projectGunKey) => {
-        console.log(projectValue)
-        values.push(trimSoul(projectValue))
-      })
-      setProjects(projects => [...projects, [projectKey, values[values.length - 1]]])
+    gun.get('projects').map().on((projectValue, projectKey) => {
+      console.log(projectValue)
+      // TODO: need promise to wait for value
+      setProjects(projects => [...projects, [projectKey, projectValue]])
     }
       , { change: true })
     return () => gun.get('projects').off()
@@ -47,7 +45,7 @@ export default function ProjecScreen() {
         <ul>
           {projects.map(project => {
             return (
-              <li key={project[0]}><Link to={`/project/${project[0]}`}>{`${project[0]} ${project[1].name}`}</Link></li>
+              <li key={project[0]}><Link to={`/project/${project[0]}`}>{`${project[0]} ${typeof project[1] === 'object' ? project[1].name : ''}`}</Link></li>
             )
           })}
         </ul></div>

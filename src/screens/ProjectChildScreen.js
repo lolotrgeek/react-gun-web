@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import {Link,useParams} from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { newTimer, updateProject } from '../constants/Models'
 import { trimSoul } from '../constants/Store'
-import {gun} from '../constants/Data'
+import { gun } from '../constants/Data'
 
 
-export default function ProjectChildScreen () {
+export default function ProjectChildScreen() {
   const { id } = useParams()
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
@@ -13,33 +13,28 @@ export default function ProjectChildScreen () {
 
   const createProject = (project) => {
     const projectNew = updateProject(project)
+    gun.get('history').get('projects').get(id).set(projectNew[1])
     gun.get('projects').get(id).set(projectNew[1])
   }
 
   useEffect(() => {
-    gun.get('projects').get(id).map().on((projectValue, projectGunKey) => {
+    gun.get('history').get('projects').get(id).map().on((projectValue, projectGunKey) => {
       console.log(projectValue)
       setEdits(projects => [...projects, [id, trimSoul(projectValue), projectGunKey]])
     }, { change: true })
-
     return () => gun.get('projects').off()
   }, [online]);
 
   const createTimer = () => {
     const timer = newTimer({ project: id })
-    gun.get('timers').get(id).get(timer[0]).set(timer[1])
+    gun.get('history').get('timers').get(id).get(timer[0]).set(timer[1])
+    gun.get('timers').get(id).get(timer[0]).put(timer[1])
   }
 
   useEffect(() => {
-    gun.get('timers').get(id).map().once((timerId, timerKey) => {
-      let values = []
-      gun.get('timers').get(id).get(timerKey).map().on((timerValue, timerGunId) => {
-        console.log(timerValue)
-        values.push(trimSoul(timerValue))
-      })
-      setTimers(timers => [...timers, [timerKey, values[values.length - 1]]])
-    }
-      , { change: true })
+    gun.get('timers').get(id).map().on((timerValue, timerKey) => {
+      setTimers(timers => [...timers, [timerKey, trimSoul(timerValue)]])
+    }, { change: true })
     return () => gun.get('timers').off()
   }, [online]);
 
@@ -58,7 +53,7 @@ export default function ProjectChildScreen () {
                 <button type='button' onClick={() => {
                   let update = project
                   update[1].color = `#${Math.random()}`
-                  update[1].name =`${project[1].name} edited`
+                  update[1].name = `${project[1].name} edited`
                   console.log(update)
                   createProject(update)
                 }}>Edit project</button>

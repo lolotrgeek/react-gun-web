@@ -10,11 +10,8 @@ export default function TimerScreen() {
 
   useEffect(() => {
     gun.get('timers').map().on((timerId, projectKey) => {
-      gun.get('timers').get(projectKey).map().on((timerId, timerKey) => {
-        gun.get('timers').get(projectKey).get(timerKey).map().on((timerValue, timerGunId) => {
-          console.log(timerValue)
-          setTimers(timers => [...timers, [timerKey, trimSoul(timerValue)]])
-        })
+      gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
+        setTimers(timers => [...timers, [timerKey, trimSoul(timerValue)]])
       })
     }
       , { change: true })
@@ -29,7 +26,7 @@ export default function TimerScreen() {
           {timers.map(timer => {
             return (
               <li key={timer[0]}>
-                <Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
+                <Link to={`/timer/${timer[1].project},${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
               </li>
               // <li key={project[0]}><Link to={`/timer/${timer[0]}`}>{`${timer[1].status}, ${timer[1].created}`}</Link></li>
             )

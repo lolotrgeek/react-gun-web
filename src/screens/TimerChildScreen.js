@@ -16,11 +16,12 @@ export default function TimerChildScreen() {
 
   const createTimer = (timer) => {
     const timerNew = updateTimer(timer)
-    gun.get('timers').get(projectId.current).get(timerId.current).set(timerNew[1])
+    gun.get('history').get('timers').get(projectId.current).get(timerId.current).set(timerNew[1])
+    gun.get('timers').get(projectId.current).get(timerId.current).put(timerNew[1])
   }
 
   useEffect(() => {
-    gun.get('timers').get(projectId.current).get(timerId.current).map().on((timerValue, timerGunId) => {
+    gun.get('history').get('timers').get(projectId.current).get(timerId.current).map().on((timerValue, timerGunId) => {
       console.log(timerValue)
       setTimers(timers => [...timers, [timerId, trimSoul(timerValue), timerGunId]])
     }
