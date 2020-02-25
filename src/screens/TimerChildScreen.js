@@ -3,13 +3,17 @@ import { Link, useParams } from "react-router-dom"
 import { updateTimer, newTimer } from '../constants/Models'
 import { trimSoul } from '../constants/Store'
 import { gun } from '../constants/Data'
+import useGlobalState from '../hooks/useGlobalState'
 
 
 export default function TimerChildScreen() {
   const { projectId, timerId, runningId } = useParams()
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
-  const [runningTimer, setRunningTimer] = useState('')
+
+  const globalState = useGlobalState()
+  const setRunningTimer = timer => globalState.setItem(timer)
+  const runningTimer = globalState.item
 
 
   // const idObject = useRef(id.split(','))
@@ -17,8 +21,8 @@ export default function TimerChildScreen() {
   // const timerId = useRef(idObject[1])
 
   const createTimer = () => {
-    if (runningTimer && Array.isArray(runningTimer) && runningTimer.length === 2, runningTimer[1].status === 'running') {
-      let doneTimer = runningTimer
+    if (runningTimer && typeof runningTimer === 'object' && Object.keys(runningTimer).length === 2 && runningTimer.key && runningTimer.value) {
+      let doneTimer = [runningTimer.key, runningTimer.value]
       doneTimer[1].status = 'done'
       updateTimer(doneTimer)
       let filteredTimers = timers.filter(timer => timer[0] !== doneTimer[0])
@@ -38,9 +42,9 @@ export default function TimerChildScreen() {
       updateTimer(doneTimer)
       let filteredTimers = timers.filter(timer => timer[0] !== doneTimer[0])
       setTimers(filteredTimers)
-      setRunningTimer('')
-      gun.get('history').get('timers').get(projectId).get(doneTimer[0]).set(doneTimer[1])
-      gun.get('timers').get(projectId).get(doneTimer[0]).put(doneTimer[1])
+      setRunningTimer({})
+      gun.get('history').get('timers').get(doneTimer[1].project).get(doneTimer[0]).set(doneTimer[1])
+      gun.get('timers').get(doneTimer[1].project).get(doneTimer[0]).put(doneTimer[1])
     }
   }
 
@@ -57,7 +61,6 @@ export default function TimerChildScreen() {
 
   useEffect(() => {
     gun.get('history').get('timers').get(projectId).get(timerId).map().on((timerValue, timerGunId) => {
-      console.log(timerValue)
       setTimers(timers => [...timers, [timerId, trimSoul(timerValue), timerGunId]])
     }
       , { change: true })
@@ -68,8 +71,8 @@ export default function TimerChildScreen() {
   return (
     <div>
       <h2>Timer History {projectId}/{timerId} </h2>
-      <h4>{runningTimer && Array.isArray(runningTimer) ? `Running Timer ${runningTimer[1].project}/ ${runningTimer[0]}` : ''}</h4>
-      <button type='button' onClick={() => stopTimer(runningTimer)}>Stop Timer</button>
+      <h4>{runningTimer && typeof runningTimer === 'object' && Object.keys(runningTimer).length === 2 && runningTimer.key && runningTimer.value ? `Running Timer ${runningTimer.value.project}/ ${runningTimer.key}` : ''}</h4>
+      <button type='button' onClick={() => runningTimer.key && runningTimer.value ? stopTimer([runningTimer.key, runningTimer.value]) : null}>Stop Timer</button>
       <div>
         <ol>
           {timers.map(timer => {

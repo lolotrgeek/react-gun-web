@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
+import { isRunning } from '../constants/Functions'
 import { gun } from '../constants/Data'
+import useGlobalState from '../hooks/useGlobalState'
 
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
 
+  const globalState = useGlobalState()
+  const setRunningTimer = timer => globalState.setItem(timer)
+  const runningTimer = globalState.item
+
   useEffect(() => {
+    console.log(runningTimer)
     gun.get('timers').map().on((timerId, projectKey) => {
       gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
-        setTimers(timers => [...timers, [timerKey, trimSoul(timerValue)]])
+        const timer = [timerKey, trimSoul(timerValue)]
+        setTimers(timers => [...timers, timer])
+        if (isRunning(timer)) setRunningTimer(timer)
       })
     }
       , { change: true })
@@ -21,6 +30,7 @@ export default function TimerScreen() {
   return (
     <div>
       <h2>Timers</h2>
+      <h4>{runningTimer && Array.isArray(runningTimer) ? `Running Timer ${runningTimer[1].project}/ ${runningTimer[0]}` : ''}</h4>
       <div>
         <ol>
           {timers.map(timer => {

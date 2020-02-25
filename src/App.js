@@ -1,10 +1,13 @@
 import React from 'react'
+import { GlobalStateProvider } from './hooks/useGlobalState'
 import AppRoutes from './routes/AppRoutes'
 
-function App() {
+function App(props) {
   return (
-    <AppRoutes />
-  );
+    <GlobalStateProvider>
+      <AppRoutes />
+    </GlobalStateProvider>
+  )
 }
 
 export default App;
