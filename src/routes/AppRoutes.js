@@ -38,8 +38,8 @@ export default function AppRoutes() {
           <Route path="/timers">
             <TimerScreen />
           </Route>
-          <Route path="/timer/:projectId/:timerId/:runningId?" children={<TimerChildScreen />} />
-          <Route path="/project/:projectId/:runningId?" children={<ProjectChildScreen />} />
+          <Route path="/timer/:projectId/:timerId" children={<TimerChildScreen />} />
+          <Route path="/project/:projectId" children={<ProjectChildScreen />} />
         </Switch>
       </div>
     </Router >

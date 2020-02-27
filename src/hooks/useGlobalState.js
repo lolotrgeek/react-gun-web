@@ -78,7 +78,7 @@ const useGlobalState = () => {
   const setItem = (payload) => {
     dispatch({
       type: SET_ITEM,
-      payload: {key: payload[0], value : payload[1]}
+      payload: payload
     });
   };
 
