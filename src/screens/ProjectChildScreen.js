@@ -47,10 +47,10 @@ export default function ProjectChildScreen() {
       updateTimer(doneTimer)
       gun.get('history').get('timers').get(projectId).get(doneTimer[0]).set(doneTimer[1])
       gun.get('timers').get(projectId).get(doneTimer[0]).put(doneTimer[1])
-      gun.get('timers').get('running').put(JSON.stringify(doneTimer))
+      gun.get('running').get('timer').put(null)
     }
     const timer = newTimer({ project: projectId })
-    gun.get('timers').get('running').put(JSON.stringify(timer))
+    gun.get('running').get('timer').put(JSON.stringify(timer))
     gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
     gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
   }
@@ -61,16 +61,35 @@ export default function ProjectChildScreen() {
       let doneTimer = timer
       doneTimer[1].status = 'done'
       updateTimer(doneTimer)
-      // setRunningTimer({})
-      // setTimers(timers => [...timers, doneTimer])
       gun.get('history').get('timers').get(doneTimer[1].project).get(doneTimer[0]).set(doneTimer[1])
       gun.get('timers').get(doneTimer[1].project).get(doneTimer[0]).put(doneTimer[1])
-      gun.get('timers').get('running').put(JSON.stringify(doneTimer))
+      gun.get('running').get('timer').put(null)
+
     }
   }
 
   useEffect(() => {
-    gun.get('timers').get('running').on((runningTimerGun, runningTimerKeyGun) => {
+    let currentTimers = []
+    gun.get('timers').get(projectId).map().on((timerValue, timerKey) => {
+      const foundTimer = [timerKey, trimSoul(timerValue)]
+      if (foundTimer[1].status === 'done') {
+        let check = currentTimers.some(id => id ===  foundTimer[0])
+        if(!check) {
+          console.log('Adding Timer', foundTimer)
+          setTimers(timers => [...timers, foundTimer])
+        }
+        currentTimers.push(foundTimer[0])
+      }
+      else {
+        gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+      }
+    }, { change: true })
+
+    return () => gun.get('timers').off()
+  }, [online]);
+
+  useEffect(() => {
+    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
       const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
       if (runningTimerFound && Array.isArray(runningTimerFound) && runningTimerFound.length === 2 && runningTimerFound[1].status === 'running') {
         setRunningTimer(runningTimerFound)
@@ -83,23 +102,9 @@ export default function ProjectChildScreen() {
         stop()
         setRunningTimer({})
       }
-      if (runningTimerFound && Array.isArray(runningTimerFound) && runningTimerFound.length === 2 && runningTimerFound[1].status === 'done') {
-        console.log('Timer just finished', runningTimerFound)
-        stop()
-        setRunningTimer({})
-        setTimers(timers => [...timers, runningTimerFound])
-      }
     }, { change: true })
-    gun.get('timers').get(projectId).map().once((timerValue, timerKey) => {
-      const foundTimer = [timerKey, trimSoul(timerValue)]
-      // const filteredTimers = []
-      if (!runningTimer && !Array.isArray(runningTimer) && foundTimer[1].status === 'done') {
-        console.log('Adding Timer', foundTimer)
-        setTimers(timers => [...timers, foundTimer])
-      }
-      else setRunningTimer(foundTimer)
-    }, { change: false })
-    return () => gun.get('timers').off()
+
+    return () => gun.get('running').off()
   }, [online]);
 
   return (
@@ -118,7 +123,7 @@ export default function ProjectChildScreen() {
           {edits.map(project => {
             return (
               <li key={project[2]}>
-                <Link to={`/project/${project[0]}`}>{`${JSON.stringify(project[1])}`}</Link>
+                <Link to={`/project/${project[0]}`}>{`${JSON.stringify(project[1].name)}`}</Link>
                 <button type='button' onClick={() => {
                   let update = project
                   update[1].color = `#${Math.random()}`
@@ -139,8 +144,8 @@ export default function ProjectChildScreen() {
                 <Link to={`/timer/${projectId}/${timer[0]}}`}>
                   {`${timer[0]}`}
                   <ul>
-                    <li>{`${timer[1].created}`}</li>
-                    <li>{`${timer[1].ended}`}</li>
+                    {/* <li>{`${timer[1].created}`}</li>
+                    <li>{`${timer[1].ended}`}</li> */}
                     <li>{`${timer[1].status}`}</li>
                   </ul>
 
