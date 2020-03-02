@@ -192,6 +192,20 @@ export const getAllOptimized = async (validator) => {
 
 
 /**
+ * get all items that are valid, subscribe to each
+ * @param {*} validator
+ */
+export const getAllSubscribe = (validator) => {
+    return new Promise(async (resolve, reject) => {
+        const stores = await multiGet()
+        if (!stores && !Array.isArray(stores)) reject('Invalid Store.')
+        let results = stores.map(result => storeMap(result, validator)).filter(result => result)
+        resolve(results)
+    })
+
+}
+
+/**
  * `DANGER!`
  * Nullifies entire Item Store.
  */

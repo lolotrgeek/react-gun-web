@@ -1,10 +1,13 @@
 import React from 'react'
-import HomeScreen from './screens/HomeScreen'
+import { GlobalStateProvider } from './hooks/useGlobalState'
+import AppRoutes from './routes/AppRoutes'
 
-function App() {
+function App(props) {
   return (
-    <HomeScreen />
-  );
+    <GlobalStateProvider>
+      <AppRoutes />
+    </GlobalStateProvider>
+  )
 }
 
 export default App;
