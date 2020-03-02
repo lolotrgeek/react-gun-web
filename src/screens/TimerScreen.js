@@ -1,80 +1,89 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { isRunning, elapsedTime } from '../constants/Functions'
-import { updateTimer } from '../constants/Models'
-import { gun } from '../constants/Data'
-import useGlobalState from '../hooks/useGlobalState'
+import { elapsedTime } from '../constants/Functions'
+import { isRunning } from '../constants/Validators'
+import { gun, stopTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
-
-  const globalState = useGlobalState()
-  const setRunningTimer = timer => globalState.setItem(timer)
-  const runningTimer = globalState.item
-
+  const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
 
   useEffect(() => {
-    // if (runningTimer && typeof runningTimer === 'object' && Object.keys(runningTimer).length === 2 && runningTimer.key && runningTimer.value && runningTimer.value.status === 'running') {
-    gun.get('timers').get('running').on((runningTimerGun, runningTimerKeyGun) => {
-      setRunningTimer(runningTimerGun)
-      console.log('runningTimer', runningTimer)
-      setCount(elapsedTime(runningTimerGun.value.created))
-      start()
-    })
-    // }
-  }, [timers])
+    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
+      const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
+      if (isRunning(runningTimerFound)) {
+        setRunningTimer(runningTimerFound)
+        console.log('runningTimerFound', runningTimerFound)
+        setCount(elapsedTime(runningTimerFound[1].created))
+        start()
+      }
+      else if (!runningTimerGun) {
+        console.log('running Timer not Found')
+        stop()
+        setRunningTimer({})
+      }
+    }, { change: true })
 
+    return () => gun.get('running').off()
+  }, [online]);
+
+// useEffect(() => {
+//   gun.get('projects').map().on((projectId, projectGunValue) => {
+//     setProjects(projects => [...projects, projectId])
+
+//   })
+// })
 
   useEffect(() => {
-    console.log(runningTimer)
-    gun.get('timers').map().on((timerId, projectKey) => {
+    let currentTimers = []
+    gun.get('timers').map().on((timerGunId, projectKey) => {
       gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
-        const timer = [timerKey, trimSoul(timerValue)]
-        setTimers(timers => [...timers, timer])
-        // if (isRunning(timer)) setRunningTimer(timer)
+        const foundTimer = [timerKey, trimSoul(timerValue)]
+        if (foundTimer[1].status === 'done') {
+          let check = currentTimers.some(id => id === foundTimer[0])
+          if (!check) {
+            console.log('Adding Timer', foundTimer)
+            setTimers(timers => [...timers, foundTimer])
+          }
+          currentTimers.push(foundTimer[0])
+        }
+        else {
+          gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+        }
       })
     }, { change: true })
     return () => gun.get('timers').off()
   }, [online]);
 
-  const stopTimer = (timer) => {
-    if (timer && Array.isArray(timer) && timer.length === 2 && timer[1].status === 'running') {
-      stop()
-      let doneTimer = timer
-      doneTimer[1].status = 'done'
-      updateTimer(doneTimer)
-      let filteredTimers = timers.filter(timer => timer[0] !== doneTimer[0])
-      setTimers(filteredTimers)
-      setRunningTimer({})
-      console.log('runningTimer', runningTimer)
-      gun.get('history').get('timers').get(doneTimer[1].project).get(doneTimer[0]).set(doneTimer[1])
-      gun.get('timers').get(doneTimer[1].project).get(doneTimer[0]).put(doneTimer[1])
-      gun.get('timers').get('running').put({})
-    }
-  }
-  
+
   return (
     <div>
-      <h2>Timers</h2>
+      <h2>Timeline</h2>
       <h4>
-        {runningTimer && typeof runningTimer === 'object' && Object.keys(runningTimer).length === 2 && runningTimer.key && runningTimer.value ?
-          `Running Timer ${runningTimer.value.project}/${runningTimer.key}/ Count: ${count}` : ''
-        }
+        {isRunning(runningTimer) ?`Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
-      <button type='button' onClick={() => runningTimer.key && runningTimer.value ? stopTimer([runningTimer.key, runningTimer.value]) : null}>Stop Timer</button>
+      <button type='button' onClick={() => { if (isRunning(runningTimer)) stopTimer(runningTimer); stop()  }}>Stop Timer</button>
       <div>
         <ol>
-          {timers.map(timer => {
+        {timers.map(timer => {
             return (
               <li key={timer[0]}>
-                <Link to={`/timer/${timer[1].project}/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
+                <Link to={`/timer/${timer[1].project}/${timer[0]}`}>
+                  {`${timer[0]}`}
+                  <ul>
+                    {/* <li>{`${timer[1].created}`}</li>
+                    <li>{`${timer[1].ended}`}</li> */}
+                    <li>{`${timer[1].status}`}</li>
+                    <li>{`${timer[1].project}`}</li>
+                  </ul>
+
+                </Link>
               </li>
-              // <li key={project[0]}><Link to={`/timer/${timer[0]}`}>{`${timer[1].status}, ${timer[1].created}`}</Link></li>
             )
           })}
         </ol></div>
