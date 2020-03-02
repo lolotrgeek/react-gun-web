@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { elapsedTime } from '../constants/Functions'
+import { elapsedTime, dayHeaders, sumProjectTimers, secondsToString } from '../constants/Functions'
 import { isRunning } from '../constants/Validators'
 import { gun, stopTimer, createTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
@@ -9,9 +9,19 @@ import useCounter from '../hooks/useCounter'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
+  const [projects, setProjects] = useState([])
   const [timers, setTimers] = useState([])
+  const [daysWithTimer, setDaysWithTimer] = useState([]); // disply the timers within each day
   const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
+
+  useEffect(() => {
+    gun.get('projects').map().on((projectValue, projectKey) => {
+      console.log(projectValue)
+      setProjects(projects => [...projects, [projectKey, projectValue]])
+    }, { change: true })
+    return () => gun.get('projects').off()
+  }, [online])
 
   useEffect(() => {
     gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
@@ -54,7 +64,6 @@ export default function TimerScreen() {
     return () => gun.get('timers').off()
   }, [online]);
 
-
   return (
     <div>
       <h2>Timeline</h2>
@@ -64,17 +73,20 @@ export default function TimerScreen() {
       <button type='button' onClick={() => { if (isRunning(runningTimer)) stopTimer(runningTimer); stop() }}>Stop Timer</button>
       <div>
         <ol>
-          {timers.map(timer => {
+          {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
             return (
-              <li key={timer[0]}>
-                <Link to={`/timer/${timer[1].project}/${timer[0]}`}>{`${timer[0]}`}</Link>
-                  <ul>
-                    <li>{`${timer[1].status}`}</li>
-                    <li>{`${timer[1].project}`}</li>
+              <li>{`${day.title}`}
+                <ul>
+                  {day.data.map(project => {
+                    return (
+                      <li>
+                        <Link to={`/project/${project.project}`}>{`${project.project} : ${project.total}`}</Link>
+                        <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(project.project) }}>New Timer</button>
+                      </li>
 
-                    <li><button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(timer[1].project)  }}>New Timer</button></li>
-                  </ul>
-
+                    )
+                  })}
+                </ul>
               </li>
             )
           })}

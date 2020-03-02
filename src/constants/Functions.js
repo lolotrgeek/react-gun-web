@@ -300,6 +300,7 @@ export const sumProjectTimers = dayheaders => {
                 projects.push({ project: timer[1].project, totals: [total], total: total, status: timer[1].status })
             }
             // console.log(projects)
+            return projects
         })
         // // console.log({title: day.title , data : projects})
         return { title: day.title, data: projects }
