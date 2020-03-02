@@ -77,15 +77,18 @@ export default function TimerScreen() {
             return (
               <li>{`${day.title}`}
                 <ul>
-                  {day.data.map(project => {
-                    return (
-                      <li>
-                        <Link to={`/project/${project.project}`}>{`${project.project} : ${project.total}`}</Link>
-                        <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(project.project) }}>New Timer</button>
-                      </li>
-
-                    )
-                  })}
+                  {day.data.map(item => projects.map(project => {
+                    if (item.status === 'running') return (null)
+                    if (project[0] === item.project) {
+                      return (
+                        <li>
+                          <Link to={`/project/${item.project}`}>{`${project[1].name} : ${secondsToString(item.total)} `}</Link>
+                          <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
+                        </li>
+                      )
+                    }
+                  })
+                  )}
                 </ul>
               </li>
             )
