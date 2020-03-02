@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { elapsedTime, dayHeaders, sumProjectTimers, secondsToString } from '../constants/Functions'
+import { elapsedTime, dayHeaders, sumProjectTimers, secondsToString, sayDay } from '../constants/Functions'
 import { isRunning } from '../constants/Validators'
 import { gun, stopTimer, createTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
@@ -75,7 +75,7 @@ export default function TimerScreen() {
         <ol>
           {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
             return (
-              <li>{`${day.title}`}
+              <li>{`${sayDay(day.title)}`}
                 <ul>
                   {day.data.map(item => projects.map(project => {
                     if (item.status === 'running') return (null)
@@ -87,6 +87,7 @@ export default function TimerScreen() {
                         </li>
                       )
                     }
+                    else return (null)
                   })
                   )}
                 </ul>

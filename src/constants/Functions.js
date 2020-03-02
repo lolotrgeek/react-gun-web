@@ -1,4 +1,5 @@
 import { isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO } from 'date-fns'
+import moment from 'moment'
 
 // TODO: REFACTOR SO FUNCTIONS DO NOT NEED ANY DATA STRUCTURE
 
@@ -16,7 +17,8 @@ export const dateCreator = () => {
  * Convert seconds to string `hh : mm : ss`
  * @param {number} seconds 
  */
-export const secondsToString = seconds => new Date(seconds * 1000).toISOString().substr(11, 8) // hh: mm : ss
+export const secondsToString = seconds => moment("2015-01-01").startOf('day').seconds(seconds).format('H:mm:ss');
+// export const secondsToString = seconds => new Date(seconds * 1000).toISOString().substr(11, 8) // hh: mm : ss
 
 /**
  * return full month name from date.
