@@ -8,6 +8,7 @@ import {
 import HomeScreen from '../screens/HomeScreen'
 import ProjectScreen from '../screens/ProjectScreen'
 import TimerScreen from '../screens/TimerScreen'
+import TimelineScreen from '../screens/TimelineScreen'
 import TimerChildScreen from '../screens/TimerChildScreen'
 import ProjectChildScreen from '../screens/ProjectChildScreen'
 
@@ -30,7 +31,7 @@ export default function AppRoutes() {
         <hr />
         <Switch>
           <Route exact path="/">
-            <HomeScreen />
+            <TimelineScreen />
           </Route>
           <Route path="/projects">
             <ProjectScreen />
