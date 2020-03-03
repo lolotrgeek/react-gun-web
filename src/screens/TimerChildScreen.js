@@ -49,11 +49,9 @@ export default function TimerChildScreen() {
       </h4>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() } }}>Stop Timer</button>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(projectId) }}>New Timer</button>
-
       {timers.map(timer => {
         return (
           <div>
-            {/* <SpacingGrid values={Object.keys(timer[1])}></SpacingGrid> */}
             <Link to={`/timer/${timer[0]}`}>
               <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
             </Link>

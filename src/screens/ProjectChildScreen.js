@@ -75,7 +75,7 @@ export default function ProjectChildScreen() {
           `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''
         }
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) {stopTimer(runningTimer); stop() } }}>Stop Timer</button>
+      <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() } }}>Stop Timer</button>
       <button type='button' onClick={() => {
         if (isRunning(runningTimer)) { stop(); stopTimer(runningTimer) }
         createTimer(projectId)
@@ -100,15 +100,14 @@ export default function ProjectChildScreen() {
         </ol></div>
       <h3>Timers</h3>
       <div>
-
-          {timers.map(timer => {
-            return (
-                <Link to={`/timer/${projectId}/${timer[0]}`}>
-                  <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
-                </Link>
-            )
-          })}
-        </div>
+        {timers.map(timer => {
+          return (
+            <Link to={`/timer/${projectId}/${timer[0]}`}>
+              <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
+            </Link>
+          )
+        })}
+      </div>
     </div >
   )
 }

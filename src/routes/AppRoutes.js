@@ -10,6 +10,7 @@ import ProjectScreen from '../screens/ProjectScreen'
 import TimerScreen from '../screens/TimerScreen'
 import TimelineScreen from '../screens/TimelineScreen'
 import TimerChildScreen from '../screens/TimerChildScreen'
+import TimerEditScreen from '../screens/TimerEditScreen'
 import ProjectChildScreen from '../screens/ProjectChildScreen'
 
 export default function AppRoutes() {
@@ -39,7 +40,8 @@ export default function AppRoutes() {
           <Route path="/timers">
             <TimerScreen />
           </Route>
-          <Route path="/timer/:projectId/:timerId" children={<TimerChildScreen />} />
+          <Route path="/timer/:projectId/:timerId" children={<TimerEditScreen />} />
+          <Route path="/history/timer/:projectId/:timerId" children={<TimerChildScreen />} />
           <Route path="/project/:projectId" children={<ProjectChildScreen />} />
         </Switch>
       </div>
