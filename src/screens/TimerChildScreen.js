@@ -44,7 +44,7 @@ export default function TimerChildScreen() {
     <div>
       <h2>Timer History {projectId}/{timerId} </h2>
       <h4>
-        {isRunning(runningTimer) ?`Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
+        {isRunning(runningTimer) ? `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() } }}>Stop Timer</button>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(projectId) }}>New Timer</button>
@@ -53,7 +53,7 @@ export default function TimerChildScreen() {
           {timers.map(timer => {
             return (
               <li key={timer[2]}>
-                <Link to={`/timer/${timer[0]}}`}>{`${JSON.stringify(timer[1])}`}</Link>
+                <Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
               </li>
             )
           })}

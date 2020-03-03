@@ -22,7 +22,6 @@ export const stopTimer = (timer) => {
 }
 
 export const createTimer = (projectId) => {
-  // if (runningTimer && typeof runningTimer === 'object' && Object.keys(runningTimer).length === 2 && runningTimer.key && runningTimer.value) {
   const timer = newTimer({ project: projectId })
   gun.get('running').get('timer').put(JSON.stringify(timer))
   gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])

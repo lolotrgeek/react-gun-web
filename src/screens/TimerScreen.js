@@ -32,12 +32,6 @@ export default function TimerScreen() {
     return () => gun.get('running').off()
   }, [online]);
 
-// useEffect(() => {
-//   gun.get('projects').map().on((projectId, projectGunValue) => {
-//     setProjects(projects => [...projects, projectId])
-
-//   })
-// })
 
   useEffect(() => {
     let currentTimers = []
@@ -71,6 +65,7 @@ export default function TimerScreen() {
       <div>
         <ol>
         {timers.map(timer => {
+          console.log(timer[0])
             return (
               <li key={timer[0]}>
                 <Link to={`/timer/${timer[1].project}/${timer[0]}`}>

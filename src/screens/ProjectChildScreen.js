@@ -104,7 +104,7 @@ export default function ProjectChildScreen() {
           {timers.map(timer => {
             return (
               <li key={timer[0]}>
-                <Link to={`/timer/${projectId}/${timer[0]}}`}>
+                <Link to={`/timer/${projectId}/${timer[0]}`}>
                   {`${timer[0]}`}
                   <ul>
                     {/* <li>{`${timer[1].created}`}</li>

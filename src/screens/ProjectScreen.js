@@ -20,7 +20,6 @@ export default function ProjecScreen() {
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
       console.log(projectValue)
-      // TODO: need promise to wait for value
       setProjects(projects => [...projects, [projectKey, projectValue]])
     }
       , { change: true })
