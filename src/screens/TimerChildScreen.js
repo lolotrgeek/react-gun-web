@@ -5,6 +5,7 @@ import { gun, stopTimer, createTimer } from '../constants/Data'
 import { isRunning } from '../constants/Validators'
 import { elapsedTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
+import SpacingGrid from '../components/Grid'
 
 export default function TimerChildScreen() {
   const { projectId, timerId } = useParams()
@@ -48,16 +49,18 @@ export default function TimerChildScreen() {
       </h4>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() } }}>Stop Timer</button>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(projectId) }}>New Timer</button>
-      <div>
-        <ol>
-          {timers.map(timer => {
-            return (
-              <li key={timer[2]}>
-                <Link to={`/timer/${timer[0]}`}>{`${JSON.stringify(timer[1])}`}</Link>
-              </li>
-            )
-          })}
-        </ol></div>
+
+      {timers.map(timer => {
+        return (
+          <div>
+            {/* <SpacingGrid values={Object.keys(timer[1])}></SpacingGrid> */}
+            <Link to={`/timer/${timer[0]}`}>
+              <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
+            </Link>
+          </div>
+        )
+      })}
+
     </div >
   )
 }

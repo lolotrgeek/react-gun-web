@@ -5,7 +5,7 @@ import { elapsedTime, dayHeaders, sumProjectTimers, secondsToString, sayDay } fr
 import { isRunning } from '../constants/Validators'
 import { gun, stopTimer, createTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
-
+import SpacingGrid from '../components/Grid'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -72,29 +72,30 @@ export default function TimerScreen() {
       </h4>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) stopTimer(runningTimer); stop() }}>Stop Timer</button>
       <div>
-        <ol>
-          {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
-            return (
-              <li>{`${sayDay(day.title)}`}
-                <ul>
-                  {day.data.map(item => projects.map(project => {
-                    if (item.status === 'running') return (null)
-                    if (project[0] === item.project) {
-                      return (
-                        <li>
-                          <Link to={`/project/${item.project}`}>{`${project[1].name} : ${secondsToString(item.total)} `}</Link>
-                          <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
-                        </li>
-                      )
-                    }
-                    else return (null)
-                  })
-                  )}
-                </ul>
-              </li>
-            )
-          })}
-        </ol></div>
+        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
+          return (
+            <div>
+              <h2>{`${sayDay(day.title)}`}</h2>
+              {day.data.map(item => projects.map(project => {
+                if (item.status === 'running') return (null)
+                if (project[0] === item.project) {
+                  return (
+                    <div>
+                      <SpacingGrid values={[
+                        <Link to={`/project/${item.project}`}>{project[1].name}</Link>,
+                        secondsToString(item.total),
+                        <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
+                      ]}></SpacingGrid>
+                    </div>
+                  )
+                }
+                else return (null)
+              })
+              )}
+            </div>
+          )
+        })}
+      </div>
     </div >
   )
 }

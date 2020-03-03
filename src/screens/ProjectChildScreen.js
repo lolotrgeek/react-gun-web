@@ -5,7 +5,7 @@ import { elapsedTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import { gun, createProject, stopTimer, createTimer } from '../constants/Data'
 import { isRunning } from '../constants/Validators'
-
+import SpacingGrid from '../components/Grid'
 
 export default function ProjectChildScreen() {
   const { projectId } = useParams()
@@ -100,23 +100,15 @@ export default function ProjectChildScreen() {
         </ol></div>
       <h3>Timers</h3>
       <div>
-        <ol>
+
           {timers.map(timer => {
             return (
-              <li key={timer[0]}>
                 <Link to={`/timer/${projectId}/${timer[0]}`}>
-                  {`${timer[0]}`}
-                  <ul>
-                    {/* <li>{`${timer[1].created}`}</li>
-                    <li>{`${timer[1].ended}`}</li> */}
-                    <li>{`${timer[1].status}`}</li>
-                  </ul>
-
+                  <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
                 </Link>
-              </li>
             )
           })}
-        </ol></div>
+        </div>
     </div >
   )
 }

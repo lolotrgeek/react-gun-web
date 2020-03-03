@@ -5,7 +5,7 @@ import { elapsedTime } from '../constants/Functions'
 import { isRunning } from '../constants/Validators'
 import { gun, stopTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
-
+import SpacingGrid from '../components/Grid'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -63,25 +63,16 @@ export default function TimerScreen() {
       </h4>
       <button type='button' onClick={() => { if (isRunning(runningTimer)) stopTimer(runningTimer); stop()  }}>Stop Timer</button>
       <div>
-        <ol>
+        
         {timers.map(timer => {
           console.log(timer[0])
             return (
-              <li key={timer[0]}>
                 <Link to={`/timer/${timer[1].project}/${timer[0]}`}>
-                  {`${timer[0]}`}
-                  <ul>
-                    {/* <li>{`${timer[1].created}`}</li>
-                    <li>{`${timer[1].ended}`}</li> */}
-                    <li>{`${timer[1].status}`}</li>
-                    <li>{`${timer[1].project}`}</li>
-                  </ul>
-
+                  <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
                 </Link>
-              </li>
             )
           })}
-        </ol></div>
+        </div>
     </div >
   )
 }

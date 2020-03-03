@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { newProject } from '../constants/Models'
 import { trimSoul } from '../constants/Store'
 import { gun } from '../constants/Data'
-
+import SpacingGrid from '../components/Grid'
 
 export default function ProjecScreen() {
   const [online, setOnline] = useState(false)
@@ -41,13 +41,16 @@ export default function ProjecScreen() {
       </div>
       <div>
         <h3>Project List</h3>
-        <ul>
-          {projects.map(project => {
-            return (
-              <li key={project[0]}><Link to={`/project/${project[0]}`}>{`${project[0]} ${typeof project[1] === 'object' ? project[1].name : ''}`}</Link></li>
-            )
-          })}
-        </ul></div>
+
+        {projects.map(project => {
+          return (
+            <div>
+              <Link to={`/project/${project[0]}`}>{`${project[0]} ${typeof project[1] === 'object' ? project[1].name : ''}`}</Link>
+              <br />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
