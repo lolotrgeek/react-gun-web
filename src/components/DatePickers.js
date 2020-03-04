@@ -11,12 +11,15 @@ export function DatePicker(props) {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
+          allowKeyboardControl={false}
           margin="normal"
           id="date-picker-dialog"
           label={props.label ? props.label : "Date picker dialog"}
           format="MM/dd/yyyy"
           value={props.startdate}
-          onChange={props.onDateChange}
+          disableFuture={true}
+          onAccept={props.onDateChange}
+          onChange={() => ''}
           maxDate={props.maxDate}
           KeyboardButtonProps={{
             'aria-label': 'change date',
@@ -32,38 +35,52 @@ export function TimePicker(props) {
 
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
 
-        <FontAwesomeIcon
-          icon={faChevronLeft}
-          size={20}
-          color="grey"
-          onClick={props.subtractMinutes}
-        />
-        <Grid container justify="space-around">
-          {props.running ?
-            <KeyboardTimePicker
-              inputValue='tracking'
-              disabled='true'
-              invalidDateMessage=''
-            /> :
-            <KeyboardTimePicker
-              margin="normal"
-              id="time-picker"
-              views={['hours', 'minutes', 'seconds']}
-              opento='hours'
-              label={props.label ? props.label : "Time picker"}
-              value={props.time}
-              onChange={props.onTimeChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change time',
-              }}
-            />}
+
+        <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
+          <Grid item >
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              size={30}
+              color="grey"
+              onClick={props.subtractMinutes}
+              style={{ marginBottom: 16, cursor: 'pointer' }}
+            />
+          </Grid>
+          <Grid item >
+            {props.running ?
+              <KeyboardTimePicker
+                inputValue='tracking'
+                disabled='true'
+                invalidDateMessage=''
+              />
+              :
+              <KeyboardTimePicker
+                margin="normal"
+                id="time-picker"
+                views={['hours', 'minutes', 'seconds']}
+                opento='hours'
+                label={props.label ? props.label : "Time picker"}
+                value={props.time}
+                onChange={props.onTimeChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change time',
+                }}
+              />
+            }
+          </Grid>
+
+          <Grid item >
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              size={30}
+              color="grey"
+              onClick={props.addMinutes}
+              style={{ marginBottom: 16, cursor: 'pointer' }}
+            />
+          </Grid>
+
         </Grid>
-        <FontAwesomeIcon
-          icon={faChevronRight}
-          size={20}
-          color="grey"
-          onClick={props.addMinutes}
-        />
+
       </MuiPickersUtilsProvider>
 
     </div>

@@ -101,7 +101,16 @@ export default function TimerEditScreen() {
         'Cannot Start before now.',
       ])
       return false
-    } else {
+
+    }
+    else if (!timeRules(end, new Date())) {
+      setAlert([
+        'Error',
+        'Cannot End before now.',
+      ])
+      return false
+    }
+    else {
       setAlert(false)
       return true
     }
@@ -153,11 +162,10 @@ export default function TimerEditScreen() {
         <DatePicker
           label=' '
           startdate={created}
-          onDateChange={newDate => setCreated(newDate)}
+          onDateChange={newDate => chooseNewDate(newDate)}
           maxDate={endOfDay(created)}
         />
 
-        {created.toString()}
         <TimePicker
           label=' '
           time={created}
@@ -166,7 +174,6 @@ export default function TimerEditScreen() {
           subtractMinutes={() => decreaseCreated()}
         />
 
-        {ended.toString()}
         <TimePicker
           label=' '
           time={ended}
