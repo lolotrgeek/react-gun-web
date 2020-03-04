@@ -29,7 +29,6 @@ export default function SpacingGrid(props) {
             </Grid>
           ))}
         </Grid>
-        <hr />
       </Grid>
     </Grid>
   );

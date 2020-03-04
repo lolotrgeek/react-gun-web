@@ -155,27 +155,28 @@ export const findRunning = timers => {
 /**
  * 
  * @param {*} created 
- * @param {*} stopped 
+ * @param {*} ended 
  */
-export const multiDay = (created, stopped) => {
+export const multiDay = (created, ended) => {
     if (typeof created === 'string') created = new Date(created)
-    if (typeof stopped === 'string') stopped = new Date(stopped)
-    if (!stopped) stopped = new Date()
-    return isSameDay(created, stopped) ? true : false
+    if (typeof ended === 'string') ended = new Date(ended)
+    if (!ended) ended = new Date()
+    return isSameDay(created, ended) ? false : true
 }
 
 /**
  * Split a timer into one timer per day
  * @param {*} created 
- * @param {*} stopped
+ * @param {*} ended
+ * @return `[{start: DateTime, end: DateTime}, ...]`
  */
-export const newEntryPerDay = (created, stopped) => {
+export const newEntryPerDay = (created, ended) => {
     if (typeof created === 'string') created = new Date(created)
-    if (typeof stopped === 'string') stopped = new Date(stopped)
-    if (!stopped) stopped = new Date()
-    // console.log(created, stopped)
+    if (typeof ended === 'string') ended = new Date(ended)
+    if (!ended) ended = new Date()
+    // console.log(created, ended)
     const secondsinday = 86400
-    let totalSeconds = differenceInSeconds(stopped, created)
+    let totalSeconds = differenceInSeconds(ended, created)
     // console.log('total seconds', totalSeconds)
     // get whole days
     if (totalSeconds > secondsinday) {
@@ -197,7 +198,8 @@ export const newEntryPerDay = (created, stopped) => {
                 let day = { start: start.toString(), end: end.toString() }
                 output.push(day)
                 // console.log(day)
-                let last = { start: startOfToday().toString(), end: 'running' }
+                // let last = { start: startOfToday().toString(), end: 'running' }
+                let last = { start: startOfToday().toString(), end: ended.toString() }
                 output.push(last)
                 // console.log(last)
                 break

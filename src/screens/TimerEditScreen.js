@@ -18,6 +18,7 @@ export default function TimerEditScreen() {
   const [mood, setMood] = useState('')
   const [energy, setEnergy] = useState(0)
   const [alerted, setAlert] = useState([])
+  const [date, setDate] = useState('')
   const [picker, setPicker] = useState(false)
   const alert = useAlert()
 

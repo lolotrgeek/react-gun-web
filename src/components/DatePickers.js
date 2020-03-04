@@ -11,15 +11,13 @@ export function DatePicker(props) {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
-          allowKeyboardControl={false}
           margin="normal"
           id="date-picker-dialog"
           label={props.label ? props.label : "Date picker dialog"}
           format="MM/dd/yyyy"
           value={props.startdate}
           disableFuture={true}
-          onAccept={props.onDateChange}
-          onChange={() => ''}
+          onChange={props.onDateChange}
           maxDate={props.maxDate}
           KeyboardButtonProps={{
             'aria-label': 'change date',
