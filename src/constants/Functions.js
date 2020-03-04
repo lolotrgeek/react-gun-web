@@ -40,10 +40,10 @@ export const simpleDate = date => date.getDate() + " " + getMonth(date) + " " + 
 export const listDay = timers => timers.map(timer => new Date(timer[1].created))
 /**
  * 
- * @param {*} created 
- * @param {*} ended 
+ * @param {*} start 
+ * @param {*} end 
  */
-export const timeRules = (created, ended) => compareAsc(parseISO(created), parseISO(ended)) === 1 ? false : true
+export const timeRules = (start, end) => compareAsc(start, end) === 1 ? false : true
 /**
  * 
  * @param {*} date 

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { elapsedTime, dayHeaders, sumProjectTimers, secondsToString, sayDay } from '../constants/Functions'
 import { isRunning } from '../constants/Validators'
-import { gun, stopTimer, createTimer } from '../constants/Data'
+import { gun, finishTimer, createTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
 
@@ -70,7 +70,7 @@ export default function TimerScreen() {
       <h4>
         {isRunning(runningTimer) ? `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) stopTimer(runningTimer); stop() }}>Stop Timer</button>
+      <button type='button' onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop() }}>Stop Timer</button>
       <div>
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
@@ -84,7 +84,7 @@ export default function TimerScreen() {
                       <SpacingGrid values={[
                         <Link to={`/project/${item.project}`}>{project[1].name}</Link>,
                         secondsToString(item.total),
-                        <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
+                        <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
                       ]}></SpacingGrid>
                     </div>
                   )

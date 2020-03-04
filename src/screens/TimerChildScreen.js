@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { gun, stopTimer, createTimer } from '../constants/Data'
+import { gun, finishTimer, createTimer } from '../constants/Data'
 import { isRunning } from '../constants/Validators'
 import { elapsedTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
@@ -47,8 +47,8 @@ export default function TimerChildScreen() {
       <h4>
         {isRunning(runningTimer) ? `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() } }}>Stop Timer</button>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() }; createTimer(projectId) }}>New Timer</button>
+      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</button>
+      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(projectId) }}>New Timer</button>
       {timers.map(timer => {
         return (
           <div>

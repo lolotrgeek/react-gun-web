@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { elapsedTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
-import { gun, createProject, stopTimer, createTimer } from '../constants/Data'
+import { gun, createProject, finishTimer, createTimer } from '../constants/Data'
 import { isRunning } from '../constants/Validators'
 import SpacingGrid from '../components/Grid'
 
@@ -75,9 +75,9 @@ export default function ProjectChildScreen() {
           `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''
         }
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { stopTimer(runningTimer); stop() } }}>Stop Timer</button>
+      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</button>
       <button type='button' onClick={() => {
-        if (isRunning(runningTimer)) { stop(); stopTimer(runningTimer) }
+        if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
         createTimer(projectId)
       }}>New Timer</button>
       <h3>Edit History</h3>

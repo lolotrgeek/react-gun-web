@@ -1,5 +1,6 @@
 import Gun from 'gun/gun'
-import { newTimer, updateProject, updateTimer } from '../constants/Models'
+import { newTimer, newProject, editedProject, doneTimer } from '../constants/Models'
+import { isRunning } from '../constants/Functions'
 
 
 const port = '8765'
@@ -11,14 +12,18 @@ export const gun = new Gun({
 })
 
 
-export const stopTimer = (timer) => {
-  let doneTimer = timer
-  doneTimer[1].status = 'done'
-  updateTimer(doneTimer)
-  gun.get('history').get('timers').get(doneTimer[1].project).get(doneTimer[0]).set(doneTimer[1])
-  gun.get('timers').get(doneTimer[1].project).get(doneTimer[0]).put(doneTimer[1])
-  gun.get('running').get('timer').put(null)
+export const updateTimer = (timer) => {
+  let editedTimer = timer
+  gun.get('history').get('timers').get(editedTimer[1].project).get(editedTimer[0]).set(editedTimer[1])
+  gun.get('timers').get(editedTimer[1].project).get(editedTimer[0]).put(editedTimer[1])
+}
 
+export const finishTimer = (timer) => {
+  if (isRunning(timer)) {
+    let finishedTimer = doneTimer(timer)
+    gun.get('running').get('timer').put(null)
+    updateTimer(finishedTimer)
+  } else { return timer }
 }
 
 export const createTimer = (projectId) => {
@@ -28,10 +33,14 @@ export const createTimer = (projectId) => {
   gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
 }
 
+export const createProject = (name, color) => {
+  const project = newProject(name, color)
+  gun.get('history').get('projects').get(project[0]).set(project[1])
+  gun.get('projects').get(project[0]).put(project[1])
+}
 
-
-export const createProject = (project, projectId) => {
-  const projectNew = updateProject(project)
+export const updateProject = (project, projectId) => {
+  const projectNew = editedProject(project)
   gun.get('history').get('projects').get(projectId).set(projectNew[1])
   gun.get('projects').get(projectId).set(projectNew[1])
 }

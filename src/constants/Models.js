@@ -18,7 +18,7 @@ export const newTimer = ({ project, value } = {}) => {
     return [key, new_value]
 }
 
-export const updateTimer = (timer) => {
+export const doneTimer = (timer) => {
     timer[1].ended = new Date().toString()
     timer[1].status = 'done'
     return timer
@@ -37,14 +37,8 @@ export const newProject = (name, color) => {
     return [key, value]
 }
 
-export const updateProject = (project) => {
+export const editedProject = (project) => {
     let update = project
     update[1].edited = new Date().toString()
     return update
 }
-
-export const navigation = (project, running, lastscreen) => ({
-    project: project,
-    running: running,
-    lastscreen: lastscreen
-})

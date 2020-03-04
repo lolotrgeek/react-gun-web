@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
-import { newProject } from '../constants/Models'
+
 import { trimSoul } from '../constants/Store'
-import { gun } from '../constants/Data'
+import { gun, createProject } from '../constants/Data'
 import SpacingGrid from '../components/Grid'
 
 export default function ProjecScreen() {
@@ -10,12 +10,6 @@ export default function ProjecScreen() {
   const [name, setName] = useState('')
   const [color, setColor] = useState('')
   const [projects, setProjects] = useState([])
-
-  const createProject = () => {
-    const project = newProject(name, color)
-    gun.get('history').get('projects').get(project[0]).set(project[1])
-    gun.get('projects').get(project[0]).put(project[1])
-  }
 
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
@@ -37,7 +31,7 @@ export default function ProjecScreen() {
           <label>Color : <input type="text" name="color" onChange={event => setColor(event.target.value)} /></label>
           <br />
         </form>
-        <button type='button' onClick={() => name.length > 0 && color.length > 0 ? createProject() : alert('Need name and color')}>Submit</button>
+        <button type='button' onClick={() => name.length > 0 && color.length > 0 ? createProject(name, color) : alert('Need name and color')}>Submit</button>
       </div>
       <div>
         <h3>Project List</h3>
