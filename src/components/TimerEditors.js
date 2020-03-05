@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGrin, faSmile, faMeh, faFrown, faDizzy  } from "@fortawesome/free-solid-svg-icons";
+import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Slider from '@material-ui/core/Slider';
@@ -80,99 +81,106 @@ const PrettoSlider = withStyles({
 
 export function MoodPicker(props) {
     return (
-        <div>
-            <h3>Moods</h3>
-            <FontAwesomeIcon
-                icon={faGrin }
-                color="orange"
-                size={40}
-                style={{
-                    fontWeight: props.selected === 'great' ? 'bold' : 'normal',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    fontSize: props.selected === 'great' ? 60 : 40
-                }}
-                onClick={props.onGreat}
-            />
-            <FontAwesomeIcon
-                icon={faSmile}
-                size={40}
-                color="green"
-                style={{
-                    fontWeight: props.selected === 'good' ? 'bold' : 'normal',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    fontSize: props.selected === 'good' ? 60 : 40
-                }}
-                onClick={props.onGood}
-            />
-            <FontAwesomeIcon
-                icon={faMeh}
-                size={40}
-                color="purple"
-                style={{
-                    fontWeight: props.selected === 'meh' ? 'bold' : 'normal',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    fontSize: props.selected === 'meh' ? 60 : 40
-                }}
-                onClick={props.onMeh}
-            />
-            <FontAwesomeIcon
-                icon={faFrown}
-                size={40}
-                color="blue"
-                style={{
-                    fontWeight: props.selected === 'bad' ? 'bold' : 'normal',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    fontSize: props.selected === 'bad' ? 60 : 40
-                }}
-                onClick={props.onSad}
-            />
-            <FontAwesomeIcon
-                icon={faDizzy}
-                size={40}
-                color="grey"
-                style={{
-                    fontWeight: props.selected === 'awful' ? 'bold' : 'normal',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    fontSize: props.selected === 'awful' ? 60 : 40
-                }}
-                onClick={props.onAwful}
-            />
-        </div>
+        <Grid container direction='column' justify='center' alignItems='center'>
+            <h3>Mood</h3>
+            <Grid container direction='row' justify='center' alignItems='center'>
+                <FontAwesomeIcon
+                    icon={faGrin}
+                    color="orange"
+                    size={40}
+                    style={{
+                        fontWeight: props.selected === 'great' ? 'bold' : 'normal',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        fontSize: props.selected === 'great' ? 60 : 40
+                    }}
+                    onClick={props.onGreat}
+                />
+                <FontAwesomeIcon
+                    icon={faSmile}
+                    size={40}
+                    color="green"
+                    style={{
+                        fontWeight: props.selected === 'good' ? 'bold' : 'normal',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        fontSize: props.selected === 'good' ? 60 : 40
+                    }}
+                    onClick={props.onGood}
+                />
+                <FontAwesomeIcon
+                    icon={faMeh}
+                    size={40}
+                    color="purple"
+                    style={{
+                        fontWeight: props.selected === 'meh' ? 'bold' : 'normal',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        fontSize: props.selected === 'meh' ? 60 : 40
+                    }}
+                    onClick={props.onMeh}
+                />
+                <FontAwesomeIcon
+                    icon={faFrown}
+                    size={40}
+                    color="blue"
+                    style={{
+                        fontWeight: props.selected === 'bad' ? 'bold' : 'normal',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        fontSize: props.selected === 'bad' ? 60 : 40
+                    }}
+                    onClick={props.onSad}
+                />
+                <FontAwesomeIcon
+                    icon={faDizzy}
+                    size={40}
+                    color="grey"
+                    style={{
+                        fontWeight: props.selected === 'awful' ? 'bold' : 'normal',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        fontSize: props.selected === 'awful' ? 60 : 40
+                    }}
+                    onClick={props.onAwful}
+                />
+            </Grid>
+        </Grid>
     );
 }
 
 export function EnergySlider(props) {
     const classes = useStyles();
     return (
-        <div >
-            <h3>Energy Level</h3>
+        <Grid container direction='column' justify='center' alignItems='center'>
+            <h3>{props.title ? props.title : 'Energy Level'}</h3>
             <PrettoSlider
                 valueLabelDisplay="auto"
                 aria-label="pretto slider"
                 defaultValue={props.startingEnergy}
                 onChangeCommitted={props.onEnergySet}
             />
-        </div>
+        </Grid>
     )
 }
 
 export function TimerStartNotes(props) {
     return (
-        <div>
-            <divarea
+        <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+        >
+            <textarea
                 multiline={false}
                 placeholder="Motivation"
-                placeholderdivColor="#abbabb"
+                placeholderGridColor="#abbabb"
                 value={props.mood}
                 editable={true}
-                onChangediv={props.onChangediv}
+                onChangeGrid={props.onChangeGrid}
                 onFocus={props.onFocus}
             />
-        </div >
+        </Grid >
     );
 }

@@ -8,7 +8,7 @@ import { isRunning } from '../constants/Validators'
 import SpacingGrid from '../components/Grid'
 
 export default function ProjectChildScreen() {
-  const { projectId } = useParams()
+  const { projectId, projectName } = useParams()
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
   const [edits, setEdits] = useState([])
@@ -102,7 +102,7 @@ export default function ProjectChildScreen() {
       <div>
         {timers.map(timer => {
           return (
-            <Link to={`/timer/${projectId}/${timer[0]}`}>
+            <Link to={`/timer/${projectId}/${projectName}/${timer[0]}`}>
               <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
             </Link>
           )

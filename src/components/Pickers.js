@@ -4,13 +4,13 @@ import Grid from '@material-ui/core/Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';
 
-export function DatePicker(props) {
+export function PickerDate(props) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
-        <KeyboardDatePicker
+        <DatePicker
           margin="normal"
           id="date-picker-dialog"
           label={props.label ? props.label : "Date picker dialog"}
@@ -27,13 +27,10 @@ export function DatePicker(props) {
     </MuiPickersUtilsProvider>
   );
 }
-export function TimePicker(props) {
+export function PickerTime(props) {
   return (
     <div>
-
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-
-
         <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
           <Grid item >
             <FontAwesomeIcon
@@ -46,13 +43,14 @@ export function TimePicker(props) {
           </Grid>
           <Grid item >
             {props.running ?
-              <KeyboardTimePicker
+              <TimePicker
                 inputValue='tracking'
                 disabled='true'
                 invalidDateMessage=''
+                format="HH:mm:ss"
               />
               :
-              <KeyboardTimePicker
+              <TimePicker
                 margin="normal"
                 id="time-picker"
                 views={['hours', 'minutes', 'seconds']}
@@ -60,6 +58,7 @@ export function TimePicker(props) {
                 label={props.label ? props.label : "Time picker"}
                 value={props.time}
                 onChange={props.onTimeChange}
+                format="HH:mm:ss"
                 KeyboardButtonProps={{
                   'aria-label': 'change time',
                 }}

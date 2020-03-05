@@ -3,14 +3,16 @@ import { Link, useParams } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer } from '../constants/Data'
 import { addMinutes, isValid, endOfDay, set } from 'date-fns'
-import { timeRules, simpleDate, timeString, dateRules, totalTime } from '../constants/Functions'
-import { DatePicker, TimePicker } from '../components/DatePickers'
+import { timeRules, simpleDate, timeString, dateRules, totalTime, secondsToString } from '../constants/Functions'
+import { PickerDate, PickerTime } from '../components/Pickers'
 import { MoodPicker, EnergySlider } from '../components/TimerEditors'
 import { isRunning, isTimer } from '../constants/Validators'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
 import { useAlert } from 'react-alert'
 
 export default function TimerEditScreen() {
-  const { projectId, timerId } = useParams()
+  const { projectId, projectName, timerId } = useParams()
   const [online, setOnline] = useState(false)
   const [timer, setTimer] = useState([])
   const [created, setCreated] = useState('')
@@ -18,6 +20,7 @@ export default function TimerEditScreen() {
   const [mood, setMood] = useState('')
   const [energy, setEnergy] = useState(0)
   const [alerted, setAlert] = useState([])
+  const [total, setTotal] = useState(0)
   const [date, setDate] = useState('')
   const [picker, setPicker] = useState(false)
   const alert = useAlert()
@@ -39,22 +42,24 @@ export default function TimerEditScreen() {
       setEnded(new Date(foundTimer[1].ended))
       setMood(foundTimer[1].mood)
       setEnergy(foundTimer[1].energy)
+      setTotal(foundTimer[1].total === 0 ? totalTime(created, ended) : foundTimer[1].total)
       setTimer(foundTimer)
     }, { change: true })
     return () => gun.get('timers').off()
   }, [online]);
 
   useEffect(() => timer[1] ? setEnergy(timer[1].energy) : timer[1], [timer])
+  useEffect(() => setTotal(totalTime(created, ended)), [created, ended])
 
-  const chooseNewTime = newTime => {
-    if (!timeRules(created, ended)) {
+  const chooseNewStart = newTime => {
+    if (!timeRules(newTime, ended)) {
       setPicker(false);
       setAlert([
         'Error',
         'Cannot Start after End.',
       ])
     }
-    else if (!timeRules(created, new Date())) {
+    else if (!timeRules(newTime, new Date())) {
       setPicker(false);
       setAlert([
         'Error',
@@ -72,6 +77,35 @@ export default function TimerEditScreen() {
       setPicker(false)
       setAlert(false)
       return isValid(newTime) ? setCreated(newTime) : false
+    }
+  }
+
+  const chooseNewEnd = newTime => {
+    if (!timeRules(created, newTime)) {
+      setPicker(false);
+      setAlert([
+        'Error',
+        'Cannot Start after End.',
+      ])
+    }
+    else if (!timeRules(newTime, new Date())) {
+      setPicker(false);
+      setAlert([
+        'Error',
+        'Cannot End before now.',
+      ])
+    }
+    else if (newTime && !dateRules(newTime)) {
+      setPicker(false);
+      setAlert([
+        'Error',
+        'Cannot Pick Date before Today.',
+      ])
+    }
+    else {
+      setPicker(false)
+      setAlert(false)
+      return isValid(newTime) ? setEnded(newTime) : false
     }
   }
 
@@ -157,28 +191,31 @@ export default function TimerEditScreen() {
   }
 
   return (
-    <div>
-      <h2>Timer Edit {projectId}/{timerId} </h2>
-      <div>
-        <DatePicker
+    <Grid container direction='column' justify='center' alignItems='center'>
+      <Grid item xs={12}>
+        <Grid container direction='column' justify='center' alignItems='center'>
+          <h2> Timer Edit: {projectName}</h2>
+          <h3>{secondsToString(total)}</h3>
+        </Grid>
+        <PickerDate
           label=' '
           startdate={created}
           onDateChange={newDate => chooseNewDate(newDate)}
           maxDate={endOfDay(created)}
         />
-
-        <TimePicker
+        {/* {created.toString()} */}
+        <PickerTime
           label=' '
           time={created}
-          onTimeChange={newTime => setCreated(newTime)}
+          onTimeChange={newTime => chooseNewStart(newTime)}
           addMinutes={() => increaseCreated()}
           subtractMinutes={() => decreaseCreated()}
         />
-
-        <TimePicker
+        {/* {ended.toString()} */}
+        <PickerTime
           label=' '
           time={ended}
-          onTimeChange={newTime => setEnded(newTime)}
+          onTimeChange={newTime => chooseNewEnd(newTime)}
           running={isRunning(timer)}
           addMinutes={() => increaseEnded()}
           subtractMinutes={() => decreaseEnded()}
@@ -191,14 +228,16 @@ export default function TimerEditScreen() {
           onAwful={() => setMood('awful')}
           selected={mood}
         />
-        {timer[1] ?
-          <EnergySlider
-            startingEnergy={energy}
-            onEnergySet={(event, value) => setEnergy(value)}
-          /> : ''}
+        {
+          timer[1] ?
+            <EnergySlider
+              startingEnergy={energy}
+              onEnergySet={(event, value) => setEnergy(value)}
+            /> : ''
+        }
 
-        <button onClick={() => editComplete()}>Done</button>
-      </div>
-    </div >
+        <Button variant="contained" color="primary" onClick={() => editComplete()}>Done</Button>
+      </Grid >
+    </Grid >
   )
 }

@@ -82,7 +82,7 @@ export default function TimerScreen() {
                   return (
                     <div>
                       <SpacingGrid values={[
-                        <Link to={`/project/${item.project}`}>{project[1].name}</Link>,
+                        <Link to={`/project/${item.project}/${project[1].name}`}>{project[1].name}</Link>,
                         secondsToString(item.total),
                         <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
                       ]}></SpacingGrid>

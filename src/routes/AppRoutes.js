@@ -47,9 +47,9 @@ export default function AppRoutes() {
           <Route path="/test">
             <TestScreen />
           </Route>
-          <Route path="/timer/:projectId/:timerId" children={<TimerEditScreen />} />
-          <Route path="/history/timer/:projectId/:timerId" children={<TimerChildScreen />} />
-          <Route path="/project/:projectId" children={<ProjectChildScreen />} />
+          <Route path="/timer/:projectId/:projectName/:timerId" children={<TimerEditScreen />} />
+          <Route path="/history/timer/:projectId/:projectName/:timerId" children={<TimerChildScreen />} />
+          <Route path="/project/:projectId/:projectName" children={<ProjectChildScreen />} />
         </Switch>
       </div>
     </Router >
