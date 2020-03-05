@@ -87,7 +87,7 @@ export default function TestScreen() {
       mood: 'good',
       energy: 50,
   }
-    addTimer({project: multiDayTimer.project, value : multiDayTimer})
+    addTimer(multiDayTimer.project, multiDayTimer)
   }
 
   return (

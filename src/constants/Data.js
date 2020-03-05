@@ -1,5 +1,5 @@
 import Gun from 'gun/gun'
-import { newTimer, newProject, editedProject, doneTimer } from '../constants/Models'
+import { newTimer, newProject, editedProject, doneTimer, generateNewTimer } from '../constants/Models'
 import { isRunning, multiDay, newEntryPerDay } from '../constants/Functions'
 
 
@@ -28,7 +28,7 @@ export const updateProject = (project, projectId) => {
  * @param {*} projectId 
  */
 export const createTimer = (projectId) => {
-  const timer = newTimer({ project: projectId })
+  const timer = generateNewTimer(projectId)
   gun.get('running').get('timer').put(JSON.stringify(timer))
   gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
   gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
@@ -47,32 +47,29 @@ export const updateTimer = (timer) => {
 
 /**
  * Generates a new timer using the given timer model
- * @param {String} model.project 
- * @param {Object} model.value a timer object
+ * @param {String} projectId project hashid
+ * @param {Object} value a timer object
  */
-export const addTimer = ({ project, value } = {}) => {
-  const timer = newTimer({ project: project, value: value })
-  console.log('Adding', timer)
-  gun.get('history').get('timers').get(project).get(timer[0]).set(timer[1])
-  gun.get('timers').get(project).get(timer[0]).put(timer[1])
+export const addTimer = (projectId, value) => {
+  const timer = newTimer(value)
+  console.log('Storing', timer)
+  gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
+  gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
 }
 
 export const finishTimer = (timer) => {
   if (isRunning(timer)) {
     let done = doneTimer(timer)
     gun.get('running').get('timer').put(null)
-    console.log('testing Done', done)
     if (multiDay(done[1].created, done[1].ended)) {
-      console.log('multiDay')
       const dayEntries = newEntryPerDay(done[1].created, done[1].ended)
       dayEntries.map((dayEntry, i) => {
-        // console.log(dayEntry)
-        const splitTimer = done
+        let splitTimer = done
         splitTimer[1].created = dayEntry.start
         splitTimer[1].ended = dayEntry.end
-        console.log('Split', i, splitTimer[1])
+        console.log('Split', i, splitTimer)
         if(i === 0) {updateTimer(splitTimer)} // use initial timer id for first day
-        else {addTimer({ project: splitTimer.project, value: splitTimer[1]})}
+        else {addTimer(splitTimer[1].project, splitTimer[1])}
         return splitTimer
       })
     } else {
