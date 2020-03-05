@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link, useParams } from "react-router-dom"
+import React, { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer } from '../constants/Data'
-import { addMinutes, isValid, endOfDay, set } from 'date-fns'
-import { timeRules, simpleDate, timeString, dateRules, totalTime, secondsToString } from '../constants/Functions'
+import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
+import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { MoodPicker, EnergySlider } from '../components/TimerEditors'
 import { isRunning, isTimer } from '../constants/Validators'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import { Grid, Button } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
 
 export default function TimerEditScreen() {
@@ -118,8 +117,8 @@ export default function TimerEditScreen() {
       setAlert([
         'Error',
         'Cannot Pick Date before Today.'
-      ]
-      )
+      ])
+      return false
     }
   }
   const timeRulesEnforcer = (start, end) => {
@@ -168,6 +167,16 @@ export default function TimerEditScreen() {
     }
   }
 
+  const nextDay = () => {
+    let newDate = add(created, { days: 1 })
+    return chooseNewDate(newDate) ? newDate : created
+  }
+
+  const previousDay = () => {
+    let newDate = sub(created, { days: 1 })
+    return chooseNewDate(newDate) ? newDate : created
+  }
+
   const decreaseCreated = () => {
     let newCreated = addMinutes(new Date(created), -5)
     let checkedEnd = isRunning(timer) ? new Date() : ended
@@ -191,21 +200,23 @@ export default function TimerEditScreen() {
   }
 
   return (
-    <Grid container direction='column' justify='center' alignItems='center'>
+    <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
+      <Grid container direction='column' justify='center' alignItems='center'>
+        <h2>Record for Project: {projectName}</h2>
+        <h3>{secondsToString(total)}</h3>
+      </Grid>
       <Grid item xs={12}>
-        <Grid container direction='column' justify='center' alignItems='center'>
-          <h2> Timer Edit: {projectName}</h2>
-          <h3>{secondsToString(total)}</h3>
-        </Grid>
         <PickerDate
-          label=' '
+          label='Date'
           startdate={created}
           onDateChange={newDate => chooseNewDate(newDate)}
           maxDate={endOfDay(created)}
+          previousDay={() => previousDay()}
+          nextDay={() => nextDay()}
         />
         {/* {created.toString()} */}
         <PickerTime
-          label=' '
+          label='Start'
           time={created}
           onTimeChange={newTime => chooseNewStart(newTime)}
           addMinutes={() => increaseCreated()}
@@ -213,7 +224,7 @@ export default function TimerEditScreen() {
         />
         {/* {ended.toString()} */}
         <PickerTime
-          label=' '
+          label='End'
           time={ended}
           onTimeChange={newTime => chooseNewEnd(newTime)}
           running={isRunning(timer)}
@@ -236,8 +247,9 @@ export default function TimerEditScreen() {
             /> : ''
         }
 
-        <Button variant="contained" color="primary" onClick={() => editComplete()}>Done</Button>
       </Grid >
+      <Grid item xs={12}><Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button></Grid>
+
     </Grid >
   )
 }

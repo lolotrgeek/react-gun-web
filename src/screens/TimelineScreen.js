@@ -6,12 +6,13 @@ import { isRunning } from '../constants/Validators'
 import { gun, finishTimer, createTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
+import { Grid, Button } from '@material-ui/core/'
+
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const [timers, setTimers] = useState([])
-  const [daysWithTimer, setDaysWithTimer] = useState([]); // disply the timers within each day
   const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
 
@@ -65,37 +66,34 @@ export default function TimerScreen() {
   }, [online]);
 
   return (
-    <div>
+    <Grid>
       <h2>Timeline</h2>
       <h4>
         {isRunning(runningTimer) ? `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop() }}>Stop Timer</button>
-      <div>
+      <Button variant="contained" color="primary" onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop() }}>Stop Timer</Button>
+      <Grid>
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
-            <div>
+            <Grid>
               <h2>{`${sayDay(day.title)}`}</h2>
               {day.data.map(item => projects.map(project => {
                 if (item.status === 'running') return (null)
                 if (project[0] === item.project) {
                   return (
-                    <div>
-                      <SpacingGrid values={[
-                        <Link to={`/project/${item.project}/${project[1].name}`}>{project[1].name}</Link>,
-                        secondsToString(item.total),
-                        <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
-                      ]}></SpacingGrid>
-                    </div>
+                    <SpacingGrid values={[
+                      <Link to={`/project/${item.project}/${project[1].name}`}>{project[1].name}</Link>,
+                      <Button variant="contained" color="primary" onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(item.project) }}>{secondsToString(item.total)}</Button>
+                    ]}></SpacingGrid>
                   )
                 }
                 else return (null)
               })
               )}
-            </div>
+            </Grid>
           )
         })}
-      </div>
-    </div >
+      </Grid>
+    </Grid >
   )
 }

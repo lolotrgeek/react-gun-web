@@ -6,6 +6,8 @@ import { isRunning } from '../constants/Validators'
 import { elapsedTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
+import { Grid, Button } from '@material-ui/core/'
+
 
 export default function TimerChildScreen() {
   const { projectId, timerId } = useParams()
@@ -42,23 +44,23 @@ export default function TimerChildScreen() {
   }, [online]);
 
   return (
-    <div>
+    <Grid>
       <h2>Timer History {projectId}/{timerId} </h2>
       <h4>
         {isRunning(runningTimer) ? `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</button>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(projectId) }}>New Timer</button>
+      <Button variant="contained" color="primary"  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</Button>
+      <Button variant="contained" color="primary"  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(projectId) }}>New Timer</Button>
       {timers.map(timer => {
         return (
-          <div>
+          <Grid>
             <Link to={`/timer/${timer[0]}`}>
               <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
             </Link>
-          </div>
+          </Grid>
         )
       })}
 
-    </div >
+    </Grid >
   )
 }

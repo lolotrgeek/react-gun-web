@@ -6,6 +6,7 @@ import { isRunning } from '../constants/Validators'
 import { gun, finishTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
+import { Grid, Button } from '@material-ui/core/'
 
 
 export default function TimerScreen() {
@@ -57,13 +58,13 @@ export default function TimerScreen() {
 
 
   return (
-    <div>
+    <Grid>
       <h2>Timeline</h2>
       <h4>
         {isRunning(runningTimer) ?`Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop()  }}>Stop Timer</button>
-      <div>
+      <Button variant="contained" color="primary"  onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop()  }}>Stop Timer</Button>
+      <Grid>
         
         {timers.map(timer => {
           console.log(timer[0])
@@ -73,7 +74,7 @@ export default function TimerScreen() {
                 </Link>
             )
           })}
-        </div>
-    </div >
+        </Grid>
+    </Grid >
   )
 }

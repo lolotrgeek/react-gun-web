@@ -6,6 +6,8 @@ import useCounter from '../hooks/useCounter'
 import { gun, createProject, finishTimer, createTimer } from '../constants/Data'
 import { isRunning } from '../constants/Validators'
 import SpacingGrid from '../components/Grid'
+import { Grid, Button } from '@material-ui/core/'
+
 
 export default function ProjectChildScreen() {
   const { projectId, projectName } = useParams()
@@ -26,7 +28,6 @@ export default function ProjectChildScreen() {
     }, { change: true })
     return () => gun.get('history').off()
   }, [online]);
-
 
   useEffect(() => {
     let currentTimers = []
@@ -68,38 +69,38 @@ export default function ProjectChildScreen() {
   }, [online]);
 
   return (
-    <div>
+    <Grid>
       <h2>Project {projectId}</h2>
       <h4>
         {runningTimer && Array.isArray(runningTimer) && runningTimer.length === 2 ?
           `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''
         }
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</button>
-      <button type='button' onClick={() => {
+      <Button variant="contained" color="primary"  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</Button>
+      <Button variant="contained" color="primary"  onClick={() => {
         if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
         createTimer(projectId)
-      }}>New Timer</button>
+      }}>New Timer</Button>
       <h3>Edit History</h3>
-      <div>
+      <Grid>
         <ol>
           {edits.map(project => {
             return (
               <li key={project[2]}>
                 <Link to={`/project/${project[0]}`}>{`${JSON.stringify(project[1].name)}`}</Link>
-                <button type='button' onClick={() => {
+                <Button variant="contained" color="primary"  onClick={() => {
                   let update = project
                   update[1].color = `#${Math.random()}`
                   update[1].name = `${project[1].name} edited`
                   console.log(update)
                   createProject(update, projectId)
-                }}>Edit project</button>
+                }}>Edit project</Button>
               </li>
             )
           })}
-        </ol></div>
+        </ol></Grid>
       <h3>Timers</h3>
-      <div>
+      <Grid>
         {timers.map(timer => {
           return (
             <Link to={`/timer/${projectId}/${projectName}/${timer[0]}`}>
@@ -107,7 +108,7 @@ export default function ProjectChildScreen() {
             </Link>
           )
         })}
-      </div>
-    </div >
+      </Grid>
+    </Grid >
   )
 }

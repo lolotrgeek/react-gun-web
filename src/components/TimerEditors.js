@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Slider from '@material-ui/core/Slider';
@@ -82,68 +83,78 @@ const PrettoSlider = withStyles({
 export function MoodPicker(props) {
     return (
         <Grid container direction='column' justify='center' alignItems='center'>
-            <h3>Mood</h3>
+            <h3>{props.title ? props.title : 'Mood'}</h3>
             <Grid container direction='row' justify='center' alignItems='center'>
-                <FontAwesomeIcon
-                    icon={faGrin}
-                    color="orange"
-                    size={40}
-                    style={{
-                        fontWeight: props.selected === 'great' ? 'bold' : 'normal',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        fontSize: props.selected === 'great' ? 60 : 40
-                    }}
-                    onClick={props.onGreat}
-                />
-                <FontAwesomeIcon
-                    icon={faSmile}
-                    size={40}
-                    color="green"
-                    style={{
-                        fontWeight: props.selected === 'good' ? 'bold' : 'normal',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        fontSize: props.selected === 'good' ? 60 : 40
-                    }}
-                    onClick={props.onGood}
-                />
-                <FontAwesomeIcon
-                    icon={faMeh}
-                    size={40}
-                    color="purple"
-                    style={{
-                        fontWeight: props.selected === 'meh' ? 'bold' : 'normal',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        fontSize: props.selected === 'meh' ? 60 : 40
-                    }}
-                    onClick={props.onMeh}
-                />
-                <FontAwesomeIcon
-                    icon={faFrown}
-                    size={40}
-                    color="blue"
-                    style={{
-                        fontWeight: props.selected === 'bad' ? 'bold' : 'normal',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        fontSize: props.selected === 'bad' ? 60 : 40
-                    }}
-                    onClick={props.onSad}
-                />
-                <FontAwesomeIcon
-                    icon={faDizzy}
-                    size={40}
-                    color="grey"
-                    style={{
-                        fontWeight: props.selected === 'awful' ? 'bold' : 'normal',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        fontSize: props.selected === 'awful' ? 60 : 40
-                    }}
-                    onClick={props.onAwful}
-                />
+                <IconButton aria-label="great">
+                    <FontAwesomeIcon
+                        icon={faGrin}
+                        color="orange"
+                        size={40}
+                        style={{
+                            fontWeight: props.selected === 'great' ? 'bold' : 'normal',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontSize: props.selected === 'great' ? 60 : 40
+                        }}
+                        onClick={props.onGreat}
+                    />
+                </IconButton>
+                <IconButton aria-label="good">
+                    <FontAwesomeIcon
+                        icon={faSmile}
+                        size={40}
+                        color="green"
+                        style={{
+                            fontWeight: props.selected === 'good' ? 'bold' : 'normal',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontSize: props.selected === 'good' ? 60 : 40
+                        }}
+                        onClick={props.onGood}
+                    />
+                </IconButton>
+                <IconButton aria-label="meh">
+                    <FontAwesomeIcon
+                        icon={faMeh}
+                        size={40}
+                        color="purple"
+                        style={{
+                            fontWeight: props.selected === 'meh' ? 'bold' : 'normal',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontSize: props.selected === 'meh' ? 60 : 40
+                        }}
+                        onClick={props.onMeh}
+                    />
+                </IconButton>
+                <IconButton aria-label="bad">
+                    <FontAwesomeIcon
+                        icon={faFrown}
+                        size={40}
+                        color="blue"
+                        style={{
+                            fontWeight: props.selected === 'bad' ? 'bold' : 'normal',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontSize: props.selected === 'bad' ? 60 : 40
+                        }}
+                        onClick={props.onSad}
+                    />
+                </IconButton>
+                <IconButton aria-label="awful">
+                    <FontAwesomeIcon
+                        icon={faDizzy}
+                        size={40}
+                        color="grey"
+                        style={{
+                            fontWeight: props.selected === 'awful' ? 'bold' : 'normal',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontSize: props.selected === 'awful' ? 60 : 40
+                        }}
+                        onClick={props.onAwful}
+                    />
+                </IconButton>
             </Grid>
         </Grid>
     );

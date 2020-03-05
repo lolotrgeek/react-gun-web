@@ -1,4 +1,6 @@
 import React from 'react'
+import { Grid, Typography } from '@material-ui/core'
+import { MainMenu } from '../components/Menus'
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,41 +19,34 @@ import TestScreen from '../screens/TestScreen'
 export default function AppRoutes() {
   return (
     <Router>
-      <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/Projects">Projects</Link>
-          </li>
-          <li>
-            <Link to="/Timers">Timers</Link>
-          </li>
-          <li>
-            <Link to="/Test">Test</Link>
-          </li>
-        </ul>
-
-        <hr />
-        <Switch>
-          <Route exact path="/">
-            <TimelineScreen />
-          </Route>
-          <Route path="/projects">
-            <ProjectScreen />
-          </Route>
-          <Route path="/timers">
-            <TimerScreen />
-          </Route>
-          <Route path="/test">
-            <TestScreen />
-          </Route>
-          <Route path="/timer/:projectId/:projectName/:timerId" children={<TimerEditScreen />} />
-          <Route path="/history/timer/:projectId/:projectName/:timerId" children={<TimerChildScreen />} />
-          <Route path="/project/:projectId/:projectName" children={<ProjectChildScreen />} />
-        </Switch>
-      </div>
+      <MainMenu
+        title='Timers'
+        links={[
+          {text: 'Home', route: "/"},
+          {text: 'Projects', route: "/projects"},
+          {text: 'Timers', route: "/timers"},
+          {text: 'Tests', route: "/test"}
+        ]}
+        content={
+          <Switch>
+            <Route exact path="/">
+              <TimelineScreen />
+            </Route>
+            <Route path="/projects">
+              <ProjectScreen />
+            </Route>
+            <Route path="/timers">
+              <TimerScreen />
+            </Route>
+            <Route path="/test">
+              <TestScreen />
+            </Route>
+            <Route path="/timer/:projectId/:projectName/:timerId" children={<TimerEditScreen />} />
+            <Route path="/history/timer/:projectId/:projectName/:timerId" children={<TimerChildScreen />} />
+            <Route path="/project/:projectId/:projectName" children={<ProjectChildScreen />} />
+          </Switch>
+        }
+      />
     </Router >
   );
 }

@@ -8,6 +8,7 @@ import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
 import sub from 'date-fns/sub'
 
+
 export default function TestScreen() {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
@@ -96,9 +97,9 @@ export default function TestScreen() {
       <h4>
         {isRunning(runningTimer) ? `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
       </h4>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop() }}>Stop Timer</button>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; generateDummys() }}>Generate Dummys</button>
-      <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; loadDummys() }}>Load Dummys</button>
+      <button  onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop() }}>Stop Timer</button>
+      <button  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; generateDummys() }}>Generate Dummys</button>
+      <button  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; loadDummys() }}>Load Dummys</button>
       <div>
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
@@ -112,7 +113,7 @@ export default function TestScreen() {
                       <SpacingGrid values={[
                         <Link to={`/project/${item.project}`}>{project[1].name}</Link>,
                         secondsToString(item.total),
-                        <button type='button' onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
+                        <button  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(item.project) }}>New Timer</button>
                       ]}></SpacingGrid>
                     </div>
                   )
