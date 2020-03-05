@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { elapsedTime, simpleDate, timeString } from '../constants/Functions'
+import { elapsedTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import { gun, createProject, finishTimer, createTimer } from '../constants/Data'
 import { isRunning } from '../constants/Validators'
 import SpacingGrid from '../components/Grid'
 import { Grid, Button } from '@material-ui/core/'
 import { MoodDisplay } from '../components/TimerDisplay'
-import { RunningTimer } from '../components/RunningTimer'
-import { ProjectTitle } from '../components/ProjectTitle'
 
 
-export default function ProjectChildScreen() {
+export default function ProjectHistory() {
   const { projectId, projectName } = useParams()
   const [online, setOnline] = useState(false)
-  const [project, setProject] = useState([])
   const [timers, setTimers] = useState([])
+  const [edits, setEdits] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
 
@@ -26,10 +24,10 @@ export default function ProjectChildScreen() {
   }, [runningTimer])
 
   useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
-      setProject([projectId, trimSoul(projectValue)])
+    gun.get('history').get('projects').get(projectId).map().on((projectValue, projectGunKey) => {
+      setEdits(projects => [...projects, [projectId, trimSoul(projectValue), projectGunKey]])
     }, { change: true })
-    return () => gun.get('projects').off()
+    return () => gun.get('history').off()
   }, [online]);
 
   useEffect(() => {
@@ -72,33 +70,26 @@ export default function ProjectChildScreen() {
   }, [online]);
 
   return (
-    <Grid container direction="column" justify="center" alignItems="center" >
-      <Link to={`/project/${projectId}`}> <ProjectTitle project={project} /></Link>
-      {isRunning(runningTimer) ? <RunningTimer timer={runningTimer} count={count} /> : ''}
-      <Button variant="contained" color="primary" onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</Button>
-      <Button variant="contained" color="primary" onClick={() => {
-        if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
-        createTimer(projectId)
-      }}>New Timer</Button>
-      <h3>Timers</h3>
+    <Grid>
+      <h2>Project {projectId}</h2>
+      <h3>Edit History</h3>
       <Grid>
-        <SpacingGrid headers={['Date', 'Started', 'Ended', 'Energy', 'Mood']} />
-        {timers.map(timer => {
-          let creation = new Date(timer[1].created)
-          return (
-            <Link to={`/timer/${projectId}/${projectName}/${timer[0]}`}>
-              <SpacingGrid
-                values={[
-                  simpleDate(creation),
-                  timeString(creation),
-                  timeString(new Date(timer[1].ended)),
-                  timer[1].energy,
-                  <MoodDisplay mood={timer[1].mood} />
-                ]} />
-            </Link>
-          )
-        })}
-      </Grid>
+        <ol>
+          {edits.map(project => {
+            return (
+              <li key={project[2]}>
+                <Link to={`/project/${project[0]}`}>{`${JSON.stringify(project[1].name)}`}</Link>
+                <Button variant="contained" color="primary" onClick={() => {
+                  let update = project
+                  update[1].color = `#${Math.random()}`
+                  update[1].name = `${project[1].name} edited`
+                  console.log(update)
+                  createProject(update, projectId)
+                }}>Edit project</Button>
+              </li>
+            )
+          })}
+        </ol></Grid>
     </Grid >
   )
 }

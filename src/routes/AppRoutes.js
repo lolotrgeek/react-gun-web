@@ -13,8 +13,9 @@ import TimerScreen from '../screens/TimerScreen'
 import TimelineScreen from '../screens/TimelineScreen'
 import TimerChildScreen from '../screens/TimerChildScreen'
 import TimerEditScreen from '../screens/TimerEditScreen'
-import ProjectChildScreen from '../screens/ProjectChildScreen'
 import TestScreen from '../screens/TestScreen'
+import ProjectCreateScreen from '../screens/ProjectCreateScreen'
+import ProjectChildScreen from '../screens/ProjectChildScreen'
 
 export default function AppRoutes() {
   return (
@@ -44,6 +45,8 @@ export default function AppRoutes() {
             <Route path="/timer/:projectId/:projectName/:timerId" children={<TimerEditScreen />} />
             <Route path="/history/timer/:projectId/:projectName/:timerId" children={<TimerChildScreen />} />
             <Route path="/project/:projectId/:projectName" children={<ProjectChildScreen />} />
+            <Route path="/project/create" children={<ProjectCreateScreen />} />
+            <Route path="/edit/:projectId/" children={<ProjectCreateScreen />} />
           </Switch>
         }
       />

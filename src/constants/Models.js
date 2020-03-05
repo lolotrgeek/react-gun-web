@@ -44,8 +44,9 @@ export const newProject = (name, color) => {
     return [key, value]
 }
 
-export const editedProject = (project) => {
+export const editedProject = (project, updates) => {
     let update = project
+    update[1] = Object.assign(project[1], updates)
     update[1].edited = new Date().toString()
     return update
 }

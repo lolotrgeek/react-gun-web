@@ -3,7 +3,7 @@ import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faGrin, faSmile, faMeh, faFrown, faDizzy  } from "@fortawesome/free-solid-svg-icons";
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';
 import { secondsToString } from '../constants/Functions'
@@ -151,3 +151,48 @@ export function PickerSeconds(props) {
   );
 }
 
+export function PickerMood(props) {
+  return (
+      <Grid container direction="row" justify="center" alignItems="flex-start" >
+          <Grid>
+
+              <FontAwesomeIcon
+                  icon={faGrin}
+                  color="orange"
+                  size={40}
+                  onClick={props.onGreat}
+              />
+
+              <FontAwesomeIcon
+                  icon={faSmile}
+                  size={40}
+                  color="green"
+                  onClick={props.onGood}
+              />
+
+              <FontAwesomeIcon
+                  icon={faMeh}
+                  size={40}
+                  color="purple"
+          
+                  onClick={props.onMeh}
+              />
+
+              <FontAwesomeIcon
+                  icon={faFrown}
+                  size={40}
+                  color="blue"
+                  onClick={props.onSad}
+              />
+
+              <FontAwesomeIcon
+                  icon={faDizzy}
+                  size={40}
+                  color="grey"
+                  onClick={props.onAwful}
+              />
+
+          </Grid>
+      </Grid>
+  )
+}

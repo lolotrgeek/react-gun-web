@@ -18,10 +18,10 @@ export const createProject = (name, color) => {
   gun.get('projects').get(project[0]).put(project[1])
 }
 
-export const updateProject = (project, projectId) => {
-  const projectNew = editedProject(project)
-  gun.get('history').get('projects').get(projectId).set(projectNew[1])
-  gun.get('projects').get(projectId).set(projectNew[1])
+export const updateProject = (project, updates) => {
+  const projectEdit = editedProject(project, updates)
+  gun.get('history').get('projects').get(projectEdit[0]).set(projectEdit[1])
+  gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
 }
 /**
  * Gemerates a new timer using the standard timer model

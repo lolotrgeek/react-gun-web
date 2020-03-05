@@ -14,10 +14,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ProjecScreen() {
+export default function ProjectCreateScreen() {
   const [online, setOnline] = useState(false)
-  const [name, setName] = useState('')
-  const [color, setColor] = useState('')
   const [projects, setProjects] = useState([])
 
   const classes = useStyles();
@@ -34,22 +32,14 @@ export default function ProjecScreen() {
   return (
     <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
       <h2>Projects</h2>
-      <Grid container direction='column' justify='flex-start' alignItems='center'>
-        <h3>New Project</h3>
-        <form className={classes.form}>
-          <TextField variant="outlined" label="name" onChange={event => setName(event.target.value)} />
-          <TextField variant="outlined" label="color" onChange={event => setColor(event.target.value)} />
-        </form>
-        <Button variant="contained" color="primary" onClick={() => name.length > 0 && color.length > 0 ? createProject(name, color) : alert('Need name and color')}>Submit</Button>
-      </Grid>
+      <Link to='/project/create'><Button variant="contained" color="primary">New Project</Button></Link>
       <h3>Project List</h3>
       <Grid container direction='column' justify='center' alignItems='center'>
-
-
         {projects.map(project => {
           return (
             <Grid item xs={6}>
-              <Link to={`/project/${project[0]}/${project[1].name}`}>{project[0]} : {project[1].name}</Link>
+              <Link to={`/project/${project[0]}/${project[1].name}`}>{project[0]} : {project[1].name} : {project[1].color}</Link>
+              <Link to={`/edit/${project[0]}`}><Button variant="contained" color="primary">Edit</Button></Link>
             </Grid>
           )
         })}
