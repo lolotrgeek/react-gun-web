@@ -2,12 +2,13 @@ import { Button, Grid } from '@material-ui/core/'
 import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import SpacingGrid from '../components/Grid'
+import { RunningTimer } from '../components/RunningTimer'
 import { createTimer, finishTimer, gun } from '../constants/Data'
 import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { isRunning } from '../constants/Validators'
 import useCounter from '../hooks/useCounter'
-import {projectlink} from '../routes/routes'
+import { projectlink } from '../routes/routes'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -68,10 +69,9 @@ export default function TimerScreen() {
   return (
     <Grid>
       <h2>Timeline</h2>
-      <h4>
-        {isRunning(runningTimer) ? `Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
-      </h4>
-      <Button variant="contained" color="primary" onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop() }}>Stop Timer</Button>
+
+      {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
+
       <Grid>
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
@@ -82,7 +82,7 @@ export default function TimerScreen() {
                 if (project[0] === item.project) {
                   return (
                     <SpacingGrid values={[
-                      <Link to={  projectlink(item.project)}>{project[1].name}</Link>,
+                      <Link to={projectlink(item.project)}>{project[1].name}</Link>,
                       <Button
                         variant="contained"
                         color="primary"

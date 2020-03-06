@@ -8,6 +8,7 @@ import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
 import { Grid, Button } from '@material-ui/core/'
 import {timerlink} from '../routes/routes'
+import { RunningTimer } from '../components/RunningTimer'
 
 
 export default function TimerScreen() {
@@ -61,12 +62,8 @@ export default function TimerScreen() {
   return (
     <Grid>
       <h2>Timeline</h2>
-      <h4>
-        {isRunning(runningTimer) ?`Running Timer ${runningTimer[1].project}/${runningTimer[0]}/ Count: ${count}` : ''}
-      </h4>
-      <Button variant="contained" color="primary"  onClick={() => { if (isRunning(runningTimer)) finishTimer(runningTimer); stop()  }}>Stop Timer</Button>
+      {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
       <Grid>
-        
         {timers.map(timer => {
           console.log(timer[0])
             return (

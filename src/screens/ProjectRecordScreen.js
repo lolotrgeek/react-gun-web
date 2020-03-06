@@ -73,10 +73,9 @@ export default function ProjectRecordScreen() {
   }, [online]);
 
   return (
-    <Grid container direction="column" justify="center" alignItems="center" >
+    <Grid container direction="column" justify="center" alignItems="center" spacing={4} >
       <Link to={projectlink(projectId)}> <Title project={project} /></Link>
-      {isRunning(runningTimer) ? <RunningTimer timer={runningTimer} count={count} /> : ''}
-      <Button variant="contained" color="primary" onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</Button>
+      {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
       <Button variant="contained" color="primary" onClick={() => {
         if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
         createTimer(projectId)
