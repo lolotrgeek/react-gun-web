@@ -7,6 +7,7 @@ import { gun, finishTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
 import { Grid, Button } from '@material-ui/core/'
+import {timerlink} from '../routes/routes'
 
 
 export default function TimerScreen() {
@@ -69,7 +70,7 @@ export default function TimerScreen() {
         {timers.map(timer => {
           console.log(timer[0])
             return (
-                <Link to={`/timer/${timer[1].project}/${timer[0]}`}>
+                <Link to={ timerlink(timer[1].project, timer[0])}>
                   <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
                 </Link>
             )

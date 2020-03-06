@@ -9,11 +9,12 @@ import SpacingGrid from '../components/Grid'
 import { Grid, Button } from '@material-ui/core/'
 import { MoodDisplay } from '../components/TimerDisplay'
 import { RunningTimer } from '../components/RunningTimer'
-import { ProjectTitle } from '../components/ProjectTitle'
+import { Title } from '../components/Title'
+import { projectlink, timerlink} from '../routes/routes'
 
 
-export default function ProjectChildScreen() {
-  const { projectId, projectName } = useParams()
+export default function ProjectRecordScreen() {
+  const { projectId,  } = useParams()
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
   const [timers, setTimers] = useState([])
@@ -73,7 +74,7 @@ export default function ProjectChildScreen() {
 
   return (
     <Grid container direction="column" justify="center" alignItems="center" >
-      <Link to={`/project/${projectId}`}> <ProjectTitle project={project} /></Link>
+      <Link to={projectlink(projectId)}> <Title project={project} /></Link>
       {isRunning(runningTimer) ? <RunningTimer timer={runningTimer} count={count} /> : ''}
       <Button variant="contained" color="primary" onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() } }}>Stop Timer</Button>
       <Button variant="contained" color="primary" onClick={() => {
@@ -86,7 +87,7 @@ export default function ProjectChildScreen() {
         {timers.map(timer => {
           let creation = new Date(timer[1].created)
           return (
-            <Link to={`/timer/${projectId}/${projectName}/${timer[0]}`}>
+            <Link to={timerlink(projectId, timer[0])}>
               <SpacingGrid
                 values={[
                   simpleDate(creation),

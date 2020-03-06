@@ -6,13 +6,14 @@ import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { MoodPicker, EnergySlider } from '../components/TimerEditors'
-import { isRunning, isTimer } from '../constants/Validators'
-import { Grid, Button } from '@material-ui/core/'
+import { isRunning, isTimer, projectValid } from '../constants/Validators'
+import { Grid, Button, Link } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
 
 export default function TimerEditScreen() {
-  const { projectId, projectName, timerId } = useParams()
+  const { projectId, timerId } = useParams()
   const [online, setOnline] = useState(false)
+  const [project, setProject] = useState([])
   const [timer, setTimer] = useState([])
   const [created, setCreated] = useState('')
   const [ended, setEnded] = useState('')
@@ -47,6 +48,14 @@ export default function TimerEditScreen() {
     return () => gun.get('timers').off()
   }, [online]);
 
+  useEffect(() => {
+    gun.get('projects').get(projectId).on((projectValue, projectKey) => {
+      console.log(projectValue)
+      setProject([projectKey, projectValue])
+    }
+      , { change: true })
+    return () => gun.get('projects').off()
+  }, [timer])
   useEffect(() => timer[1] ? setEnergy(timer[1].energy) : timer[1], [timer])
   useEffect(() => setTotal(totalTime(created, ended)), [created, ended])
 
@@ -202,7 +211,7 @@ export default function TimerEditScreen() {
   return (
     <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
       <Grid container direction='column' justify='center' alignItems='center'>
-        <h2>Record for Project: {projectName}</h2>
+        <h2>Record for Project: {projectValid(project) ? project[1].name : ''}</h2>
         <h3>{secondsToString(total)}</h3>
       </Grid>
       <Grid item xs={12}>
@@ -248,7 +257,9 @@ export default function TimerEditScreen() {
         }
 
       </Grid >
-      <Grid item xs={12}><Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button></Grid>
+      <Grid item xs={12}>
+        <Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button>
+      </Grid>
 
     </Grid >
   )

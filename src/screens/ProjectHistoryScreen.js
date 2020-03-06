@@ -11,7 +11,7 @@ import { MoodDisplay } from '../components/TimerDisplay'
 
 
 export default function ProjectHistory() {
-  const { projectId, projectName } = useParams()
+  const { projectId,  } = useParams()
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
   const [edits, setEdits] = useState([])

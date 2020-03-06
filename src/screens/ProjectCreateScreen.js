@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ProjectCreateScreen() {
-  const { projectId, projectName } = useParams()
+  const { projectId,  } = useParams()
   const [online, setOnline] = useState(false)
   const [name, setName] = useState('')
   const [color, setColor] = useState('')

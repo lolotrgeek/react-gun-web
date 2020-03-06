@@ -4,6 +4,9 @@ import { trimSoul } from '../constants/Store'
 import { gun, createProject } from '../constants/Data'
 import SpacingGrid from '../components/Grid'
 import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
+import { Title } from '../components/Title'
+import { projectValid } from '../constants/Validators'
+import { projectEditlink, projectCreatelink, projectlink } from '../routes/routes'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -31,16 +34,24 @@ export default function ProjectCreateScreen() {
 
   return (
     <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
-      <h2>Projects</h2>
-      <Link to='/project/create'><Button variant="contained" color="primary">New Project</Button></Link>
+
+      <Link to={projectCreatelink() }><Button variant="contained" color="primary">New Project</Button></Link>
       <h3>Project List</h3>
       <Grid container direction='column' justify='center' alignItems='center'>
         {projects.map(project => {
           return (
-            <Grid item xs={6}>
-              <Link to={`/project/${project[0]}/${project[1].name}`}>{project[0]} : {project[1].name} : {project[1].color}</Link>
-              <Link to={`/edit/${project[0]}`}><Button variant="contained" color="primary">Edit</Button></Link>
-            </Grid>
+            <SpacingGrid
+              values={[
+                <Link to={projectlink(project[0])} style={{ textDecoration: 'none' }} >
+                  <Title
+                    color={project[1].color}
+                    name={projectValid(project) ? project[1].name : ''}
+                    variant='h6'
+                  />
+                </Link>,
+                <Link to={projectEditlink(project[0])}><Button variant="contained" color="primary">Edit</Button></Link>
+              ]}
+            />
           )
         })}
       </Grid>

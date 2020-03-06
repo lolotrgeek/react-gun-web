@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import { Button, Grid } from '@material-ui/core/'
+import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
-import { trimSoul } from '../constants/Store'
-import { elapsedTime, dayHeaders, sumProjectTimers, secondsToString, sayDay } from '../constants/Functions'
-import { isRunning } from '../constants/Validators'
-import { gun, finishTimer, createTimer } from '../constants/Data'
-import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
-import { Grid, Button } from '@material-ui/core/'
-
+import { createTimer, finishTimer, gun } from '../constants/Data'
+import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } from '../constants/Functions'
+import { trimSoul } from '../constants/Store'
+import { isRunning } from '../constants/Validators'
+import useCounter from '../hooks/useCounter'
+import {projectlink} from '../routes/routes'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -41,7 +41,7 @@ export default function TimerScreen() {
     }, { change: true })
 
     return () => gun.get('running').off()
-  }, [online]);
+  }, [online, setCount, start, stop]);
 
 
   useEffect(() => {
@@ -82,9 +82,17 @@ export default function TimerScreen() {
                 if (project[0] === item.project) {
                   return (
                     <SpacingGrid values={[
-                      <Link to={`/project/${item.project}/${project[1].name}`}>{project[1].name}</Link>,
-                      <Button variant="contained" color="primary" onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; createTimer(item.project) }}>{secondsToString(item.total)}</Button>
-                    ]}></SpacingGrid>
+                      <Link to={  projectlink(item.project)}>{project[1].name}</Link>,
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                          if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
+                          createTimer(item.project)
+                        }}>
+                        {secondsToString(item.total)}
+                      </Button>
+                    ]} />
                   )
                 }
                 else return (null)

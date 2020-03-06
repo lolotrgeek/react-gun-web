@@ -8,9 +8,10 @@ import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
 import { Grid, Button } from '@material-ui/core/'
 import { RunningTimer } from '../components/RunningTimer'
+import { timerlink } from '../routes/routes'
 
 
-export default function TimerChildScreen() {
+export default function TimerHistoryScreen() {
   const { projectId, timerId } = useParams()
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
@@ -53,7 +54,7 @@ export default function TimerChildScreen() {
       {timers.map(timer => {
         return (
           <Grid>
-            <Link to={`/timer/${timer[0]}`}>
+            <Link to={timerlink(projectId,timerId)}>
               <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
             </Link>
           </Grid>
