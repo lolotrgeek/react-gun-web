@@ -1,12 +1,12 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import { Route, Link as RouterLink, } from "react-router-dom"
 
 const LinkRouter = props => <Link {...props} component={RouterLink} />;
 
-export function BreadCrumbsRouted() {
+export function BreadCrumbsRouted(props) {
     return (
         <Route>
             {({ location }) => {
@@ -14,7 +14,7 @@ export function BreadCrumbsRouted() {
                 console.log(pathnames)
                 return (
                     <Breadcrumbs aria-label="breadcrumb">
-                        <LinkRouter color="inherit" to="/">Home</LinkRouter>
+                        <LinkRouter color="inherit" to="/">{props.home ? props.home : 'Home'}</LinkRouter>
                         {pathnames.map((value, index) => {
                             const last = index === pathnames.length - 1;
                             const to = `/${pathnames.slice(0, index + 1).join('/')}`;

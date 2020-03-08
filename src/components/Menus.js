@@ -16,7 +16,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Link  } from 'react-router-dom';
+import { Link } from './Link'
 import {BreadCrumbsRouted} from './BreadCrumbsRouted'
 
 // Source: https://material-ui.com/components/drawers/#persistent-drawer
@@ -79,6 +79,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+/**
+ * 
+ * @param {*} props 
+ * @param {*} props.content any content to display (html, jsx, etc...) 
+ * @param {Array} props.links list of links, first link will be home
+ * @param {Boolean} props.breadcrumbs default `true` set `false` to hide
+ */
 export function MainMenu(props) {
     const classes = useStyles();
     const theme = useTheme();
@@ -129,9 +136,9 @@ export function MainMenu(props) {
                 <Divider />
                 <List>
                     {props.links.map((link, index) => (
-                        <Link to={link.route}>
+                        <Link color='inherit' style={{'text-decoration': 'none'} } to={link.route}>
                             <ListItem button key={link.text}>
-                                <ListItemIcon>{}</ListItemIcon>
+                                <ListItemIcon>{props.icon}</ListItemIcon>
                                 <ListItemText primary={link.text} />
                             </ListItem>
                         </Link>
@@ -143,7 +150,7 @@ export function MainMenu(props) {
                 [classes.contentShift]: open,
             })}>
                 <div className={classes.drawerHeader} />
-                <BreadCrumbsRouted />
+                <BreadCrumbsRouted home={props.links[0].text} />
                 <div className={classes.drawerHeader} />
                 {props.content}
             </main>

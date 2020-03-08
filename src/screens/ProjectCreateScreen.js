@@ -30,8 +30,7 @@ export default function ProjectCreateScreen() {
       gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
         console.log(projectValue)
         setProject([projectId, projectValue])
-      }
-        , { change: true })
+      }, { change: true })
     }
     return () => gun.get('projects').off()
   }, [online])

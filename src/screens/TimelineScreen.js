@@ -1,6 +1,5 @@
-import { Button, Grid } from '@material-ui/core/'
+import { Grid } from '@material-ui/core/'
 import React, { useEffect, useState } from 'react'
-import { Link } from "react-router-dom"
 import SpacingGrid from '../components/Grid'
 import { RunningTimer } from '../components/RunningTimer'
 import { createTimer, finishTimer, gun } from '../constants/Data'
@@ -8,7 +7,10 @@ import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } fr
 import { trimSoul } from '../constants/Store'
 import { isRunning } from '../constants/Validators'
 import useCounter from '../hooks/useCounter'
-import { projectlink } from '../routes/routes'
+import { projectlink, projectsListLink } from '../routes/routes'
+import { Title } from '../components/Title'
+import { Link } from '../components/Link'
+import { Button } from '../components/Button'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -67,12 +69,19 @@ export default function TimerScreen() {
   }, [online]);
 
   return (
-    <Grid>
-      <h2>Timeline</h2>
-
+    <Grid >
+      <Grid container direction='row' justify='flex-start' alignItems=' baseline' spacing={2}>
+        <Grid item xs={6}>
+          <Title variant='h3' name='Timeline' />
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="contained" color="secondary" to={projectsListLink()}>Projects</Button>
+        </Grid>
+        <Grid item xs={6}></Grid>
+      </Grid>
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
 
-      <Grid>
+      <Grid >
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
             <Grid>
@@ -82,7 +91,9 @@ export default function TimerScreen() {
                 if (project[0] === item.project) {
                   return (
                     <SpacingGrid values={[
-                      <Link to={projectlink(item.project)}>{project[1].name}</Link>,
+                      <Link to={projectlink(item.project)}>
+                        <Title variant='body1' color={project[1].color} name={project[1].name} />
+                      </Link>,
                       <Button
                         variant="contained"
                         color="primary"
@@ -102,6 +113,8 @@ export default function TimerScreen() {
           )
         })}
       </Grid>
+
+
     </Grid >
   )
 }

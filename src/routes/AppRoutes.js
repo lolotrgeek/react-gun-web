@@ -42,7 +42,7 @@ export default function AppRoutes() {
       <MainMenu
         title='Timers'
         links={[
-          { text: 'Home', route: "/" },
+          { text: 'Timeline', route: "/" },
           { text: 'Projects', route: "/projects" },
           { text: 'Timers', route: "/timers" },
           { text: 'Tests', route: "/test" }
@@ -55,9 +55,9 @@ export default function AppRoutes() {
             <Route exact path="/">
               <TimelineScreen />
             </Route>
+            <Route path="/projects/:projectId/edit" children={<ProjectCreateScreen />} />
             <Route path="/projects/:projectId/:timerId" children={<TimerEditScreen />} />
             <Route path="/projects/:projectId/:timerId/history" children={<TimerHistoryScreen />} />
-            <Route path="/projects/:projectId/edit" children={<ProjectCreateScreen />} />
             <Route path="/projects/create" children={<ProjectCreateScreen />} />
             <Route path="/projects/:projectId" children={<ProjectRecordScreen />} />
             <Route path="/projects" children={<ProjectScreen />} />

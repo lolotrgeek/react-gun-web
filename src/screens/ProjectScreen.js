@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, createProject } from '../constants/Data'
 import SpacingGrid from '../components/Grid'
-import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
-import { Title } from '../components/Title'
+import { Grid, TextField, makeStyles, Divider } from '@material-ui/core/'
 import { projectValid } from '../constants/Validators'
 import { projectEditlink, projectCreatelink, projectlink } from '../routes/routes'
+import { Title } from '../components/Title'
+import { Link } from '../components/Link'
+import { Button } from '../components/Button'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -33,28 +34,35 @@ export default function ProjectCreateScreen() {
   }, [online])
 
   return (
-    <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
-
-      <Link to={projectCreatelink() }><Button variant="contained" color="primary">New Project</Button></Link>
-      <h3>Project List</h3>
-      <Grid container direction='column' justify='center' alignItems='center'>
+    <Grid>
+      <Grid container direction='row' justify='flex-start' alignItems='center' spacing={2}>
+        <Grid item xs={6}>
+          <Title name='Projects' variant='h3' />
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="contained" color="secondary" to={projectCreatelink()}>New Project</Button>
+        </Grid>
+        <Grid item xs={6}></Grid>
+      </Grid>
+      <Grid >
         {projects.map(project => {
           return (
             <SpacingGrid
               values={[
-                <Link to={projectlink(project[0])} style={{ textDecoration: 'none' }} >
+                <Link to={projectlink(project[0])} >
                   <Title
                     color={project[1].color}
                     name={projectValid(project) ? project[1].name : ''}
-                    variant='h6'
+                    variant='body1'
                   />
                 </Link>,
-                <Link to={projectEditlink(project[0])}><Button variant="contained" color="primary">Edit</Button></Link>
+                <Button variant="contained" color="primary" to={projectEditlink(project[0])}>Edit</Button>
               ]}
             />
           )
         })}
       </Grid>
+
     </Grid>
   )
 }
