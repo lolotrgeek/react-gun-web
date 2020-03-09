@@ -7,8 +7,12 @@ import { timeRules, dateRules, totalTime, secondsToString } from '../constants/F
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { MoodPicker, EnergySlider } from '../components/TimerEditors'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
-import { Grid, Button, Link } from '@material-ui/core/'
+import { Grid } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
+import { Title } from '../components/Title'
+import { Link } from '../components/Link'
+import { Button } from '../components/Button'
+import { SubHeader } from '../components/Header'
 
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()
@@ -209,11 +213,12 @@ export default function TimerEditScreen() {
   }
 
   return (
-    <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
-      <Grid container direction='column' justify='center' alignItems='center'>
-        <h2>Record for Project: {projectValid(project) ? project[1].name : ''}</h2>
-        <h3>{secondsToString(total)}</h3>
+    <Grid container direction='column' justify='center' alignItems='center' spacing={3}>
+      <Grid item xs={12}>
+        <SubHeader title='Edit' />
+        <Title variant='h5'>{secondsToString(total)}</Title>
       </Grid>
+
       <Grid item xs={12}>
         <PickerDate
           label='Date'

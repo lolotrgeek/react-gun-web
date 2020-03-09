@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, finishTimer, createTimer } from '../constants/Data'
 import { isRunning } from '../constants/Validators'
 import { elapsedTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import SpacingGrid from '../components/Grid'
-import { Grid, Button } from '@material-ui/core/'
+import { Grid } from '@material-ui/core/'
 import { RunningTimer } from '../components/RunningTimer'
 import { timerlink } from '../routes/routes'
-
+import { Title } from '../components/Title'
+import { Link } from '../components/Link'
+import { Button } from '../components/Button'
 
 export default function TimerHistoryScreen() {
   const { projectId, timerId } = useParams()

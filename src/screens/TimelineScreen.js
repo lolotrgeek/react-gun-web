@@ -8,9 +8,10 @@ import { trimSoul } from '../constants/Store'
 import { isRunning } from '../constants/Validators'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink } from '../routes/routes'
-import { Title } from '../components/Title'
+import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
+import { Header, SubHeader} from '../components/Header'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -70,29 +71,21 @@ export default function TimerScreen() {
 
   return (
     <Grid >
-      <Grid container direction='row' justify='flex-start' alignItems=' baseline' spacing={2}>
-        <Grid item xs={6}>
-          <Title variant='h3' name='Timeline' />
-        </Grid>
-        <Grid item xs={6}>
-          <Button variant="contained" color="secondary" to={projectsListLink()}>Projects</Button>
-        </Grid>
-        <Grid item xs={6}></Grid>
-      </Grid>
+      <SubHeader title='Timeline' buttonLink={projectsListLink()} buttonText='Projects' />
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
 
       <Grid >
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
             <Grid>
-              <h2>{`${sayDay(day.title)}`}</h2>
+              <SubTitle>{sayDay(day.title)}</SubTitle>
               {day.data.map(item => projects.map(project => {
                 if (item.status === 'running') return (null)
                 if (project[0] === item.project) {
                   return (
                     <SpacingGrid values={[
                       <Link to={projectlink(item.project)}>
-                        <Title variant='body1' color={project[1].color} name={project[1].name} />
+                        <Title variant='h6' color={project[1].color} name={project[1].name} />
                       </Link>,
                       <Button
                         variant="contained"

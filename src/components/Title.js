@@ -17,9 +17,13 @@ export function Title(props) {
             {colorValid(props.color) ? <FiberManualRecordIcon style={{ color: props.color }}/> : '' }
             <Typography variant={props.variant} color="textPrimary" style={{ textDecoration: 'none' }}>
                 {props.name}
+                {props.children}
             </Typography>
 
         </Grid >
     )
 }
 
+export function SubTitle (props) {
+    return <h2>{props.children}</h2>
+}

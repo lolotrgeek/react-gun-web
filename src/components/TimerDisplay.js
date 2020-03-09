@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link } from "react-router-dom"
-import { Grid, Button } from '@material-ui/core/'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
+import { faGrin, faSmile, faMeh, faFrown, faDizzy, faBolt } from "@fortawesome/free-solid-svg-icons";
+import { timeString } from '../constants/Functions'
+import { format } from 'date-fns'
 
 export function MoodDisplay(props) {
     let mood
@@ -13,11 +13,32 @@ export function MoodDisplay(props) {
     else if (props.mood === 'awful') mood = [faDizzy, 'grey']
 
     return (
-        <FontAwesomeIcon 
-        icon={mood[0]} 
-        size={40} 
-        color={mood[1]} 
-        style={props.style}
+        <FontAwesomeIcon
+            icon={mood[0]}
+            size={40}
+            color={mood[1]}
+            style={props.style}
         />
     )
+}
+
+export function EnergyDisplay(props) {
+    let energy
+    if (props.energy > 75) energy = 'orange'
+    if (props.energy > 50 && props.energy < 75) energy = 'yellow'
+    if (props.energy === 50) energy = 'green'
+    if (props.energy < 50 && props.energy > 25) energy = 'blue'
+    if (props.energy < 25) energy = 'grey'
+    return (
+        <FontAwesomeIcon
+            icon={faBolt}
+            size={40}
+            color={energy}
+            style={props.style}
+        />
+    )
+}
+
+export function TimePeriod(props) {
+    return format(props.start, 'hh:mm aaa') + ' - ' + format(props.end, 'hh:mm aaa')
 }

@@ -8,6 +8,7 @@ import { projectEditlink, projectCreatelink, projectlink } from '../routes/route
 import { Title } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
+import { Header, SubHeader } from '../components/Header'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -35,16 +36,8 @@ export default function ProjectCreateScreen() {
 
   return (
     <Grid>
-      <Grid container direction='row' justify='flex-start' alignItems='center' spacing={2}>
-        <Grid item xs={6}>
-          <Title name='Projects' variant='h3' />
-        </Grid>
-        <Grid item xs={6}>
-          <Button variant="contained" color="secondary" to={projectCreatelink()}>New Project</Button>
-        </Grid>
-        <Grid item xs={6}></Grid>
-      </Grid>
-      <Grid >
+      <SubHeader title='Projects' buttonLink={projectCreatelink()} buttonText='New Project' />
+      <Grid>
         {projects.map(project => {
           return (
             <SpacingGrid
@@ -62,7 +55,7 @@ export default function ProjectCreateScreen() {
           )
         })}
       </Grid>
-
     </Grid>
+
   )
 }

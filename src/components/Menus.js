@@ -17,7 +17,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from './Link'
-import {BreadCrumbsRouted} from './BreadCrumbsRouted'
+import { BreadCrumbsRouted } from './BreadCrumbsRouted'
 
 // Source: https://material-ui.com/components/drawers/#persistent-drawer
 
@@ -64,20 +64,9 @@ const useStyles = makeStyles(theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: -drawerWidth,
-    },
-    contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
     },
 }));
+
 
 /**
  * 
@@ -94,6 +83,13 @@ export function MainMenu(props) {
     const handleDrawerOpen = () => setOpen(true);
 
     const handleDrawerClose = () => setOpen(false);
+
+    const toggleDrawer = open => event => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setOpen(false)
+    }
 
     return (
         <div className={classes.root}>
@@ -121,12 +117,14 @@ export function MainMenu(props) {
             </AppBar>
             <Drawer
                 className={classes.drawer}
-                variant="persistent"
+                variant="temporary"
                 anchor="left"
                 open={open}
                 classes={{
                     paper: classes.drawerPaper,
                 }}
+                onClick={toggleDrawer(false)}
+                onKeyDown={toggleDrawer(false)}
             >
                 <div className={classes.drawerHeader}>
                     <IconButton onClick={handleDrawerClose}>
@@ -136,7 +134,7 @@ export function MainMenu(props) {
                 <Divider />
                 <List>
                     {props.links.map((link, index) => (
-                        <Link color='inherit' style={{'text-decoration': 'none'} } to={link.route}>
+                        <Link color='inherit' style={{ 'text-decoration': 'none' }} to={link.route}>
                             <ListItem button key={link.text}>
                                 <ListItemIcon>{props.icon}</ListItemIcon>
                                 <ListItemText primary={link.text} />
@@ -146,9 +144,7 @@ export function MainMenu(props) {
                 </List>
                 <Divider />
             </Drawer>
-            <main className={clsx(classes.content, {
-                [classes.contentShift]: open,
-            })}>
+            <main className={classes.content}>
                 <div className={classes.drawerHeader} />
                 <BreadCrumbsRouted home={props.links[0].text} />
                 <div className={classes.drawerHeader} />

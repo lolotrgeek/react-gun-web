@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { elapsedTime, simpleDate, timeString } from '../constants/Functions'
+import { dayHeaders, elapsedTime, simpleDate, timeString, sayDay, totalTime, secondsToString } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import { gun, createProject, finishTimer, createTimer } from '../constants/Data'
-import { isRunning } from '../constants/Validators'
-import SpacingGrid from '../components/Grid'
-import { Grid, Button } from '@material-ui/core/'
-import { MoodDisplay } from '../components/TimerDisplay'
+import { isRunning, isTimer } from '../constants/Validators'
+import { UnEvenGrid } from '../components/Grid'
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid'
+import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 import { RunningTimer } from '../components/RunningTimer'
-import { Title } from '../components/Title'
-import { projectlink, timerlink} from '../routes/routes'
+import { projectlink, timerlink } from '../routes/routes'
+import { Title, SubTitle } from '../components/Title'
+import { Link } from '../components/Link'
+import { Button } from '../components/Button'
+import { SubHeader } from '../components/Header'
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    maxWidth: 500,
+    minWidth: 350,
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  }
+}));
 
 export default function ProjectRecordScreen() {
-  const { projectId,  } = useParams()
+  const { projectId, } = useParams()
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
   const [timers, setTimers] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
+  const classes = useStyles();
 
   useEffect(() => {
     let filteredTimers = timers.filter(timer => timer[0] !== runningTimer[0])
@@ -73,32 +87,50 @@ export default function ProjectRecordScreen() {
   }, [online]);
 
   return (
-    <Grid container direction="column" justify="center" alignItems="center" spacing={4} >
-      <Link to={projectlink(projectId)}> <Title project={project} /></Link>
+    <Grid>
+      {project && project[1] ?
+        <SubHeader
+          color={project[1].color}
+          title={project[1].name}
+          buttonText='Start Timer'
+          buttonClick={() => {
+            if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
+            createTimer(projectId)
+          }}
+        /> : ''}
+
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
-      <Button variant="contained" color="primary" onClick={() => {
-        if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
-        createTimer(projectId)
-      }}>New Timer</Button>
-      <h3>Timers</h3>
-      <Grid>
-        <SpacingGrid headers={['Date', 'Started', 'Ended', 'Energy', 'Mood']} />
-        {timers.map(timer => {
-          let creation = new Date(timer[1].created)
-          return (
-            <Link to={timerlink(projectId, timer[0])}>
-              <SpacingGrid
-                values={[
-                  simpleDate(creation),
-                  timeString(creation),
-                  timeString(new Date(timer[1].ended)),
-                  timer[1].energy,
-                  <MoodDisplay mood={timer[1].mood} />
-                ]} />
-            </Link>
-          )
-        })}
-      </Grid>
+      {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
+      {dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created))).map(day => {
+        return (
+          <Grid  className={classes.root} >
+            <SubTitle>{sayDay(day.title)}</SubTitle>
+            {/* {console.log(day.data)} */}
+            {day.data.map(timer => {
+              console.log(timer)
+              if (!isTimer(timer)) return (null)
+              if (timer[1].status === 'running') return (null)
+              let ended = new Date(timer[1].ended)
+              let created = new Date(timer[1].created)
+              return (
+                <Link to={timerlink(projectId, timer[0])}>
+                  <UnEvenGrid
+                    values={[
+                      // simpleDate(creation),
+                      // timeString(new Date(timer[1].created)) ,'-', timeString(new Date(timer[1].ended)),
+                      <TimePeriod start={created} end={ended} />,
+                      <EnergyDisplay energy={timer[1].energy} />,
+                      <MoodDisplay mood={timer[1].mood} />,
+                      secondsToString(totalTime(created, ended)),
+                    ]} />
+                </Link>
+              )
+
+
+            })}
+          </Grid>
+        )
+      })}
     </Grid >
   )
 }

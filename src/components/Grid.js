@@ -6,14 +6,18 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    marginBottom: '1.2rem'
   },
   paper: {
     height: 50,
     width: 100,
   },
   control: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   },
+  typography : {
+    fontSize: '1.1rem'
+  }
 }));
 
 export default function SpacingGrid(props) {
@@ -31,6 +35,25 @@ export default function SpacingGrid(props) {
           {props.values ? props.values.map(value => (
             <Grid key={value} wrap="nowrap" item xs>
               <Typography>{value}</Typography>
+            </Grid>
+          )) : ''}
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+}
+
+
+export function UnEvenGrid(props) {
+  const classes = useStyles();
+
+  return (
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <Grid container direction='row' justify="space-between" alignItems="center" >
+          {props.values ? props.values.map(value => (
+            <Grid className={classes.control} key={value} wrap="nowrap">
+              <Typography className={classes.typography}>{value}</Typography>
             </Grid>
           )) : ''}
         </Grid>

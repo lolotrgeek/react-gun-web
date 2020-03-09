@@ -6,6 +6,7 @@ import SpacingGrid from '../components/Grid'
 import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
 import { CirclePicker } from 'react-color'
 import { colorValid, nameValid, projectValid } from '../constants/Validators'
+import {SubHeader} from '../components/Header'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -61,7 +62,7 @@ export default function ProjectCreateScreen() {
   }
   return (
     <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
-      <h2>{nameValid(name) ? name : 'New Project'}</h2>
+      <SubHeader title={nameValid(name) ? name : 'New Project'} />
       <Grid container direction='column' justify='flex-start' alignItems='center' spacing={5}>
         <form className={classes.form}>
           <TextField variant="outlined" label="name" value={nameValid(name) ? name : ''} onChange={event => setName(event.target.value)} />
