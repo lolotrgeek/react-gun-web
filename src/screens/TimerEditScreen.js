@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom"
+import { useParams, useHistory  } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer } from '../constants/Data'
 import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
@@ -9,10 +9,10 @@ import { MoodPicker, EnergySlider } from '../components/TimerEditors'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
 import { Grid } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
-import { Title } from '../components/Title'
-import { Link } from '../components/Link'
+import { Title, SubTitle } from '../components/Title'
 import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
+import { projectlink } from '../routes/routes'
 
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()
@@ -28,6 +28,7 @@ export default function TimerEditScreen() {
   const [date, setDate] = useState('')
   const [picker, setPicker] = useState(false)
   const alert = useAlert()
+  let history = useHistory()
 
   useEffect(() => {
     if (alerted && alerted.length > 0) {
@@ -174,6 +175,7 @@ export default function TimerEditScreen() {
     if (isTimer(updatedTimer)) {
       updateTimer(updatedTimer)
       setAlert(['Success', 'Timer Updated!',])
+      history.push((projectlink(projectId)))
     }
     else {
       setAlert(['Error', 'Timer Invalid!',])
@@ -213,59 +215,59 @@ export default function TimerEditScreen() {
   }
 
   return (
-    <Grid container direction='column' justify='center' alignItems='center' spacing={3}>
-      <Grid item xs={12}>
-        <SubHeader title='Edit' />
-        <Title variant='h5'>{secondsToString(total)}</Title>
-      </Grid>
+    <Grid >
+      <SubHeader title={projectValid(project) ? `${project[1].name}` : 'Edit'} color={projectValid(project) ? project[1].color : ''} />
 
-      <Grid item xs={12}>
-        <PickerDate
-          label='Date'
-          startdate={created}
-          onDateChange={newDate => chooseNewDate(newDate)}
-          maxDate={endOfDay(created)}
-          previousDay={() => previousDay()}
-          nextDay={() => nextDay()}
-        />
-        {/* {created.toString()} */}
-        <PickerTime
-          label='Start'
-          time={created}
-          onTimeChange={newTime => chooseNewStart(newTime)}
-          addMinutes={() => increaseCreated()}
-          subtractMinutes={() => decreaseCreated()}
-        />
-        {/* {ended.toString()} */}
-        <PickerTime
-          label='End'
-          time={ended}
-          onTimeChange={newTime => chooseNewEnd(newTime)}
-          running={isRunning(timer)}
-          addMinutes={() => increaseEnded()}
-          subtractMinutes={() => decreaseEnded()}
-        />
-        <MoodPicker
-          onGreat={() => setMood('great')}
-          onGood={() => setMood('good')}
-          onMeh={() => setMood('meh')}
-          onSad={() => setMood('bad')}
-          onAwful={() => setMood('awful')}
-          selected={mood}
-        />
-        {
-          timer[1] ?
-            <EnergySlider
-              startingEnergy={energy}
-              onEnergySet={(event, value) => setEnergy(value)}
-            /> : ''
-        }
+      <Grid container direction='column' justify='center' alignItems='center' spacing={3}>
+        <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
 
+        <Grid item xs={12}>
+          <PickerDate
+            label='Date'
+            startdate={created}
+            onDateChange={newDate => chooseNewDate(newDate)}
+            maxDate={endOfDay(created)}
+            previousDay={() => previousDay()}
+            nextDay={() => nextDay()}
+          />
+          {/* {created.toString()} */}
+          <PickerTime
+            label='Start'
+            time={created}
+            onTimeChange={newTime => chooseNewStart(newTime)}
+            addMinutes={() => increaseCreated()}
+            subtractMinutes={() => decreaseCreated()}
+          />
+          {/* {ended.toString()} */}
+          <PickerTime
+            label='End'
+            time={ended}
+            onTimeChange={newTime => chooseNewEnd(newTime)}
+            running={isRunning(timer)}
+            addMinutes={() => increaseEnded()}
+            subtractMinutes={() => decreaseEnded()}
+          />
+          <MoodPicker
+            onGreat={() => setMood('great')}
+            onGood={() => setMood('good')}
+            onMeh={() => setMood('meh')}
+            onSad={() => setMood('bad')}
+            onAwful={() => setMood('awful')}
+            selected={mood}
+          />
+          {
+            timer[1] ?
+              <EnergySlider
+                startingEnergy={energy}
+                onEnergySet={(event, value) => setEnergy(value)}
+              /> : ''
+          }
+
+        </Grid >
+        <Grid item xs={12}>
+          <Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button>
+        </Grid>
       </Grid >
-      <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button>
-      </Grid>
-
     </Grid >
   )
 }

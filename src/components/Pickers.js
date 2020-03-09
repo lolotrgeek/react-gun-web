@@ -3,15 +3,19 @@ import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight, faGrin, faSmile, faMeh, faFrown, faDizzy  } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';
 import { secondsToString } from '../constants/Functions'
+import { Typography } from '@material-ui/core';
 
 export function PickerDate(props) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
+        <Grid item >
+          <h3>{props.label}</h3>
+        </Grid>
         <Grid item >
           <IconButton aria-label="previous day">
             <FontAwesomeIcon
@@ -26,15 +30,13 @@ export function PickerDate(props) {
           <DatePicker
             margin="normal"
             id="date-picker-dialog"
-            label={props.label ? props.label : "Date picker dialog"}
             format="MM/dd/yyyy"
             value={props.startdate}
             disableFuture={true}
             onChange={props.onDateChange}
             maxDate={props.maxDate}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
+            KeyboardButtonProps={{ 'aria-label': 'change date', }}
+
           />
         </Grid>
         <Grid item >
@@ -57,6 +59,9 @@ export function PickerTime(props) {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
           <Grid item >
+            <h3>{props.label}</h3>
+          </Grid>
+          <Grid item >
             <IconButton aria-label="subtract 5 minutes">
               <FontAwesomeIcon
                 icon={faChevronLeft}
@@ -72,7 +77,7 @@ export function PickerTime(props) {
                 inputValue='tracking'
                 disabled='true'
                 invalidDateMessage=''
-                format="HH:mm:ss"
+                format="HH:mm:ss a"
                 style={{ cursor: 'pointer' }}
               />
               :
@@ -81,10 +86,9 @@ export function PickerTime(props) {
                 id="time-picker"
                 views={['hours', 'minutes', 'seconds']}
                 opento='hours'
-                label={props.label ? props.label : "Time picker"}
                 value={props.time}
                 onChange={props.onTimeChange}
-                format="HH:mm:ss"
+                format="HH:mm:ss a"
                 ampm={true}
                 KeyboardButtonProps={{
                   'aria-label': 'change time',
@@ -153,46 +157,46 @@ export function PickerSeconds(props) {
 
 export function PickerMood(props) {
   return (
-      <Grid container direction="row" justify="center" alignItems="flex-start" >
-          <Grid>
+    <Grid container direction="row" justify="center" alignItems="flex-start" >
+      <Grid>
 
-              <FontAwesomeIcon
-                  icon={faGrin}
-                  color="orange"
-                  size={40}
-                  onClick={props.onGreat}
-              />
+        <FontAwesomeIcon
+          icon={faGrin}
+          color="orange"
+          size={40}
+          onClick={props.onGreat}
+        />
 
-              <FontAwesomeIcon
-                  icon={faSmile}
-                  size={40}
-                  color="green"
-                  onClick={props.onGood}
-              />
+        <FontAwesomeIcon
+          icon={faSmile}
+          size={40}
+          color="green"
+          onClick={props.onGood}
+        />
 
-              <FontAwesomeIcon
-                  icon={faMeh}
-                  size={40}
-                  color="purple"
-          
-                  onClick={props.onMeh}
-              />
+        <FontAwesomeIcon
+          icon={faMeh}
+          size={40}
+          color="purple"
 
-              <FontAwesomeIcon
-                  icon={faFrown}
-                  size={40}
-                  color="blue"
-                  onClick={props.onSad}
-              />
+          onClick={props.onMeh}
+        />
 
-              <FontAwesomeIcon
-                  icon={faDizzy}
-                  size={40}
-                  color="grey"
-                  onClick={props.onAwful}
-              />
+        <FontAwesomeIcon
+          icon={faFrown}
+          size={40}
+          color="blue"
+          onClick={props.onSad}
+        />
 
-          </Grid>
+        <FontAwesomeIcon
+          icon={faDizzy}
+          size={40}
+          color="grey"
+          onClick={props.onAwful}
+        />
+
       </Grid>
+    </Grid>
   )
 }

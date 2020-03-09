@@ -17,7 +17,7 @@ import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  listClass: {
     flexGrow: 1,
     maxWidth: 500,
     minWidth: 350,
@@ -103,7 +103,7 @@ export default function ProjectRecordScreen() {
       {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
       {dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created))).map(day => {
         return (
-          <Grid  className={classes.root} >
+          <Grid  className={classes.listClass} >
             <SubTitle>{sayDay(day.title)}</SubTitle>
             {/* {console.log(day.data)} */}
             {day.data.map(timer => {

@@ -1,6 +1,6 @@
-import { Grid } from '@material-ui/core/'
+import { Grid, makeStyles } from '@material-ui/core/'
 import React, { useEffect, useState } from 'react'
-import SpacingGrid from '../components/Grid'
+import SpacingGrid, { UnEvenGrid } from '../components/Grid'
 import { RunningTimer } from '../components/RunningTimer'
 import { createTimer, finishTimer, gun } from '../constants/Data'
 import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } from '../constants/Functions'
@@ -11,7 +11,21 @@ import { projectlink, projectsListLink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
-import { Header, SubHeader} from '../components/Header'
+import { Header, SubHeader } from '../components/Header'
+
+const useStyles = makeStyles(theme => ({
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+  listClass: {
+    flexGrow: 1,
+    maxWidth: 500,
+    minWidth: 350,
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  }
+}))
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -19,6 +33,7 @@ export default function TimerScreen() {
   const [timers, setTimers] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
+  const classes = useStyles();
 
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
@@ -70,20 +85,20 @@ export default function TimerScreen() {
   }, [online]);
 
   return (
-    <Grid >
+    <Grid className={classes.content} >
       <SubHeader title='Timeline' buttonLink={projectsListLink()} buttonText='Projects' />
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
 
       <Grid >
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
-            <Grid>
+            <Grid className={classes.listClass}>
               <SubTitle>{sayDay(day.title)}</SubTitle>
               {day.data.map(item => projects.map(project => {
                 if (item.status === 'running') return (null)
                 if (project[0] === item.project) {
                   return (
-                    <SpacingGrid values={[
+                    <UnEvenGrid values={[
                       <Link to={projectlink(item.project)}>
                         <Title variant='h6' color={project[1].color} name={project[1].name} />
                       </Link>,

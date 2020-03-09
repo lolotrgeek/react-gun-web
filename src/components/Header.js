@@ -5,7 +5,6 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { Grid, Typography } from '@material-ui/core/'
 import { Button } from './Button'
 
-
 /**
  * 
  * @param {*} props 
@@ -44,11 +43,17 @@ export function Header(props) {
  */
 export function SubHeader(props) {
     return (
-        <Grid container direction='column' justify='center' alignItems='center' spacing={4} >
+        <Grid container direction='column' justify='center' alignItems='center' spacing={4}
+            style={{
+                background: `linear-gradient(0deg, #ffffff  0%, ${props.color}  100%)`
+            }}
+        >
             <Grid item>
-                <Grid container direction='row' justify='flex-start' alignItems='center'>
+                <Grid container direction='row' justify='flex-start' alignItems='center' 
+                    style={props.margin === 'none' ? {} : { marginTop: '2rem'}}
+                >
                     {colorValid(props.color) ? <FiberManualRecordIcon style={{ color: props.color }} /> : ''}
-                    <Typography variant='h4' component='h1' color="textPrimary" style={{ textDecoration: 'none' }}>
+                    <Typography variant='h4' component='h1' color="textPrimary" style={{ textDecoration: 'none', textTransform: 'capitalize' }}>
                         {props.title}
                         {props.children}
                     </Typography>

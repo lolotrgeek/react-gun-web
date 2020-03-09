@@ -40,7 +40,7 @@ export default function AppRoutes() {
   return (
     <Router>
       <MainMenu
-        title='Timers'
+        showBreadcrumbs={false}
         links={[
           { text: 'Timeline', route: "/" },
           { text: 'Projects', route: "/projects" },

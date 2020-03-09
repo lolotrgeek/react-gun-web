@@ -15,7 +15,7 @@ export function Title(props) {
     return (
         <Grid container direction='row' justify='flex-start' alignItems='center'>
             {colorValid(props.color) ? <FiberManualRecordIcon style={{ color: props.color }}/> : '' }
-            <Typography variant={props.variant} color="textPrimary" style={{ textDecoration: 'none' }}>
+            <Typography variant={props.variant} color="textPrimary" style={{ textDecoration: 'none', textTransform: 'capitalize' }}>
                 {props.name}
                 {props.children}
             </Typography>
@@ -25,5 +25,5 @@ export function Title(props) {
 }
 
 export function SubTitle (props) {
-    return <h2>{props.children}</h2>
+    return <h2 style={{ textDecoration: 'none', textTransform: 'capitalize' }}>{props.children}</h2>
 }

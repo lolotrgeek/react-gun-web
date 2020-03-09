@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
     },
     appBar: {
+        background: 'transparent',
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -61,9 +62,15 @@ const useStyles = makeStyles(theme => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
+    breadcrumbs: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(1),
+        justifyContent: 'flex-end',
+    },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
+        
     },
 }));
 
@@ -96,6 +103,7 @@ export function MainMenu(props) {
             <CssBaseline />
             <AppBar
                 position="fixed"
+                elevation={0}
                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: open,
                 })}
@@ -145,9 +153,9 @@ export function MainMenu(props) {
                 <Divider />
             </Drawer>
             <main className={classes.content}>
-                <div className={classes.drawerHeader} />
-                <BreadCrumbsRouted home={props.links[0].text} />
-                <div className={classes.drawerHeader} />
+                {/* <div className={classes.drawerHeader} /> */}
+                {props.showBreadcrumbs ? <BreadCrumbsRouted home={props.links[0].text} /> : ''}
+                {props.showBreadcrumbs ? <div className={classes.breadcrumbs} /> : ''}
                 {props.content}
             </main>
         </div>
