@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { gun, updateTimer, } from '../constants/Data'
+import { gun, updateTimer, deleteTimer } from '../constants/Data'
 import { addMinutes, isValid, endOfDay, sub, add, set } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
@@ -47,14 +47,25 @@ export default function TimerEditScreen() {
 
   useEffect(() => {
     console.log('Getting: ', projectId, timerId)
-    gun.get('timers').get(projectId).get(timerId).on((timerValue, timerGunId) => {
-      let foundTimer = [timerId, trimSoul(timerValue)]
-      setCreated(new Date(foundTimer[1].created))
-      setEnded(new Date(foundTimer[1].ended))
-      setMood(foundTimer[1].mood)
-      setEnergy(foundTimer[1].energy)
-      setTotal(foundTimer[1].total === 0 ? totalTime(created, ended) : foundTimer[1].total)
-      setTimer(foundTimer)
+    gun.get('timers').get(projectId, ack => {
+      if(ack.err || !ack.put) setAlert(['Error', 'No Project Exists'])
+    }).get(timerId, ack => {
+      if(ack.err || !ack.put) setAlert(['Error', 'No Timer Exists'])
+    }).on((timerValue, timerGunId) => {
+      if(!timerValue) {
+        setAlert(['Error', 'No Timer Exists'])
+        history.push((projectlink(projectId)))
+      }
+      else {
+        let foundTimer = [timerId, trimSoul(timerValue)]
+        setCreated(new Date(foundTimer[1].created))
+        setEnded(new Date(foundTimer[1].ended))
+        setMood(foundTimer[1].mood)
+        setEnergy(foundTimer[1].energy)
+        setTotal(foundTimer[1].total === 0 ? totalTime(created, ended) : foundTimer[1].total)
+        setTimer(foundTimer)
+      }
+
     }, { change: true })
     return () => gun.get('timers').off()
   }, [online]);
@@ -71,6 +82,7 @@ export default function TimerEditScreen() {
   useEffect(() => setTotal(totalTime(created, ended)), [created, ended])
 
   const openPopup = () => dispatch({ type: "open" });
+  const closePopup = () => dispatch({ type: "close" });
 
   const chooseNewStart = newTime => {
     if (!timeRules(newTime, ended)) {
@@ -222,22 +234,20 @@ export default function TimerEditScreen() {
     return timeRulesEnforcer(created, newEnded) ? setEnded(newEnded) : ended
   }
 
-  const deleteTimer = () => {
-
-    let deletedTimer = timer
-    deletedTimer[1] = null
-    updateTimer(deletedTimer)
-    setAlert(['Success', 'Timer Deleted!',])
-
+  const removeTimer = () => {
+    deleteTimer(timer)
+    setAlert(['Success', 'Timer Deleted!'])
+    history.push((projectlink(projectId)))
   }
 
   return (
     <Grid >
+      <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
       <SubHeader title={projectValid(project) ? `${project[1].name}` : 'Edit'} color={projectValid(project) ? project[1].color : ''} />
       <SideMenu
         options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit' }, { name: 'history' }, { name: 'archive' }]}
       />
-      <Popup/>
+      
       <Grid container direction='column' justify='center' alignItems='center' spacing={3}>
         <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
 

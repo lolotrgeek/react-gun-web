@@ -51,7 +51,7 @@ export default function TimerScreen() {
           }
           currentTimers.push(foundTimer[0])
         }
-        else {
+        else if (foundTimer[1].status === 'running') {
           gun.get('running').get('timer').put(JSON.stringify(foundTimer))
         }
       })

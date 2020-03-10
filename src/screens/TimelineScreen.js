@@ -38,7 +38,9 @@ export default function TimerScreen() {
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
       console.log(projectValue)
-      setProjects(projects => [...projects, [projectKey, projectValue]])
+      if (projectValue && projectValue.status !== 'deleted') {
+        setProjects(projects => [...projects, [projectKey, projectValue]])
+      }
     }, { change: true })
     return () => gun.get('projects').off()
   }, [online])
@@ -67,17 +69,19 @@ export default function TimerScreen() {
     let currentTimers = []
     gun.get('timers').map().on((timerGunId, projectKey) => {
       gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
-        const foundTimer = [timerKey, trimSoul(timerValue)]
-        if (foundTimer[1].status === 'done') {
-          let check = currentTimers.some(id => id === foundTimer[0])
-          if (!check) {
-            console.log('Adding Timer', foundTimer)
-            setTimers(timers => [...timers, foundTimer])
+        if (timerValue) {
+          const foundTimer = [timerKey, trimSoul(timerValue)]
+          if (foundTimer[1].status === 'done') {
+            let check = currentTimers.some(id => id === foundTimer[0])
+            if (!check) {
+              console.log('Adding Timer', foundTimer)
+              setTimers(timers => [...timers, foundTimer])
+            }
+            currentTimers.push(foundTimer[0])
           }
-          currentTimers.push(foundTimer[0])
-        }
-        else {
-          gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+          else if (foundTimer[1].status === 'running') {
+            gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+          }
         }
       })
     }, { change: true })

@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
  * 
  * @param {*} props 
  * @param {*} props.id 
+ * @param {*} props.content 
  * @param {*} props.onAccept 
  * @param {*} props.onReject 
  * @param {*} props.onClose 
@@ -47,7 +48,7 @@ export default function Popup(props) {
                 }}
             >
                 <div className={classes.popup}>
-                    <Typography className={classes.typography}> The content of the Popover. </Typography>
+                    <Typography className={classes.typography}>{props.content}</Typography>
                     <Button classname={classes.button} aria-describedby={id} variant="contained" color="primary" onClick={props.onAccept} > Accept </Button>
                     <Button classname={classes.button} aria-describedby={id} variant="contained" color="secondary" onClick={props.onReject} > Reject </Button>
                 </div>

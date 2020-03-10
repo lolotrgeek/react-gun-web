@@ -6,6 +6,7 @@ export const newTimerValue = (projectId) => ({
     type: 'timer',
     project: projectId,
     status: 'running',
+    edited: '',
     total: 0,
     mood: 'good',
     energy: 50,
@@ -37,6 +38,7 @@ export const newProject = (name, color) => {
     const value = {
         created: new Date().toString(),
         type: 'project',
+        status: 'active',
         name: name,
         color: color,
         // time: typeof time === 'string' && time.length > 0 ? parseInt(time) : time

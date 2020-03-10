@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom"
+import React, { useState, useEffect, useContext } from 'react'
+import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { dayHeaders, elapsedTime, simpleDate, timeString, sayDay, totalTime, secondsToString } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
-import { gun, createProject, finishTimer, createTimer } from '../constants/Data'
+import { gun, createProject, finishTimer, createTimer, deleteProject } from '../constants/Data'
 import { isRunning, isTimer } from '../constants/Validators'
 import { UnEvenGrid } from '../components/Grid'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 import { RunningTimer } from '../components/RunningTimer'
-import { projectlink, timerlink } from '../routes/routes'
+import { projectsListLink, timerlink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
+import { useAlert } from 'react-alert'
+import SideMenu from '../components/SideMenu'
+import Popup from '../components/Popup'
+import { PopupContext } from '../contexts/PopupContext'
 
 const useStyles = makeStyles(theme => ({
   listClass: {
@@ -31,9 +35,24 @@ export default function ProjectRecordScreen() {
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
   const [timers, setTimers] = useState([])
+  const [deleted, setDeleted] = useState(false)
+  const [alerted, setAlert] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
+  const alert = useAlert()
+  let history = useHistory()
+  let { state, dispatch } = useContext(PopupContext)
+
+
+  useEffect(() => {
+    if (alerted && alerted.length > 0) {
+      alert.show(alerted[1], {
+        type: alerted[0]
+      })
+    }
+    return () => alerted
+  }, [alerted])
 
   useEffect(() => {
     let filteredTimers = timers.filter(timer => timer[0] !== runningTimer[0])
@@ -50,17 +69,19 @@ export default function ProjectRecordScreen() {
   useEffect(() => {
     let currentTimers = []
     gun.get('timers').get(projectId).map().on((timerValue, timerKey) => {
-      const foundTimer = [timerKey, trimSoul(timerValue)]
-      if (foundTimer[1].status === 'done') {
-        let check = currentTimers.some(id => id === foundTimer[0])
-        if (!check) {
-          console.log('Adding Timer', foundTimer)
-          setTimers(timers => [...timers, foundTimer])
+      if (timerValue) {
+        const foundTimer = [timerKey, trimSoul(timerValue)]
+        if (foundTimer[1].status === 'done') {
+          let check = currentTimers.some(id => id === foundTimer[0])
+          if (!check) {
+            console.log('Adding Timer', foundTimer)
+            setTimers(timers => [...timers, foundTimer])
+          }
+          currentTimers.push(foundTimer[0])
         }
-        currentTimers.push(foundTimer[0])
-      }
-      else {
-        gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+        else if (foundTimer[1].status === 'running') {
+          gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+        }
       }
     }, { change: true })
 
@@ -86,8 +107,17 @@ export default function ProjectRecordScreen() {
     return () => gun.get('running').off()
   }, [online]);
 
+  const removeProject = () => {
+    deleteProject(project)
+    setAlert(['Success', 'Timer Deleted!'])
+    history.push((projectsListLink()))
+  }
+
+  const openPopup = () => dispatch({ type: "open" });
+  const closePopup = () => dispatch({ type: "close" });
   return (
     <Grid>
+      <Popup content='Confirm Delete?' onAccept={() => removeProject()} onReject={() => closePopup()} />
       {project && project[1] ?
         <SubHeader
           color={project[1].color}
@@ -98,12 +128,14 @@ export default function ProjectRecordScreen() {
             createTimer(projectId)
           }}
         /> : ''}
-
+      <SideMenu
+        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit' }, { name: 'history' }, { name: 'archive' }]}
+      />
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
       {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
       {dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created))).map(day => {
         return (
-          <Grid  className={classes.listClass} >
+          <Grid className={classes.listClass} >
             <SubTitle>{sayDay(day.title)}</SubTitle>
             {/* {console.log(day.data)} */}
             {day.data.map(timer => {

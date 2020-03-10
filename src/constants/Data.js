@@ -23,6 +23,13 @@ export const updateProject = (project, updates) => {
   gun.get('history').get('projects').get(projectEdit[0]).set(projectEdit[1])
   gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
 }
+
+export const deleteProject = (project) => {
+  const projectDelete = project
+  projectDelete[1].edited = new Date().toString()
+  projectDelete[1].status = 'deleted'
+  gun.get('projects').get(project[0]).put(projectDelete[1])
+}
 /**
  * Gemerates a new timer using the standard timer model
  * @param {*} projectId 
@@ -40,9 +47,18 @@ export const runTimer = (timer) => {
 
 export const updateTimer = (timer) => {
   let editedTimer = timer
+  editedTimer[1].edited = new Date().toString()
   console.log('Updating', editedTimer)
   gun.get('history').get('timers').get(editedTimer[1].project).get(editedTimer[0]).set(editedTimer[1])
   gun.get('timers').get(editedTimer[1].project).get(editedTimer[0]).put(editedTimer[1])
+}
+
+export const deleteTimer = (timer) => {
+  console.log('Deleting', timer)
+  const timerDelete = timer
+  timerDelete[1].edited = new Date().toString()
+  timerDelete[1].status = 'deleted'
+  gun.get('timers').get(timer[1].project).get(timer[0]).put(timerDelete[1])
 }
 
 /**

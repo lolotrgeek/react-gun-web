@@ -39,7 +39,9 @@ export default function ProjectCreateScreen() {
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
       console.log(projectValue)
-      setProjects(projects => [...projects, [projectKey, projectValue]])
+      if (projectValue && projectValue.status !== 'deleted') {
+        setProjects(projects => [...projects, [projectKey, projectValue]])
+      }
     }
       , { change: true })
     return () => gun.get('projects').off()
@@ -68,7 +70,7 @@ export default function ProjectCreateScreen() {
     <Grid className={classes.content}>
       <SubHeader title='Projects' buttonLink={projectCreatelink()} buttonText='New Project' />
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
-      
+
 
       <Grid className={classes.listClass}>
         {projects.map(project => {
