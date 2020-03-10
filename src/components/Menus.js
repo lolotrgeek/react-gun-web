@@ -18,6 +18,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from './Link'
 import { BreadCrumbsRouted } from './BreadCrumbsRouted'
+import SideMenu from './SideMenu'
 
 // Source: https://material-ui.com/components/drawers/#persistent-drawer
 
@@ -62,6 +63,9 @@ const useStyles = makeStyles(theme => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
+    title : {
+        flexGrow: 1,
+    },
     breadcrumbs: {
         display: 'flex',
         alignItems: 'center',
@@ -70,7 +74,7 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-        
+
     },
 }));
 
@@ -118,10 +122,13 @@ export function MainMenu(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap>
+                    <Typography variant="h6" noWrap className={classes.title}>
                         {props.title}
                     </Typography>
+                    {props.options ? <SideMenu options={props.options} /> : ''}
+
                 </Toolbar>
+
             </AppBar>
             <Drawer
                 className={classes.drawer}

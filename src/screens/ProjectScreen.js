@@ -12,7 +12,8 @@ import { Title } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
 import { Header, SubHeader } from '../components/Header'
-import{ RunningTimer} from '../components/RunningTimer'
+import { RunningTimer } from '../components/RunningTimer'
+
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -67,6 +68,7 @@ export default function ProjectCreateScreen() {
     <Grid className={classes.content}>
       <SubHeader title='Projects' buttonLink={projectCreatelink()} buttonText='New Project' />
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
+      
 
       <Grid className={classes.listClass}>
         {projects.map(project => {
@@ -84,7 +86,7 @@ export default function ProjectCreateScreen() {
                   if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
                   createTimer(project[0])
                 }}>Start</Button>
-                
+
               ]}
             />
           )

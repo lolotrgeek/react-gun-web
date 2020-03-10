@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { useParams, useHistory  } from "react-router-dom"
+import React, { useState, useEffect, useContext } from 'react'
+import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { gun, updateTimer } from '../constants/Data'
-import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
+import { gun, updateTimer, } from '../constants/Data'
+import { addMinutes, isValid, endOfDay, sub, add, set } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { MoodPicker, EnergySlider } from '../components/TimerEditors'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
-import { Grid } from '@material-ui/core/'
+import { Grid, makeStyles } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
 import { Title, SubTitle } from '../components/Title'
 import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
 import { projectlink } from '../routes/routes'
+import SideMenu from '../components/SideMenu'
+import Popup from '../components/Popup'
+import { PopupContext } from '../contexts/PopupContext'
+
 
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()
@@ -27,8 +31,10 @@ export default function TimerEditScreen() {
   const [total, setTotal] = useState(0)
   const [date, setDate] = useState('')
   const [picker, setPicker] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const alert = useAlert()
   let history = useHistory()
+  let { state, dispatch } = useContext(PopupContext)
 
   useEffect(() => {
     if (alerted && alerted.length > 0) {
@@ -63,6 +69,8 @@ export default function TimerEditScreen() {
   }, [timer])
   useEffect(() => timer[1] ? setEnergy(timer[1].energy) : timer[1], [timer])
   useEffect(() => setTotal(totalTime(created, ended)), [created, ended])
+
+  const openPopup = () => dispatch({ type: "open" });
 
   const chooseNewStart = newTime => {
     if (!timeRules(newTime, ended)) {
@@ -214,10 +222,22 @@ export default function TimerEditScreen() {
     return timeRulesEnforcer(created, newEnded) ? setEnded(newEnded) : ended
   }
 
+  const deleteTimer = () => {
+
+    let deletedTimer = timer
+    deletedTimer[1] = null
+    updateTimer(deletedTimer)
+    setAlert(['Success', 'Timer Deleted!',])
+
+  }
+
   return (
     <Grid >
       <SubHeader title={projectValid(project) ? `${project[1].name}` : 'Edit'} color={projectValid(project) ? project[1].color : ''} />
-
+      <SideMenu
+        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit' }, { name: 'history' }, { name: 'archive' }]}
+      />
+      <Popup/>
       <Grid container direction='column' justify='center' alignItems='center' spacing={3}>
         <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
 

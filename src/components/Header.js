@@ -65,8 +65,6 @@ export function SubHeader(props) {
                     <Button variant="contained" color="secondary" to={props.buttonLink} onClick={props.buttonClick}>{props.buttonText}</Button>
                 </Grid> : ''
             }
-
-
             <Grid item></Grid>
         </Grid >
     )
