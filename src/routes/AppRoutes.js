@@ -22,6 +22,7 @@ import TimerHistoryScreen from '../screens/TimerHistoryScreen'
 import TimerEditScreen from '../screens/TimerEditScreen'
 import TestScreen from '../screens/TestScreen'
 import ProjectCreateScreen from '../screens/ProjectCreateScreen'
+import ProjectEditScreen from '../screens/ProjectEditScreen'
 import ProjectRecordScreen from '../screens/ProjectRecordScreen';
 
 // function RouteWithSubRoutes(route) {
@@ -55,7 +56,7 @@ export default function AppRoutes() {
             <Route exact path="/">
               <TimelineScreen />
             </Route>
-            <Route path="/projects/:projectId/edit" children={<ProjectCreateScreen />} />
+            <Route path="/projects/:projectId/edit" children={<ProjectEditScreen />} />
             <Route path="/projects/:projectId/:timerId" children={<TimerEditScreen />} />
             <Route path="/projects/:projectId/:timerId/history" children={<TimerHistoryScreen />} />
             <Route path="/projects/create" children={<ProjectCreateScreen />} />

@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 import { RunningTimer } from '../components/RunningTimer'
-import { projectsListLink, timerlink } from '../routes/routes'
+import { projectsListLink, projectEditlink, timerlink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
@@ -110,6 +110,7 @@ export default function ProjectRecordScreen() {
   const removeProject = () => {
     deleteProject(project)
     setAlert(['Success', 'Timer Deleted!'])
+    closePopup()
     history.push((projectsListLink()))
   }
 
@@ -129,7 +130,7 @@ export default function ProjectRecordScreen() {
           }}
         /> : ''}
       <SideMenu
-        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit' }, { name: 'history' }, { name: 'archive' }]}
+        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => history.push(projectEditlink(projectId)) }, { name: 'history' }, { name: 'archive' }]}
       />
       {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
       {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}

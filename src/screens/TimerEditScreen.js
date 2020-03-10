@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer } from '../constants/Data'
-import { addMinutes, isValid, endOfDay, sub, add, set } from 'date-fns'
+import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { MoodPicker, EnergySlider } from '../components/TimerEditors'
@@ -237,6 +237,7 @@ export default function TimerEditScreen() {
   const removeTimer = () => {
     deleteTimer(timer)
     setAlert(['Success', 'Timer Deleted!'])
+    closePopup()
     history.push((projectlink(projectId)))
   }
 
