@@ -7,20 +7,8 @@ import { colorValid, nameValid, projectValid } from '../constants/Validators'
 import { SubHeader } from '../components/Header'
 import { useAlert } from 'react-alert'
 import { projectsListLink } from '../routes/routes'
+import { useStyles } from '../themes/DefaultTheme'
 
-const useStyles = makeStyles(theme => ({
-  form: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: 200,
-    },
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  }
-
-}));
 
 export default function ProjectCreateScreen() {
   const [alerted, setAlert] = useState([])
@@ -65,7 +53,7 @@ export default function ProjectCreateScreen() {
       return false
     }
     else {
-      
+
       createProject(name, color)
       setAlert([
         'Success',
@@ -75,14 +63,14 @@ export default function ProjectCreateScreen() {
     }
   }
   return (
-    <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
+    <Grid className={classes.content}>
       <SubHeader title={nameValid(name) ? name : 'New Project'} color={color ? color : ''} />
-      <Grid container direction='column' justify='flex-start' alignItems='center' spacing={5}>
+      <Grid container direction='column' justify='flex-start' alignItems='center' className={classes.space} >
         <form className={classes.form}>
           <TextField variant="outlined" label="name" value={nameValid(name) ? name : ''} onChange={event => setName(event.target.value)} />
         </form>
-        <Grid item xs><CirclePicker onChangeComplete={handleSelectedColor} /></Grid>
-        <Grid item xs>
+        <Grid item xs className={classes.space}>< CirclePicker  onChangeComplete={handleSelectedColor} /></Grid>
+        <Grid item xs className={classes.space} >
           <Button variant="contained" color="primary" onClick={() => handleSubmitProject()}>Submit</Button>
         </Grid>
       </Grid>

@@ -8,7 +8,7 @@ import { isRunning } from '../constants/Validators'
 import SpacingGrid from '../components/Grid'
 import { Grid, Button } from '@material-ui/core/'
 import { MoodDisplay } from '../components/TimerDisplay'
-
+import { useStyles } from '../themes/DefaultTheme'
 
 export default function ProjectHistory() {
   const { projectId,  } = useParams()

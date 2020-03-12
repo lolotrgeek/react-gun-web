@@ -11,20 +11,8 @@ import { projectsListLink } from '../routes/routes'
 import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
+import { useStyles } from '../themes/DefaultTheme'
 
-const useStyles = makeStyles(theme => ({
-  form: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: 200,
-    },
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  }
-
-}));
 
 export default function ProjectEditScreen() {
   const { projectId, } = useParams()
@@ -119,18 +107,18 @@ export default function ProjectEditScreen() {
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
   return (
-    <Grid container direction='column' justify='center' alignItems='center' spacing={4}>
+    <Grid container direction='column' justify='center' alignItems='center'>
       <Popup content='Confirm Delete?' onAccept={() => removeProject()} onReject={() => closePopup()} />
       <SubHeader title={nameValid(name) ? name : 'New Project'} color={color ? color : ''} />
       <SideMenu
         options={[{ name: 'delete', action: () => openPopup() }, { name: 'archive' }]}
       />
-      <Grid container direction='column' justify='flex-start' alignItems='center' spacing={5}>
+      <Grid container direction='column' justify='flex-start' alignItems='center' className={classes.space}>
         <form className={classes.form}>
           <TextField variant="outlined" label="name" value={nameValid(name) ? name : ''} onChange={event => setName(event.target.value)} />
         </form>
-        <Grid item xs><CirclePicker onChangeComplete={handleSelectedColor} /></Grid>
-        <Grid item xs>
+        <Grid item xs className={classes.space}><CirclePicker onChangeComplete={handleSelectedColor} /></Grid>
+        <Grid item xs className={classes.space}>
           <Button variant="contained" color="primary" onClick={() => handleSubmitProject()}>Submit</Button>
         </Grid>
       </Grid>

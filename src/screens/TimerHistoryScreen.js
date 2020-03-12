@@ -12,6 +12,7 @@ import { timerlink } from '../routes/routes'
 import { Title } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
+import { useStyles } from '../themes/DefaultTheme'
 
 export default function TimerHistoryScreen() {
   const { projectId, timerId } = useParams()

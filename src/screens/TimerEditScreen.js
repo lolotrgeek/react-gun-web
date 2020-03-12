@@ -16,7 +16,7 @@ import { projectlink } from '../routes/routes'
 import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
-
+import { useStyles } from '../themes/DefaultTheme'
 
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()

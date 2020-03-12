@@ -13,21 +13,7 @@ import { Link } from '../components/Link'
 import { Button } from '../components/Button'
 import { Header, SubHeader } from '../components/Header'
 import { RunningTimer } from '../components/RunningTimer'
-
-
-const useStyles = makeStyles(theme => ({
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  listClass: {
-    flexGrow: 1,
-    maxWidth: 500,
-    minWidth: 350,
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  }
-}));
+import { useStyles } from '../themes/DefaultTheme'
 
 export default function ProjectCreateScreen() {
   const [online, setOnline] = useState(false)
@@ -67,12 +53,12 @@ export default function ProjectCreateScreen() {
   }, [online, setCount, start, stop]);
 
   return (
-    <Grid className={classes.content}>
-      <SubHeader title='Projects' buttonLink={projectCreatelink()} buttonText='New Project' />
-      {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
+    <Grid className={classes.listRoot}>
+      <SubHeader className={classes.space} title='Projects' buttonLink={projectCreatelink()} buttonText='New Project' />
+      {isRunning(runningTimer) ? <RunningTimer className={classes.space} project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
 
 
-      <Grid className={classes.listClass}>
+      <Grid className={classes.space}>
         {projects.map(project => {
           return (
             <UnEvenGrid

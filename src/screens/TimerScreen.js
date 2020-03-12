@@ -11,6 +11,7 @@ import { RunningTimer } from '../components/RunningTimer'
 import { Title } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
+import { useStyles } from '../themes/DefaultTheme'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)

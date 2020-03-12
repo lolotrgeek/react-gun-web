@@ -12,20 +12,7 @@ import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 import { Button } from '../components/Button'
 import { Header, SubHeader } from '../components/Header'
-
-const useStyles = makeStyles(theme => ({
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  listClass: {
-    flexGrow: 1,
-    maxWidth: 500,
-    minWidth: 350,
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  }
-}))
+import { useStyles } from '../themes/DefaultTheme'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -89,11 +76,11 @@ export default function TimerScreen() {
   }, [online]);
 
   return (
-    <Grid className={classes.content} >
-      <SubHeader title='Timeline' buttonLink={projectsListLink()} buttonText='Projects' />
-      {isRunning(runningTimer) ? <RunningTimer project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
+    <Grid className={classes.listRoot} >
+      <SubHeader className={classes.space} title='Timeline' buttonLink={projectsListLink()} buttonText='Projects' />
+      {isRunning(runningTimer) ? <RunningTimer className={classes.space} project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
 
-      <Grid >
+      <Grid className={classes.space}>
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
           return (
             <Grid className={classes.listClass}>

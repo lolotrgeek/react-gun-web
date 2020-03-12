@@ -19,16 +19,8 @@ import { useAlert } from 'react-alert'
 import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
+import { useStyles } from '../themes/DefaultTheme'
 
-const useStyles = makeStyles(theme => ({
-  listClass: {
-    flexGrow: 1,
-    maxWidth: 500,
-    minWidth: 350,
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  }
-}));
 
 export default function ProjectRecordScreen() {
   const { projectId, } = useParams()

@@ -4,6 +4,8 @@ import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import './index.css';
 import { PopupContextProvider } from '../src/contexts/PopupContext';
+import { ThemeProvider } from "@material-ui/core/styles";
+import { theme, darkTheme } from './themes/DefaultTheme'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -17,11 +19,13 @@ const alertOptions = {
 }
 
 const Root = () => (
-  <AlertProvider template={AlertTemplate} {...alertOptions}>
-    <PopupContextProvider>
-      <App />
-    </PopupContextProvider>
-  </AlertProvider>
+  <ThemeProvider theme={darkTheme}>
+    <AlertProvider template={AlertTemplate} {...alertOptions}>
+      <PopupContextProvider>
+        <App />
+      </PopupContextProvider>
+    </AlertProvider>
+  </ThemeProvider>
 )
 
 ReactDOM.render(<Root />, document.getElementById('root'));

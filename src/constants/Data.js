@@ -4,7 +4,7 @@ import { isRunning, multiDay, newEntryPerDay } from '../constants/Functions'
 
 
 const port = '8765'
-const address = 'localhost'
+const address = '192.168.1.109'
 const peers = [`http://${address}:${port}/gun`]
 
 export const gun = new Gun({

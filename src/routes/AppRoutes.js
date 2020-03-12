@@ -14,7 +14,6 @@ import {
 
 // import { routes } from './routes'
 
-import HomeScreen from '../screens/HomeScreen'
 import ProjectScreen from '../screens/ProjectScreen'
 import TimerScreen from '../screens/TimerScreen'
 import TimelineScreen from '../screens/TimelineScreen'
@@ -45,7 +44,6 @@ export default function AppRoutes() {
         links={[
           { text: 'Timeline', route: "/" },
           { text: 'Projects', route: "/projects" },
-          { text: 'Timers', route: "/timers" },
           { text: 'Tests', route: "/test" }
         ]}
         content={
