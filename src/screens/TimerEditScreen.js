@@ -249,7 +249,7 @@ export default function TimerEditScreen() {
         options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit' }, { name: 'history' }, { name: 'archive' }]}
       />
       
-      <Grid container direction='column' justify='center' alignItems='center' spacing={3}>
+      <Grid container direction='column' justify='center' alignItems='center'>
         <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
 
         <Grid item xs={12}>

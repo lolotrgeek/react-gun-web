@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { secondsToString } from '../constants/Functions'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme =>({
     root: {
         minWidth: 275,
     },
@@ -19,20 +19,21 @@ const useStyles = makeStyles({
         fontSize: 14,
     },
     pos: {
+        marginTop: theme.spacing(5),
         marginBottom: 12,
     },
     button: {
         right: 0,
     }
-});
+}));
 
 export function RunningTimer(props) {
     const classes = useStyles();
     return (
-        <Grid container direction='column' justify='center' alignItems='center' spacing={2}>
+        <Grid container className={classes.pos} direction='column' justify='center' alignItems='center' >
             <Card className={classes.root} style={{ background: props.color }}>
                 <CardContent>
-                    <Grid container direction='row' justify='center' alignItems='center' spacing={2}>
+                    <Grid container direction='row' justify='center' alignItems='center' >
                         <Grid item xs={6}>
                             <Typography variant='h5'>
                                 {`${props.name}`}

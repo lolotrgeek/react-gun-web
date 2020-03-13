@@ -24,15 +24,15 @@ export const useStyles = makeStyles(theme => ({
     },
     listRoot: {
         flexGrow: 1,
-        padding: theme.spacing(3),
-      },
-      listClass: {
+        overflowX: 'hidden'
+    },
+    listClass: {
         flexGrow: 1,
         maxWidth: 500,
         minWidth: 350,
         marginLeft: 'auto',
         marginRight: 'auto'
-      }
+    }
 }));
 
 
