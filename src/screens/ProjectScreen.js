@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useCounter from '../hooks/useCounter'
-import { isRunning } from '../constants/Validators'
+import { isRunning, isTimer} from '../constants/Validators'
 import { elapsedTime } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { gun, finishTimer, createTimer } from '../constants/Data'
@@ -19,6 +19,7 @@ export default function ProjectCreateScreen() {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
+  const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
 
@@ -52,31 +53,52 @@ export default function ProjectCreateScreen() {
     return () => gun.get('running').off()
   }, [online, setCount, start, stop]);
 
+  useEffect(() => {
+    if (runningTimer[1] && isTimer(runningTimer)) {
+      gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
+        console.log(projectValue)
+        if (projectValue && projectValue.status !== 'deleted') {
+          setRunningProject([projectKey, projectValue])
+        }
+      }, { change: true })
+      return () => gun.get('projects').off()
+    }
+  }, [runningTimer])
+
   return (
     <Grid className={classes.listRoot}>
       <SubHeader className={classes.space} title='Projects' buttonLink={projectCreatelink()} buttonText='New Project' />
-      {isRunning(runningTimer) ? <RunningTimer className={classes.space} project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
-
+      {isRunning(runningTimer) ?
+        <RunningTimer
+          className={classes.space}
+          name={runningProject[1] ? runningProject[1].name : ''}
+          color={runningProject[1] ? runningProject[1].color : ''}
+          count={count}
+          stop={() => { finishTimer(runningTimer); stop() }}
+        />
+        : ''}
 
       <Grid className={classes.space}>
         {projects.map(project => {
           return (
-            <UnEvenGrid
-              values={[
-                <Link to={projectlink(project[0])} >
-                  <Title
-                    color={project[1].color}
-                    name={projectValid(project) ? project[1].name : ''}
-                    variant='h6'
-                  />
-                </Link>,
-                <Button variant="contained" color="primary" onClick={() => {
-                  if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
-                  createTimer(project[0])
-                }}>Start</Button>
+            <Grid className={classes.listClass}>
+              <UnEvenGrid
+                values={[
+                  <Link to={projectlink(project[0])} >
+                    <Title
+                      color={project[1].color}
+                      name={projectValid(project) ? project[1].name : ''}
+                      variant='h6'
+                    />
+                  </Link>,
+                  <Button variant="contained" color="primary" onClick={() => {
+                    if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
+                    createTimer(project[0])
+                  }}>Start</Button>
 
-              ]}
-            />
+                ]}
+              />
+            </Grid>
           )
         })}
       </Grid>

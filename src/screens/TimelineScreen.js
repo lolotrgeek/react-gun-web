@@ -5,7 +5,7 @@ import { RunningTimer } from '../components/RunningTimer'
 import { createTimer, finishTimer, gun } from '../constants/Data'
 import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
-import { isRunning } from '../constants/Validators'
+import { isRunning, projectValid, isTimer } from '../constants/Validators'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
@@ -19,6 +19,7 @@ export default function TimerScreen() {
   const [projects, setProjects] = useState([])
   const [timers, setTimers] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
+  const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
 
@@ -51,6 +52,17 @@ export default function TimerScreen() {
     return () => gun.get('running').off()
   }, [online, setCount, start, stop]);
 
+  useEffect(() => {
+    if (runningTimer[1] && isTimer(runningTimer)) {
+      gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
+        console.log(projectValue)
+        if (projectValue && projectValue.status !== 'deleted') {
+          setRunningProject([projectKey, projectValue])
+        }
+      }, { change: true })
+      return () => gun.get('projects').off()
+    }
+  }, [runningTimer])
 
   useEffect(() => {
     let currentTimers = []
@@ -78,7 +90,15 @@ export default function TimerScreen() {
   return (
     <Grid className={classes.listRoot} >
       <SubHeader className={classes.space} title='Timeline' buttonLink={projectsListLink()} buttonText='Projects' />
-      {isRunning(runningTimer) ? <RunningTimer className={classes.space} project={runningTimer[1].project} count={count} stop={() => { finishTimer(runningTimer); stop() }} /> : ''}
+      {isRunning(runningTimer) ?
+        <RunningTimer
+          className={classes.space}
+          name={runningProject[1] ? runningProject[1].name : ''}
+          color={runningProject[1] ? runningProject[1].color : ''}
+          count={count}
+          stop={() => { finishTimer(runningTimer); stop() }}
+        />
+        : ''}
 
       <Grid className={classes.space}>
         {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
