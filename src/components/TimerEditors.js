@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -7,15 +6,8 @@ import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
 import useResizeObserver from "use-resize-observer";
+import { useStyles } from '../themes/DefaultTheme'
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: 300 + theme.spacing(3) * 2,
-    },
-    margin: {
-        height: theme.spacing(3),
-    },
-}));
 
 const sliderBackground = 'linear-gradient(0deg, rgba(191,191,191,0) 0%, rgba(0,125,255,0) 25%, rgba(39,255,0,0) 50%, rgba(255,252,0,0) 75%, rgba(255,154,0,1) 100%)'
 
@@ -92,7 +84,7 @@ const calcColor = (sliderWidth, energy) => {
     return result
 }
 
-const PrettoSlider = withStyles({
+const PrettoSlider = withStyles(theme => ({
     root: {
         height: 8,
     },
@@ -119,103 +111,30 @@ const PrettoSlider = withStyles({
         height: 8,
         borderRadius: 4,
     },
-})(Slider);
+}))(Slider);
 
 export function EnergySlider(props) {
     const classes = useStyles();
     const { ref, width, height } = useResizeObserver()
     const [color, setColor] = useState('')
     return (
-        <Grid container direction='column' justify='center' alignItems='center'>
-            <h3>{props.title ? props.title : 'Energy Level'}</h3>
-            <PrettoSlider
-                ref={ref}
-                style={{ color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy)}}
-                valueLabelDisplay="on"
-                aria-label="pretto slider"
-                onChange={(event, value) => setColor(calcColor(width, value))}
-                defaultValue={props.startingEnergy}
-                onChangeCommitted={props.onEnergySet}
-            />
-        </Grid>
-    )
-}
-export function MoodPicker(props) {
-    return (
-        <Grid container direction='column' justify='center' alignItems='center'>
-            <h3>{props.title ? props.title : 'Mood'}</h3>
-            <Grid container direction='row' justify='center' alignItems='center'>
-                <IconButton aria-label="great" onClick={props.onGreat}>
-                    <FontAwesomeIcon
-                        icon={faGrin}
-                        color="orange"
-                        style={{
-                            fontWeight: props.selected === 'great' ? 'bold' : 'normal',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            fontSize: props.selected === 'great' ? 60 : 40
-                        }}
-
-                    />
-                </IconButton>
-                <IconButton aria-label="good" onClick={props.onGood}>
-                    <FontAwesomeIcon
-                        icon={faSmile}
-
-                        color="green"
-                        style={{
-                            fontWeight: props.selected === 'good' ? 'bold' : 'normal',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            fontSize: props.selected === 'good' ? 60 : 40
-                        }}
-
-                    />
-                </IconButton>
-                <IconButton aria-label="meh" onClick={props.onMeh}>
-                    <FontAwesomeIcon
-                        icon={faMeh}
-
-                        color="purple"
-                        style={{
-                            fontWeight: props.selected === 'meh' ? 'bold' : 'normal',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            fontSize: props.selected === 'meh' ? 60 : 40
-                        }}
-
-                    />
-                </IconButton>
-                <IconButton aria-label="bad" onClick={props.onSad}>
-                    <FontAwesomeIcon
-                        icon={faFrown}
-
-                        color="blue"
-                        style={{
-                            fontWeight: props.selected === 'bad' ? 'bold' : 'normal',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            fontSize: props.selected === 'bad' ? 60 : 40
-                        }}
-
-                    />
-                </IconButton>
-                <IconButton aria-label="awful" onClick={props.onAwful}>
-                    <FontAwesomeIcon
-                        icon={faDizzy}
-                        color="grey"
-                        style={{
-                            fontWeight: props.selected === 'awful' ? 'bold' : 'normal',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            fontSize: props.selected === 'awful' ? 60 : 40
-                        }}
-
-                    />
-                </IconButton>
+        <Grid className={classes.space} container direction='row' justify='space-between' alignItems='center'>
+            <Grid item xs={3}>
+                <h3>{props.label ? props.label : 'Energy'}</h3>
+            </Grid>
+            <Grid item xs>
+                <PrettoSlider
+                    ref={ref}
+                    style={{ color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy) }}
+                    valueLabelDisplay="on"
+                    aria-label="pretto slider"
+                    onChange={(event, value) => setColor(calcColor(width, value))}
+                    defaultValue={props.startingEnergy}
+                    onChangeCommitted={props.onEnergySet}
+                />
             </Grid>
         </Grid>
-    );
+    )
 }
 
 export function TimerStartNotes(props) {
