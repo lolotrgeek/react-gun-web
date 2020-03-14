@@ -7,10 +7,10 @@ import { timeRules, dateRules, totalTime, secondsToString } from '../constants/F
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { MoodPicker, EnergySlider } from '../components/TimerEditors'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
-import { Grid, makeStyles } from '@material-ui/core/'
+import { Grid, makeStyles, Button } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
 import { Title, SubTitle } from '../components/Title'
-import { Button } from '../components/Button'
+// import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
 import { projectlink } from '../routes/routes'
 import SideMenu from '../components/SideMenu'
@@ -246,7 +246,7 @@ export default function TimerEditScreen() {
       <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
       <SubHeader title={projectValid(project) ? `${project[1].name}` : 'Edit'} color={projectValid(project) ? project[1].color : ''} />
       <SideMenu
-        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit' }, { name: 'history' }, { name: 'archive' }]}
+        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => {} }, { name: 'history', action: () => {} }, { name: 'archive', action: () => {} }]}
       />
       
       <Grid container direction='column' justify='center' alignItems='center'>

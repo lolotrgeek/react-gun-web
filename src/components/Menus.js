@@ -149,9 +149,9 @@ export function MainMenu(props) {
                 <Divider />
                 <List>
                     {props.links.map((link, index) => (
-                        <Link color='inherit' style={{ 'text-decoration': 'none' }} to={link.route}>
+                        <Link key={index} color='inherit' style={{ textDecoration: 'none' }} to={link.route}>
                             <ListItem button key={link.text}>
-                                <ListItemIcon>{props.icon}</ListItemIcon>
+                            {props.icon ? <ListItemIcon> {props.icon}</ListItemIcon> : '' }
                                 <ListItemText primary={link.text} />
                             </ListItem>
                         </Link>

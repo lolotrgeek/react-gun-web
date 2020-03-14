@@ -111,7 +111,7 @@ export default function ProjectEditScreen() {
       <Popup content='Confirm Delete?' onAccept={() => removeProject()} onReject={() => closePopup()} />
       <SubHeader title={nameValid(name) ? name : 'New Project'} color={color ? color : ''} />
       <SideMenu
-        options={[{ name: 'delete', action: () => openPopup() }, { name: 'archive' }]}
+        options={[{ name: 'delete', action: () => openPopup() }, { name: 'archive', action: () => {} }]}
       />
       <Grid container direction='column' justify='flex-start' alignItems='center' className={classes.space}>
         <form className={classes.form}>

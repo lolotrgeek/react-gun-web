@@ -17,12 +17,11 @@ export function PickerDate(props) {
           <h3>{props.label}</h3>
         </Grid>
         <Grid item >
-          <IconButton aria-label="previous day">
+          <IconButton aria-label="previous day" onClick={props.previousDay}>
             <FontAwesomeIcon
               icon={faChevronLeft}
-              size={20}
+              size={'sm'}
               color="grey"
-              onClick={props.previousDay}
             />
           </IconButton>
         </Grid>
@@ -35,17 +34,15 @@ export function PickerDate(props) {
             disableFuture={true}
             onChange={props.onDateChange}
             maxDate={props.maxDate}
-            KeyboardButtonProps={{ 'aria-label': 'change date', }}
 
           />
         </Grid>
         <Grid item >
-          <IconButton aria-label="next day">
+          <IconButton aria-label="next day" onClick={props.nextDay}>
             <FontAwesomeIcon
               icon={faChevronRight}
-              size={20}
+              size={'sm'}
               color="grey"
-              onClick={props.nextDay}
             />
           </IconButton>
         </Grid>
@@ -62,12 +59,11 @@ export function PickerTime(props) {
             <h3>{props.label}</h3>
           </Grid>
           <Grid item >
-            <IconButton aria-label="subtract 5 minutes">
+            <IconButton aria-label="subtract 5 minutes" onClick={props.subtractMinutes}>
               <FontAwesomeIcon
                 icon={faChevronLeft}
-                size={20}
+                size={'sm'}
                 color="grey"
-                onClick={props.subtractMinutes}
               />
             </IconButton>
           </Grid>
@@ -90,9 +86,6 @@ export function PickerTime(props) {
                 onChange={props.onTimeChange}
                 format="HH:mm:ss a"
                 ampm={true}
-                KeyboardButtonProps={{
-                  'aria-label': 'change time',
-                }}
                 style={{ cursor: 'pointer' }}
 
               />
@@ -100,12 +93,12 @@ export function PickerTime(props) {
           </Grid>
 
           <Grid item >
-            <IconButton aria-label="add 5 minutes">
+            <IconButton aria-label="add 5 minutes" onClick={props.addMinutes}>
               <FontAwesomeIcon
                 icon={faChevronRight}
-                size={20}
+                size={'sm'}
                 color="grey"
-                onClick={props.addMinutes}
+                
               />
             </IconButton>
           </Grid>
@@ -124,12 +117,11 @@ export function PickerSeconds(props) {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
           <Grid item >
-            <IconButton aria-label="subtract 5 minutes">
+            <IconButton aria-label="subtract 5 minutes" onClick={props.subtractMinutes}>
               <FontAwesomeIcon
                 icon={faChevronLeft}
-                size={20}
+                size={'sm'}
                 color="grey"
-                onClick={props.subtractMinutes}
               />
             </IconButton>
           </Grid>
@@ -138,12 +130,11 @@ export function PickerSeconds(props) {
           </Grid>
 
           <Grid item >
-            <IconButton aria-label="add 5 minutes">
+            <IconButton aria-label="add 5 minutes" onClick={props.addMinutes}>
               <FontAwesomeIcon
                 icon={faChevronRight}
-                size={20}
+                size={'sm'}
                 color="grey"
-                onClick={props.addMinutes}
               />
             </IconButton>
           </Grid>
@@ -163,20 +154,20 @@ export function PickerMood(props) {
         <FontAwesomeIcon
           icon={faGrin}
           color="orange"
-          size={40}
+          size={'lg'}
           onClick={props.onGreat}
         />
 
         <FontAwesomeIcon
           icon={faSmile}
-          size={40}
+          size={'lg'}
           color="green"
           onClick={props.onGood}
         />
 
         <FontAwesomeIcon
           icon={faMeh}
-          size={40}
+          size={'lg'}
           color="purple"
 
           onClick={props.onMeh}
@@ -184,14 +175,14 @@ export function PickerMood(props) {
 
         <FontAwesomeIcon
           icon={faFrown}
-          size={40}
+          size={'lg'}
           color="blue"
           onClick={props.onSad}
         />
 
         <FontAwesomeIcon
           icon={faDizzy}
-          size={40}
+          size={'lg'}
           color="grey"
           onClick={props.onAwful}
         />

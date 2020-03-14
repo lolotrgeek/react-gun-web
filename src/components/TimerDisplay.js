@@ -15,7 +15,7 @@ export function MoodDisplay(props) {
     return (
         <FontAwesomeIcon
             icon={mood[0]}
-            size={40}
+            size={'lg'}
             color={mood[1]}
             style={props.style}
         />
@@ -32,7 +32,7 @@ export function EnergyDisplay(props) {
     return (
         <FontAwesomeIcon
             icon={faBolt}
-            size={40}
+            size={'lg'}
             color={energy}
             style={props.style}
         />

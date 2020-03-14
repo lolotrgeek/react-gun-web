@@ -1,4 +1,4 @@
-import { Grid, makeStyles } from '@material-ui/core/'
+import { Grid, Button, makeStyles } from '@material-ui/core/'
 import React, { useEffect, useState } from 'react'
 import SpacingGrid, { UnEvenGrid } from '../components/Grid'
 import { RunningTimer } from '../components/RunningTimer'
@@ -7,12 +7,13 @@ import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } fr
 import { trimSoul } from '../constants/Store'
 import { isRunning, projectValid, isTimer } from '../constants/Validators'
 import useCounter from '../hooks/useCounter'
-import { projectlink, projectsListLink } from '../routes/routes'
+import { projectlink, projectsListLink, timerRunninglink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
-import { Button } from '../components/Button'
+// import { Button } from '../components/Button'
 import { Header, SubHeader } from '../components/Header'
 import { useStyles } from '../themes/DefaultTheme'
+import { useHistory } from "react-router-dom"
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -22,6 +23,7 @@ export default function TimerScreen() {
   const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
+  const history = useHistory()
 
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
@@ -101,15 +103,15 @@ export default function TimerScreen() {
         : ''}
 
       <Grid className={classes.space}>
-        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
+        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map((day, index) => {
           return (
-            <Grid className={classes.listClass}>
+            <Grid key={index} className={classes.listClass}>
               <SubTitle>{sayDay(day.title)}</SubTitle>
               {day.data.map(item => projects.map(project => {
                 if (item.status === 'running') return (null)
                 if (project[0] === item.project) {
                   return (
-                    <UnEvenGrid values={[
+                    <UnEvenGrid key={project[0]} values={[
                       <Link to={projectlink(item.project)}>
                         <Title variant='h6' color={project[1].color} name={project[1].name} />
                       </Link>,
@@ -119,6 +121,7 @@ export default function TimerScreen() {
                         onClick={() => {
                           if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
                           createTimer(item.project)
+                          history.push(timerRunninglink())
                         }}>
                         {secondsToString(item.total)}
                       </Button>

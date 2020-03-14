@@ -85,24 +85,23 @@ export function MoodPicker(props) {
         <Grid container direction='column' justify='center' alignItems='center'>
             <h3>{props.title ? props.title : 'Mood'}</h3>
             <Grid container direction='row' justify='center' alignItems='center'>
-                <IconButton aria-label="great">
+                <IconButton aria-label="great" onClick={props.onGreat}>
                     <FontAwesomeIcon
                         icon={faGrin}
                         color="orange"
-                        size={40}
                         style={{
                             fontWeight: props.selected === 'great' ? 'bold' : 'normal',
                             marginLeft: 'auto',
                             marginRight: 'auto',
                             fontSize: props.selected === 'great' ? 60 : 40
                         }}
-                        onClick={props.onGreat}
+                        
                     />
                 </IconButton>
-                <IconButton aria-label="good">
+                <IconButton aria-label="good" onClick={props.onGood}>
                     <FontAwesomeIcon
                         icon={faSmile}
-                        size={40}
+                        
                         color="green"
                         style={{
                             fontWeight: props.selected === 'good' ? 'bold' : 'normal',
@@ -110,13 +109,13 @@ export function MoodPicker(props) {
                             marginRight: 'auto',
                             fontSize: props.selected === 'good' ? 60 : 40
                         }}
-                        onClick={props.onGood}
+                        
                     />
                 </IconButton>
-                <IconButton aria-label="meh">
+                <IconButton aria-label="meh" onClick={props.onMeh}>
                     <FontAwesomeIcon
                         icon={faMeh}
-                        size={40}
+                        
                         color="purple"
                         style={{
                             fontWeight: props.selected === 'meh' ? 'bold' : 'normal',
@@ -124,13 +123,13 @@ export function MoodPicker(props) {
                             marginRight: 'auto',
                             fontSize: props.selected === 'meh' ? 60 : 40
                         }}
-                        onClick={props.onMeh}
+                        
                     />
                 </IconButton>
-                <IconButton aria-label="bad">
+                <IconButton aria-label="bad" onClick={props.onSad}>
                     <FontAwesomeIcon
                         icon={faFrown}
-                        size={40}
+                        
                         color="blue"
                         style={{
                             fontWeight: props.selected === 'bad' ? 'bold' : 'normal',
@@ -138,13 +137,13 @@ export function MoodPicker(props) {
                             marginRight: 'auto',
                             fontSize: props.selected === 'bad' ? 60 : 40
                         }}
-                        onClick={props.onSad}
+                        
                     />
                 </IconButton>
-                <IconButton aria-label="awful">
+                <IconButton aria-label="awful" onClick={props.onAwful}>
                     <FontAwesomeIcon
                         icon={faDizzy}
-                        size={40}
+                        
                         color="grey"
                         style={{
                             fontWeight: props.selected === 'awful' ? 'bold' : 'normal',
@@ -152,7 +151,7 @@ export function MoodPicker(props) {
                             marginRight: 'auto',
                             fontSize: props.selected === 'awful' ? 60 : 40
                         }}
-                        onClick={props.onAwful}
+                        
                     />
                 </IconButton>
             </Grid>

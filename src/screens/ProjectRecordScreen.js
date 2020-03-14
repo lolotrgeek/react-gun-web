@@ -6,14 +6,13 @@ import useCounter from '../hooks/useCounter'
 import { gun, createProject, finishTimer, createTimer, deleteProject } from '../constants/Data'
 import { isRunning, isTimer } from '../constants/Validators'
 import { UnEvenGrid } from '../components/Grid'
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 import { RunningTimer } from '../components/RunningTimer'
-import { projectsListLink, projectEditlink, timerlink } from '../routes/routes'
+import { projectsListLink, projectEditlink, timerlink, timerRunninglink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
-import { Button } from '../components/Button'
+// import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
 import { useAlert } from 'react-alert'
 import SideMenu from '../components/SideMenu'
@@ -52,8 +51,6 @@ export default function ProjectRecordScreen() {
     setTimers(filteredTimers)
   }, [runningTimer])
 
-
-  
   useEffect(() => {
     gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
       setProject([projectId, trimSoul(projectValue)])
@@ -113,6 +110,7 @@ export default function ProjectRecordScreen() {
       return () => gun.get('projects').off()
     }
   }, [runningTimer])
+
   const removeProject = () => {
     deleteProject(project)
     setAlert(['Success', 'Timer Deleted!'])
@@ -133,10 +131,11 @@ export default function ProjectRecordScreen() {
           buttonClick={() => {
             if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
             createTimer(projectId)
+            history.push(timerRunninglink())
           }}
         /> : ''}
       <SideMenu
-        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => history.push(projectEditlink(projectId)) }, { name: 'history' }, { name: 'archive' }]}
+        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => history.push(projectEditlink(projectId)) }, { name: 'history', action: () => {} }, { name: 'archive', action: () =>{} }]}
       />
       {isRunning(runningTimer) ?
         <RunningTimer
@@ -148,19 +147,18 @@ export default function ProjectRecordScreen() {
         />
         : ''}
       {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
-      {dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created))).map(day => {
+      {dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created))).map((day, index) => {
         return (
-          <Grid className={classes.listClass} >
+          <Grid key={index} className={classes.listClass} >
             <SubTitle>{sayDay(day.title)}</SubTitle>
             {/* {console.log(day.data)} */}
             {day.data.map(timer => {
-              console.log(timer)
               if (!isTimer(timer)) return (null)
               if (timer[1].status === 'running') return (null)
               let ended = new Date(timer[1].ended)
               let created = new Date(timer[1].created)
               return (
-                <Link to={timerlink(projectId, timer[0])}>
+                <Link key={timer[0]} to={timerlink(projectId, timer[0])}>
                   <UnEvenGrid
                     values={[
                       // simpleDate(creation),

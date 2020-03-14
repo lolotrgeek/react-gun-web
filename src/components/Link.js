@@ -6,4 +6,4 @@ import { Link as RouterLink, } from "react-router-dom"
  * Combine Router Link and Material-Ui Link into single Component
  * @param {*} props 
  */
-export const Link = props => <MaterialLink  {...props} color='inherit' style={{'text-decoration': 'none'}}  component={RouterLink} />;
+export const Link = props => <MaterialLink  {...props} color='inherit'  component={RouterLink} />;

@@ -51,9 +51,9 @@ export function UnEvenGrid(props) {
     <Grid container className={classes.root}>
       <Grid item xs={12}>
         <Grid container direction='row' justify="space-between" alignItems="center" >
-          {props.values ? props.values.map(value => (
-            <Grid className={classes.control} key={value} wrap="nowrap">
-              <Typography className={classes.typography}>{value}</Typography>
+          {props.values ? props.values.map((value, index) => (
+            <Grid className={classes.control} key={index}>
+              {value}
             </Grid>
           )) : ''}
         </Grid>

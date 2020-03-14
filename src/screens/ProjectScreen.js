@@ -5,14 +5,15 @@ import { elapsedTime } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { gun, finishTimer, createTimer } from '../constants/Data'
 import SpacingGrid, { UnEvenGrid } from '../components/Grid'
-import { Grid, TextField, makeStyles, Divider } from '@material-ui/core/'
+import { Grid, TextField, makeStyles, Divider, Button } from '@material-ui/core/'
 import { projectValid } from '../constants/Validators'
-import { projectEditlink, projectCreatelink, projectlink } from '../routes/routes'
+import { projectEditlink, projectCreatelink, projectlink, timerRunninglink} from '../routes/routes'
 import { Title } from '../components/Title'
 import { Link } from '../components/Link'
-import { Button } from '../components/Button'
+// import { Button } from '../components/Button'
 import { Header, SubHeader } from '../components/Header'
 import { RunningTimer } from '../components/RunningTimer'
+import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
 
 export default function ProjectCreateScreen() {
@@ -22,6 +23,8 @@ export default function ProjectCreateScreen() {
   const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
+  let history = useHistory()
+
 
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
@@ -81,7 +84,7 @@ export default function ProjectCreateScreen() {
       <Grid className={classes.space}>
         {projects.map(project => {
           return (
-            <Grid className={classes.listClass}>
+            <Grid key={project[0]} className={classes.listClass}>
               <UnEvenGrid
                 values={[
                   <Link to={projectlink(project[0])} >
@@ -94,6 +97,7 @@ export default function ProjectCreateScreen() {
                   <Button variant="contained" color="primary" onClick={() => {
                     if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
                     createTimer(project[0])
+                    history.push(timerRunninglink())
                   }}>Start</Button>
 
                 ]}

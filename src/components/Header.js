@@ -2,7 +2,9 @@ import React from 'react'
 import { colorValid } from '../constants/Validators'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { Grid, Typography } from '@material-ui/core/'
-import { Button } from './Button'
+// import { Button } from './Button'
+import Button from '@material-ui/core/Button';
+
 
 /**
  * 
@@ -59,7 +61,7 @@ export function SubHeader(props) {
             </Grid>
             {props.buttonText ?
                 <Grid item>
-                    <Button variant="contained" color="secondary" to={props.buttonLink} onClick={props.buttonClick}>{props.buttonText}</Button>
+                    <Button variant="contained" color="secondary" onClick={props.buttonClick}>{props.buttonText}</Button>
                 </Grid> : ''
             }
             <Grid item></Grid>

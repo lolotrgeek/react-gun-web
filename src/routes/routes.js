@@ -1,6 +1,6 @@
 import React from 'react'
 
-
+export const timerRunninglink = () => `/timer/`
 export const timerlink = (projectId, timerId) => `/projects/${projectId}/${timerId}`
 export const timerHistorylink = (projectId, timerId) => `/projects/${projectId}/${timerId}/history`
 export const projectlink = (projectId) => `/projects/${projectId}`
