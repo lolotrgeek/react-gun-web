@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 /**
  * 
  * @param {*} props 
- * @param {*} props.buttonLink
+ * @param {*} props.buttonClick
  * @param {*} props.buttonText  
  * @param {*} props.title 
  */
@@ -24,7 +24,7 @@ export function Header(props) {
             </Grid>
             {props.buttonText ?
                 <Grid item>
-                    <Button variant="contained" color="secondary" to={props.buttonLink}>{props.buttonText}</Button>
+                    <Button variant="contained" color="secondary" onClick={props.buttonClick}>{props.buttonText}</Button>
 
                 </Grid> : ''
             }
@@ -36,7 +36,6 @@ export function Header(props) {
 /**
  * 
  * @param {*} props 
- * @param {*} props.buttonLink
  * @param {*} props.buttonText  
  * @param {*} props.buttonClick  
  * @param {*} props.title 

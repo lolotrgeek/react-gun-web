@@ -70,7 +70,7 @@ export default function ProjectCreateScreen() {
 
   return (
     <Grid className={classes.listRoot}>
-      <SubHeader className={classes.space} title='Projects' buttonLink={projectCreatelink()} buttonText='New Project' />
+      <SubHeader className={classes.space} title='Projects' buttonClick={() => history.push(projectCreatelink())} buttonText='New Project' />
       {isRunning(runningTimer) ?
         <RunningTimer
           className={classes.space}

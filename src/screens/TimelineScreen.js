@@ -91,7 +91,7 @@ export default function TimerScreen() {
 
   return (
     <Grid className={classes.listRoot} >
-      <SubHeader className={classes.space} title='Timeline' buttonLink={projectsListLink()} buttonText='Projects' />
+      <SubHeader className={classes.space} title='Timeline' buttonClick={() => history.push(projectsListLink())} buttonText='Projects' />
       {isRunning(runningTimer) ?
         <RunningTimer
           className={classes.space}
