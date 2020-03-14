@@ -1,7 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy, faBolt } from "@fortawesome/free-solid-svg-icons";
-import { timeString } from '../constants/Functions'
 import { format } from 'date-fns'
 
 export function MoodDisplay(props) {

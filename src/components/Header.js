@@ -1,6 +1,4 @@
 import React from 'react'
-import { colorValid } from '../constants/Validators'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { Grid, Typography } from '@material-ui/core/'
 // import { Button } from './Button'
 import Button from '@material-ui/core/Button';

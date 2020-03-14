@@ -5,7 +5,7 @@ import { gun, updateTimer, deleteTimer } from '../constants/Data'
 import { addMinutes, isValid, endOfDay, sub, add,  getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
-import { EnergySlider } from '../components/TimerEditors'
+import { EnergySlider } from '../components/EnergySlider'
 import { MoodPicker } from '../components/MoodPicker'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
 import { Grid, makeStyles, Button } from '@material-ui/core/'
@@ -260,7 +260,7 @@ export default function TimerEditScreen() {
         />
         : ' '}
       {timer && isTimer(timer) ?
-        <Grid container direction='column' justify='center' alignItems='center'>
+        <Grid container direction='column' justify='flex-start' alignItems='center'>
           <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
 
           <Grid item xs={12}>
