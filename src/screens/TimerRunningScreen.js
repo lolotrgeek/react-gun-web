@@ -125,6 +125,8 @@ export default function TimerRunningScreen() {
   }
 
   const removeTimer = () => {
+    finishTimer(runningTimer)
+    stop()
     deleteTimer(runningTimer)
     setAlert(['Success', 'Timer Deleted!'])
     closePopup()
@@ -149,7 +151,6 @@ export default function TimerRunningScreen() {
           <Grid item xs={12}> <Title variant='h2'>{secondsToString(count)}</Title> </Grid>
 
           <Grid item xs={12}>
-
 
             <MoodPicker
               onGreat={() => setMood('great')}
