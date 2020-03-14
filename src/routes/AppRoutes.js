@@ -19,6 +19,7 @@ import TimerScreen from '../screens/TimerScreen'
 import TimelineScreen from '../screens/TimelineScreen'
 import TimerHistoryScreen from '../screens/TimerHistoryScreen'
 import TimerEditScreen from '../screens/TimerEditScreen'
+import TimerRunningScreen from '../screens/TimerRunningScreen'
 import TestScreen from '../screens/TestScreen'
 import ProjectCreateScreen from '../screens/ProjectCreateScreen'
 import ProjectEditScreen from '../screens/ProjectEditScreen'
@@ -44,6 +45,7 @@ export default function AppRoutes() {
         links={[
           { text: 'Timeline', route: "/" },
           { text: 'Projects', route: "/projects" },
+          { text: 'Timer', route: "/timer" },
           { text: 'Tests', route: "/test" }
         ]}
         content={
@@ -65,6 +67,8 @@ export default function AppRoutes() {
             <Route path="/timers/:projectId/:timerId/history" children={<TimerHistoryScreen />} />  
             <Route path="/timers" children={<TimerScreen />} />
 
+            <Route path="/timer" children={<TimerRunningScreen />} />
+            
             <Route path="/test">
               <TestScreen />
             </Route>
