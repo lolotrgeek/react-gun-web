@@ -256,7 +256,7 @@ export default function TimerEditScreen() {
       <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} />
       {timer && isTimer(timer) ?
         <SideMenu
-          options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => { } }, { name: 'history', action: () => { } }, { name: 'archive', action: () => { } }]}
+          options={[{ name: 'delete', action: () => openPopup() }, { name: 'archive', action: () => { } }]}
         />
         : ' '}
       {timer && isTimer(timer) ?

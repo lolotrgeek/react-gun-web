@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import { PopupContext } from '../contexts/PopupContext'
 
 const useStyles = makeStyles(theme => ({
@@ -13,7 +14,8 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2)
     },
     button: {
-        margin: theme.spacing(2)
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2)
     }
 }));
 
@@ -39,7 +41,7 @@ export default function Popup(props) {
                 open={state}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: "bottom",
+                    vertical: "top",
                     horizontal: "center"
                 }}
                 transformOrigin={{
@@ -49,8 +51,18 @@ export default function Popup(props) {
             >
                 <div className={classes.popup}>
                     <Typography className={classes.typography}>{props.content}</Typography>
-                    <Button classname={classes.button} aria-describedby={id} variant="contained" color="primary" onClick={props.onAccept} > Accept </Button>
-                    <Button classname={classes.button} aria-describedby={id} variant="contained" color="secondary" onClick={props.onReject} > Reject </Button>
+                    <Grid container direction='row' justify='space-evenly' alignItems='flex-start' >
+                        <Grid className={classes.button} item >
+                            <Button aria-describedby={id} variant="contained" color="primary" onClick={props.onAccept} > Accept </Button>
+                        </Grid>
+                        <Grid className={classes.button} item >
+                            <Button aria-describedby={id} variant="contained" color="secondary" onClick={props.onReject} > Reject </Button>
+                        </Grid>
+
+
+
+                    </Grid>
+
                 </div>
             </Popover>
         </div >

@@ -66,11 +66,17 @@ export default function SideMenu(props) {
                 {Array.isArray(props.options) ? props.options.map(option => (
                     option.link ?
                         <Link to={option.link}>
-                            <MenuItem key={option.name} onClick={option.action ? option.action : ''}>
+                            <MenuItem key={option.name} onClick={() => {
+                                handleClose()
+                                if (option.action) return option.action()
+                            }}>
                                 {option.name}
                             </MenuItem>
                         </Link> :
-                        <MenuItem key={option.name} onClick={option.action ? option.action : ''}>
+                        <MenuItem key={option.name} onClick={() => {
+                            handleClose()
+                            if (option.action) return option.action()
+                        }}>
                             {option.name}
                         </MenuItem>
                 )) : ''}
