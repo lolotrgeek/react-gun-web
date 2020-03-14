@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import useCounter from '../hooks/useCounter'
-import { isRunning, isTimer} from '../constants/Validators'
+import { isRunning, isTimer } from '../constants/Validators'
 import { elapsedTime } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { gun, finishTimer, createTimer } from '../constants/Data'
 import SpacingGrid, { UnEvenGrid } from '../components/Grid'
 import { Grid, TextField, makeStyles, Divider, Button } from '@material-ui/core/'
 import { projectValid } from '../constants/Validators'
-import { projectEditlink, projectCreatelink, projectlink, timerRunninglink} from '../routes/routes'
+import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
 import { Title } from '../components/Title'
 import { Link } from '../components/Link'
 // import { Button } from '../components/Button'
@@ -88,11 +88,9 @@ export default function ProjectCreateScreen() {
               <UnEvenGrid
                 values={[
                   <Link to={projectlink(project[0])} >
-                    <Title
-                      color={project[1].color}
-                      name={projectValid(project) ? project[1].name : ''}
-                      variant='h6'
-                    />
+                    <Title color={project[1].color} variant='h6'>
+                      {projectValid(project) ? project[1].name : ''}
+                    </Title>
                   </Link>,
                   <Button variant="contained" color="primary" onClick={() => {
                     if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
