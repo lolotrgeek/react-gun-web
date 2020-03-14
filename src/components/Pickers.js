@@ -12,7 +12,7 @@ import { Typography } from '@material-ui/core';
 export function PickerDate(props) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
+      <Grid container direction="row" alignItems="flex-end" justify="center">
         <Grid item >
           <h3>{props.label}</h3>
         </Grid>
@@ -54,7 +54,7 @@ export function PickerTime(props) {
   return (
     <div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
+        <Grid container direction="row" alignItems="flex-end" justify="center">
           <Grid item >
             <h3>{props.label}</h3>
           </Grid>
@@ -115,7 +115,7 @@ export function PickerSeconds(props) {
   return (
     <div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Grid container direction="row" alignItems="flex-end" justify="center" spacing={1}>
+        <Grid container direction="row" alignItems="flex-end" justify="center">
           <Grid item >
             <IconButton aria-label="subtract 5 minutes" onClick={props.subtractMinutes}>
               <FontAwesomeIcon

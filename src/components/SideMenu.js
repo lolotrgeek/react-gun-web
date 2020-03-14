@@ -12,8 +12,8 @@ const useStyles = makeStyles(theme => ({
     sidemenu: {
         position: 'absolute',
         background: 'transparent',
-        top: theme.spacing(2),
-        right: theme.spacing(2),
+        top: theme.spacing(1),
+        right: theme.spacing(1),
         zIndex: 1101, //https://material-ui.com/customization/z-index/
     }
 }))

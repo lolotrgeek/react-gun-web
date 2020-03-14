@@ -4,7 +4,8 @@ import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer, createTimer, finishTimer } from '../constants/Data'
 import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
-import { MoodPicker, EnergySlider } from '../components/TimerEditors'
+import { EnergySlider } from '../components/TimerEditors'
+import {MoodPicker} from '../components/MoodPicker'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
 import { Grid, makeStyles } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
@@ -156,7 +157,7 @@ export default function TimerRunningScreen() {
               onGreat={() => setMood('great')}
               onGood={() => setMood('good')}
               onMeh={() => setMood('meh')}
-              onSad={() => setMood('bad')}
+              onBad={() => setMood('bad')}
               onAwful={() => setMood('awful')}
               selected={mood}
             />

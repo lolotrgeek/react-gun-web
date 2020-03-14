@@ -5,14 +5,15 @@ import { gun, updateTimer, deleteTimer } from '../constants/Data'
 import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
-import { MoodPicker, EnergySlider } from '../components/TimerEditors'
+import { EnergySlider } from '../components/TimerEditors'
+import { MoodPicker } from '../components/MoodPicker'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
 import { Grid, makeStyles, Button } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
 import { Title, SubTitle } from '../components/Title'
 // import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
-import { projectlink } from '../routes/routes'
+import { projectlink, projectsListLink } from '../routes/routes'
 import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
@@ -50,11 +51,11 @@ export default function TimerEditScreen() {
   useEffect(() => {
     console.log('Getting: ', projectId, timerId)
     gun.get('timers').get(projectId, ack => {
-      if(ack.err || !ack.put) setAlert(['Error', 'No Project Exists'])
+      if (ack.err || !ack.put) setAlert(['Error', 'No Project Exists'])
     }).get(timerId, ack => {
-      if(ack.err || !ack.put) setAlert(['Error', 'No Timer Exists'])
+      if (ack.err || !ack.put) setAlert(['Error', 'No Timer Exists'])
     }).on((timerValue, timerGunId) => {
-      if(!timerValue) {
+      if (!timerValue) {
         setAlert(['Error', 'No Timer Exists'])
         history.push((projectlink(projectId)))
       }
@@ -246,61 +247,68 @@ export default function TimerEditScreen() {
   return (
     <Grid >
       <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
-      <SubHeader title={projectValid(project) ? `${project[1].name}` : 'Edit'} color={projectValid(project) ? project[1].color : ''} />
-      <SideMenu
-        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => {} }, { name: 'history', action: () => {} }, { name: 'archive', action: () => {} }]}
-      />
-      
-      <Grid container direction='column' justify='center' alignItems='center'>
-        <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
+      <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} />
+      {timer && isTimer(timer) ?
+        <SideMenu
+          options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => { } }, { name: 'history', action: () => { } }, { name: 'archive', action: () => { } }]}
+        />
+        : ' '}
+      {timer && isTimer(timer) ?
+        <Grid container direction='column' justify='center' alignItems='center'>
+          <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
 
-        <Grid item xs={12}>
-          <PickerDate
-            label='Date'
-            startdate={created}
-            onDateChange={newDate => chooseNewDate(newDate)}
-            maxDate={endOfDay(created)}
-            previousDay={() => previousDay()}
-            nextDay={() => nextDay()}
-          />
-          {/* {created.toString()} */}
-          <PickerTime
-            label='Start'
-            time={created}
-            onTimeChange={newTime => chooseNewStart(newTime)}
-            addMinutes={() => increaseCreated()}
-            subtractMinutes={() => decreaseCreated()}
-          />
-          {/* {ended.toString()} */}
-          <PickerTime
-            label='End'
-            time={ended}
-            onTimeChange={newTime => chooseNewEnd(newTime)}
-            running={isRunning(timer)}
-            addMinutes={() => increaseEnded()}
-            subtractMinutes={() => decreaseEnded()}
-          />
-          <MoodPicker
-            onGreat={() => setMood('great')}
-            onGood={() => setMood('good')}
-            onMeh={() => setMood('meh')}
-            onSad={() => setMood('bad')}
-            onAwful={() => setMood('awful')}
-            selected={mood}
-          />
-          {
-            timer[1] ?
-              <EnergySlider
-                startingEnergy={energy}
-                onEnergySet={(event, value) => setEnergy(value)}
-              /> : ''
-          }
+          <Grid item xs={12}>
+            <PickerDate
+              label='Date'
+              startdate={created}
+              onDateChange={newDate => chooseNewDate(newDate)}
+              maxDate={endOfDay(created)}
+              previousDay={() => previousDay()}
+              nextDay={() => nextDay()}
+            />
+            {/* {created.toString()} */}
+            <PickerTime
+              label='Start'
+              time={created}
+              onTimeChange={newTime => chooseNewStart(newTime)}
+              addMinutes={() => increaseCreated()}
+              subtractMinutes={() => decreaseCreated()}
+            />
+            {/* {ended.toString()} */}
+            <PickerTime
+              label='End'
+              time={ended}
+              onTimeChange={newTime => chooseNewEnd(newTime)}
+              running={isRunning(timer)}
+              addMinutes={() => increaseEnded()}
+              subtractMinutes={() => decreaseEnded()}
+            />
 
+            {
+              timer[1] ?
+                <EnergySlider
+                  startingEnergy={energy}
+                  onEnergySet={(event, value) => setEnergy(value)}
+                /> : ''
+            }
+            <MoodPicker
+              onGreat={() => setMood('great')}
+              onGood={() => setMood('good')}
+              onMeh={() => setMood('meh')}
+              onBad={() => setMood('bad')}
+              onAwful={() => setMood('awful')}
+              selected={mood}
+            />
+          </Grid >
+          <Grid item className={classes.space2} xs={12}>
+            <Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button>
+          </Grid>
         </Grid >
-        <Grid item className={classes.space} xs={12}>
-          <Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button>
+        :
+        <Grid container direction='column' justify='center' alignItems='center'>
+          <Button variant="contained" color="primary" onClick={(() => history.push(projectsListLink()))}> Projects </Button>
         </Grid>
-      </Grid >
+      }
     </Grid >
   )
 }
