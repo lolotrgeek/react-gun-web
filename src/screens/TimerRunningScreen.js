@@ -137,7 +137,7 @@ export default function TimerRunningScreen() {
   return (
     <Grid >
       <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
-      <SubHeader title={projectValid(runningProject) ? `${runningProject[1].name}` : 'No Running Timer'} color={projectValid(runningProject) ? runningProject[1].color : ''} />
+      <SubHeader title={projectValid(runningProject) ? `${runningProject[1].name}` : 'Timer'} color={projectValid(runningProject) ? runningProject[1].color : ''} />
       {!runningTimer[1] ?
         <Grid container direction='column' justify='center' alignItems='center'>
           <Button variant="contained" color="primary" onClick={() => history.push(projectsListLink())} > Project List </Button>

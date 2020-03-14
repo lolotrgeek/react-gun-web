@@ -25,17 +25,6 @@ import ProjectCreateScreen from '../screens/ProjectCreateScreen'
 import ProjectEditScreen from '../screens/ProjectEditScreen'
 import ProjectRecordScreen from '../screens/ProjectRecordScreen';
 
-// function RouteWithSubRoutes(route) {
-//   return (
-//     <Route
-//       path={route.path}
-//       render={props => (
-//         // pass the sub-routes down to keep nesting
-//         <route.component {...props} routes={route.routes} />
-//       )}
-//     />
-//   );
-// }
 
 export default function AppRoutes() {
   return (
@@ -46,13 +35,9 @@ export default function AppRoutes() {
           { text: 'Timeline', route: "/" },
           { text: 'Projects', route: "/projects" },
           { text: 'Timer', route: "/timer" },
-          { text: 'Tests', route: "/test" }
         ]}
         content={
           <Switch>
-            {/* {routes.map((route, i) => (
-              <RouteWithSubRoutes key={i} {...route} />
-            ))} */}
             <Route exact path="/">
               <TimelineScreen />
             </Route>

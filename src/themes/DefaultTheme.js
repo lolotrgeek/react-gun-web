@@ -35,14 +35,16 @@ export const useStyles = makeStyles(theme => ({
         minWidth: 350,
         marginLeft: 'auto',
         marginRight: 'auto'
-    }
+    },
+    
 }));
 
 
 export const theme = createMuiTheme({
     status: {
         danger: orange[500]
-    }
+    },
+    maxWidth : 500,
 });
 
 

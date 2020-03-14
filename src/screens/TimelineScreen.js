@@ -113,7 +113,7 @@ export default function TimerScreen() {
                   return (
                     <UnEvenGrid key={project[0]} values={[
                       <Link to={projectlink(item.project)}>
-                        <Title variant='h6' color={project[1].color} >{project[1].name} </Title>
+                        <Title variant='h6' color={project[1].color} >{projectValid(project) ? project[1].name : ''}</Title>
                       </Link>,
                       <Button
                         variant="contained"

@@ -45,7 +45,7 @@ export function Header(props) {
 export function SubHeader(props) {
     return (
         <Grid container direction='column' justify='center' alignItems='center'
-            style={{ background: `linear-gradient(0deg, #303030  0%, ${props.color}  100%)` }}
+            // style={{ background: `linear-gradient(0deg, #303030  0%, ${props.color}  100%)` }}
         >
             <Grid item>
                 <Grid container direction='row' justify='flex-start' alignItems='center'
