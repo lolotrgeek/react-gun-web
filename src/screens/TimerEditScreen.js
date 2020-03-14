@@ -34,6 +34,8 @@ export default function TimerEditScreen() {
   const [deleted, setDeleted] = useState(false)
   const alert = useAlert()
   let history = useHistory()
+  const classes = useStyles()
+
   let { state, dispatch } = useContext(PopupContext)
 
   useEffect(() => {
@@ -295,7 +297,7 @@ export default function TimerEditScreen() {
           }
 
         </Grid >
-        <Grid item xs={12}>
+        <Grid item className={classes.space} xs={12}>
           <Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button>
         </Grid>
       </Grid >
