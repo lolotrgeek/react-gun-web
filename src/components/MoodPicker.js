@@ -22,7 +22,7 @@ export function MoodPicker(props) {
                 </Grid>
                 {moods.map(mood => (
                     <Grid key={mood.name} item>
-                        <IconButton aria-label={mood.name} onClick={mood.click} >
+                        <IconButton aria-label={mood.name} edge='end' onClick={mood.click} >
                             <FontAwesomeIcon
                                 icon={mood.icon}
                                 color={mood.color}

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer } from '../constants/Data'
-import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
+import { addMinutes, isValid, endOfDay, sub, add,  getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { EnergySlider } from '../components/TimerEditors'
@@ -148,7 +148,13 @@ export default function TimerEditScreen() {
   const chooseNewDate = newDate => {
     if (dateRules(newDate)) {
       setPicker(false);
-      return isValid(newDate) ? setCreated(newDate) : false
+      if (isValid(newDate)) {
+        let newStart = new Date(getYear(newDate), getMonth(newDate), getDate(newDate), getHours(created), getMinutes(created), getSeconds(created))
+        setCreated(newStart)
+        let newEnd = new Date(getYear(newDate), getMonth(newDate), getDate(newDate), getHours(ended), getMinutes(ended), getSeconds(ended))
+        setEnded(newEnd)
+      }
+      else return false
     } else {
       setPicker(false);
       setAlert([
@@ -262,7 +268,7 @@ export default function TimerEditScreen() {
               label='Date'
               startdate={created}
               onDateChange={newDate => chooseNewDate(newDate)}
-              maxDate={endOfDay(created)}
+              maxDate={endOfDay(new Date())}
               previousDay={() => previousDay()}
               nextDay={() => nextDay()}
             />
