@@ -9,6 +9,7 @@ import {
   Route,
   Link as RouterLink,
 } from "react-router-dom"
+import * as routes from './routes'
 
 // NOTE: order matters for parameter routing
 
@@ -24,6 +25,7 @@ import TestScreen from '../screens/TestScreen'
 import ProjectCreateScreen from '../screens/ProjectCreateScreen'
 import ProjectEditScreen from '../screens/ProjectEditScreen'
 import ProjectRecordScreen from '../screens/ProjectRecordScreen';
+import ProjectHistoryScreen from '../screens/ProjectHistoryScreen';
 
 
 export default function AppRoutes() {
@@ -41,18 +43,16 @@ export default function AppRoutes() {
             <Route exact path="/">
               <TimelineScreen />
             </Route>
-            <Route path="/projects/:projectId/edit" children={<ProjectEditScreen />} />
-            <Route path="/projects/:projectId/:timerId" children={<TimerEditScreen />} />
-            <Route path="/projects/:projectId/:timerId/history" children={<TimerHistoryScreen />} />
-            <Route path="/projects/create" children={<ProjectCreateScreen />} />
-            <Route path="/projects/:projectId" children={<ProjectRecordScreen />} />
-            <Route path="/projects" children={<ProjectScreen />} />
+            <Route path={routes.projectEditlink(':projectId')} children={<ProjectEditScreen />} />
+            <Route path={routes.projectCreatelink()} children={<ProjectCreateScreen />} />
+            <Route path={routes.projectlink(':projectId')} children={<ProjectRecordScreen />} />
+            <Route path={routes.projectHistorylink(':projectId')} children={<ProjectHistoryScreen />} />
+            <Route path={routes.projectsListLink()} children={<ProjectScreen />} />
             
-            <Route path="/timers/:projectId/:timerId" children={<TimerEditScreen />} />
-            <Route path="/timers/:projectId/:timerId/history" children={<TimerHistoryScreen />} />  
-            <Route path="/timers" children={<TimerScreen />} />
-
-            <Route path="/timer" children={<TimerRunningScreen />} />
+            <Route path={routes.timerlink(':projectId', ':timerId')} children={<TimerEditScreen />} />
+            <Route path={routes.timerHistorylink(':projectId', ':timerId')} children={<TimerHistoryScreen />} /> 
+            <Route path={routes.timerListlink()} children={<TimerScreen />} />
+            <Route path={routes.timerRunninglink()} children={<TimerRunningScreen />} />
             
             <Route path="/test">
               <TestScreen />
