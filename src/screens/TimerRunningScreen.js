@@ -5,7 +5,7 @@ import { gun, updateTimer, deleteTimer, createTimer, finishTimer } from '../cons
 import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { EnergySlider } from '../components/EnergySlider'
-import {MoodPicker} from '../components/MoodPicker'
+import { MoodPicker } from '../components/MoodPicker'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
 import { Grid, makeStyles } from '@material-ui/core/'
 import { useAlert } from 'react-alert'
@@ -18,6 +18,7 @@ import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import useCounter from '../hooks/useCounter'
 import { elapsedTime } from '../constants/Functions'
+import Stateless from '../components/Stateless'
 
 import { useStyles } from '../themes/DefaultTheme'
 
@@ -136,7 +137,10 @@ export default function TimerRunningScreen() {
   return (
     <Grid >
       <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
-      <SubHeader title={projectValid(runningProject) ? `${runningProject[1].name}` : 'Timer'} color={projectValid(runningProject) ? runningProject[1].color : ''} />
+      {projectValid(runningProject) && isTimer(runningTimer) ?
+        <SubHeader title={projectValid(runningProject) ? `${runningProject[1].name}` : 'Timer'} color={projectValid(runningProject) ? runningProject[1].color : ''} />
+        : <Stateless />
+      }
       {!runningTimer[1] ?
         <Grid container direction='column' justify='center' alignItems='center'>
           <Button variant="contained" color="primary" onClick={() => history.push(projectsListLink())} > Project List </Button>

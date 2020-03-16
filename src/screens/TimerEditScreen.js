@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer } from '../constants/Data'
-import { addMinutes, isValid, endOfDay, sub, add,  getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
+import { addMinutes, isValid, endOfDay, sub, add, getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
 import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
 import { PickerDate, PickerTime } from '../components/Pickers'
 import { EnergySlider } from '../components/EnergySlider'
@@ -18,6 +18,7 @@ import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
+import Stateless from '../components/Stateless'
 
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()
@@ -253,10 +254,14 @@ export default function TimerEditScreen() {
   return (
     <Grid className={classes.listRoot}>
       <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
-      <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} />
+      {projectValid(project) && isTimer(timer) ?
+        <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} /> 
+        : <Stateless />
+      }
+
       {timer && isTimer(timer) ?
         <SideMenu
-          options={[{ name: 'delete', action: () => openPopup() }, { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) }, { name: 'archive', action: () => { } }, ]}
+          options={[{ name: 'delete', action: () => openPopup() }, { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) }, { name: 'archive', action: () => { } },]}
         />
         : ' '}
       {timer && isTimer(timer) ?
@@ -288,7 +293,7 @@ export default function TimerEditScreen() {
               addMinutes={() => increaseEnded()}
               running={isRunning(timer)}
               subtractMinutes={() => decreaseEnded()}
-              />
+            />
 
             {
               timer[1] ?

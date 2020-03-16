@@ -15,6 +15,7 @@ import { Header, SubHeader } from '../components/Header'
 import { RunningTimer } from '../components/RunningTimer'
 import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
+import Stateless from '../components/Stateless'
 
 export default function ProjectCreateScreen() {
   const [online, setOnline] = useState(false)
@@ -70,7 +71,11 @@ export default function ProjectCreateScreen() {
 
   return (
     <Grid className={classes.listRoot}>
-      <SubHeader className={classes.space} title='Projects' buttonClick={() => history.push(projectCreatelink())} buttonText='New Project' />
+      {projects && projects.length > 0 ?
+        <SubHeader className={classes.space} title='Projects' buttonClick={() => history.push(projectCreatelink())} buttonText='New Project' /> :
+        <Stateless />
+      }
+
       {isRunning(runningTimer) ?
         <RunningTimer
           className={classes.space}

@@ -19,6 +19,7 @@ import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
+import Stateless from '../components/Stateless'
 
 
 export default function ProjectRecordScreen() {
@@ -118,6 +119,7 @@ export default function ProjectRecordScreen() {
     history.push((projectsListLink()))
   }
 
+
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
   return (
@@ -133,7 +135,8 @@ export default function ProjectRecordScreen() {
             createTimer(projectId)
             history.push(timerRunninglink())
           }}
-        /> : ''}
+        /> : <Stateless />
+      }
       <SideMenu
         options={[
           { name: 'delete', action: () => openPopup() },

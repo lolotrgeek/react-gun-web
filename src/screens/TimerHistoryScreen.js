@@ -19,7 +19,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from 'react-alert'
 import { projectsListLink, projectlink } from '../routes/routes'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
-
+import Stateless from '../components/Stateless'
 
 export default function TimerHistoryScreen() {
   const { projectId, timerId } = useParams()
@@ -107,12 +107,12 @@ export default function TimerHistoryScreen() {
 
   return (
     <Grid container className={classes.listClass} direction='column' justify='center' alignItems='center'>
-      {project[1] ?
+      {project && project[1] ?
         <SubHeader
           color={project[1].color}
           title={nameValid(project[1].name) ? project[1].name : ''}
         />
-        : ''}
+        : <Stateless />  }
 
       <Typography className={classes.spaceBelow} variant='h4'> {timer[1] && nameValid(timer[1].name) && isTimer(timer) ? timer[1].name : ' Timer History '}</Typography>
       {edits.map((edit) => {

@@ -7,7 +7,7 @@ import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } fr
 import { trimSoul } from '../constants/Store'
 import { isRunning, projectValid, isTimer } from '../constants/Validators'
 import useCounter from '../hooks/useCounter'
-import { projectlink, projectsListLink, timerRunninglink } from '../routes/routes'
+import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 // import { Button } from '../components/Button'
@@ -91,7 +91,12 @@ export default function TimerScreen() {
 
   return (
     <Grid className={classes.listRoot} >
-      <SubHeader className={classes.space} title='Timeline' buttonClick={() => history.push(projectsListLink())} buttonText='Projects' />
+      <SubHeader
+        className={classes.space}
+        title='Timeline'
+        buttonClick={() => timers && timers.length > 0 ? history.push(projectsListLink()) : history.push(projectCreatelink())}
+        buttonText= {timers && timers.length > 0 ? 'Projects' : 'New Project' }
+      />
       {isRunning(runningTimer) ?
         <RunningTimer
           className={classes.space}

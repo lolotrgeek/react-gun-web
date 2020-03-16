@@ -16,6 +16,7 @@ import { Header, SubHeader } from '../components/Header'
 import { RunningTimer } from '../components/RunningTimer'
 import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
+import Stateless  from '../components/Stateless'
 
 export default function ProjectHistory() {
   const { projectId, } = useParams()
@@ -89,15 +90,17 @@ export default function ProjectHistory() {
 
   return (
     <Grid className={classes.content}>
-      <SubHeader
-        className={classes.space}
-        title={projectValid(project) ? `${project[1].name} History` : 'Project History'}
-        buttonClick={() => {
-          // history.push(projectEditlink(project[0]))
-          updateProject(project, {name: project[1].name + '1', color: '#000'})
-        }}
-        buttonText='Edit'
-      />
+      {projectValid(project) && edits && edits.length > 0 ?
+        <SubHeader
+          className={classes.space}
+          title={`${project[1].name} History`}
+          buttonClick={() => {
+            history.push(projectEditlink(project[0]))
+            // updateProject(project, {name: project[1].name + '1', color: '#000'})
+          }}
+          buttonText='Edit'
+        /> : <Stateless />}
+
       {/* <Grid className={classes.listClass} container direction='row' justify='center' alignItems='flex-start'>
         <Typography variant='h6'>
         started : {projectValid(project) && project[1].started ? fullDate(new Date(project[1].started)) : ''}
