@@ -5,7 +5,7 @@ import { gun, finishTimer, createTimer } from '../constants/Data'
 import { isRunning, nameValid, isTimer } from '../constants/Validators'
 import { elapsedTime, fullDate, secondsToString, totalTime } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
-import SpacingGrid, { UnEvenGrid } from '../components/Grid'
+import SpacingGrid, { UnEvenGrid, EvenGrid } from '../components/Grid'
 import { Grid, Typography } from '@material-ui/core/'
 import { RunningTimer } from '../components/RunningTimer'
 import { timerlink } from '../routes/routes'
@@ -98,39 +98,40 @@ export default function TimerHistoryScreen() {
     return () => gun.get('timers').off()
   }, [online]);
 
+  const displayStatus = timer => {
+    if (timer[1].edited || timer[1].edited.length > 0) return `Edited : ${fullDate(new Date(timer[1].edited))}`
+    if (timer[1].status === 'running') return `Started : ${fullDate(new Date(timer[1].created))}`
+    if (timer[1].status === 'done') return `Ended : ${fullDate(new Date(timer[1].ended))}`
+
+  }
+
   return (
-    <Grid container direction='column' justify='center' alignItems='center'>
-      <SubHeader title={project[1] && nameValid(project[1].name) ? project[1].name : ''} />
-      <SubHeader title={timer[1] && nameValid(timer[1].name) && isTimer(timer) ? timer[1].name : ' Timer History '} />
+    <Grid container className={classes.listClass} direction='column' justify='center' alignItems='center'>
+      {project[1] ?
+        <SubHeader
+          color={project[1].color}
+          title={nameValid(project[1].name) ? project[1].name : ''}
+        />
+        : ''}
+
+      <Typography className={classes.spaceBelow} variant='h4'> {timer[1] && nameValid(timer[1].name) && isTimer(timer) ? timer[1].name : ' Timer History '}</Typography>
       {edits.map((edit) => {
         return (
-          <Grid key={edit[0]} className={classes.listClass} container direction='row' justify='space-between' alignItems='flex-start' >
-            {/* <Link to={timerlink(projectId, timerId)}>
-              <SpacingGrid values={Object.values(edit[1])}></SpacingGrid>
-            </Link> */}
+          <Grid key={edit[0]} container >
+            <Typography variant='h6'>
+              {displayStatus(edit)}
+            </Typography>
 
-
-
-            <Grid>
-              {/* <Typography>{fullDate(new Date(edit[1].started))}</Typography> */}
-              {edit[1].ended ? <TimePeriod start={new Date(edit[1].started)} end={new Date(edit[1].ended)} /> : ''}
-
-            </Grid>
-            <Grid>
-              {/* <Typography>{fullDate(new Date(edit[1].edited))}</Typography> */}
-
-            </Grid>
-            <Grid>
-              <EnergyDisplay energy={timer[1].energy} />
-
-            </Grid>
-            <Grid>
-              <MoodDisplay mood={timer[1].mood} />
-
-            </Grid>
-            <Grid>
-              <Typography>{secondsToString(totalTime(new Date(edit[1].started), new Date(edit[1].ended)))}</Typography>
-            </Grid>
+            <EvenGrid
+              values={[
+                // <Typography>
+                //   {edit[1].ended ? <TimePeriod start={new Date(edit[1].started)} end={new Date(edit[1].ended)} /> : ''}
+                // </Typography>,
+                <EnergyDisplay energy={edit[1].energy} />,
+                <MoodDisplay mood={edit[1].mood} />,
+                <Typography>{secondsToString(totalTime(new Date(edit[1].started), new Date(edit[1].ended)))}</Typography>
+              ]}
+            />
           </Grid>
         )
       })}

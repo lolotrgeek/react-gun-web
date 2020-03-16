@@ -115,7 +115,6 @@ export default function TimerRunningScreen() {
     completeTimer[1].energy = energy
     completeTimer[1].total = totalTime(completeTimer[1].started, completeTimer[1].ended)
     if (isTimer(completeTimer)) {
-      updateTimer(completeTimer)
       finishTimer(completeTimer)
       setAlert(['Success', 'Timer Updated!',])
       history.push((projectlink(completeTimer[1].project)))

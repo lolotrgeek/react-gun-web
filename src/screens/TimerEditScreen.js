@@ -285,10 +285,10 @@ export default function TimerEditScreen() {
               label='End'
               time={ended}
               onTimeChange={newTime => chooseNewEnd(newTime)}
-              running={isRunning(timer)}
               addMinutes={() => increaseEnded()}
+              running={isRunning(timer)}
               subtractMinutes={() => decreaseEnded()}
-            />
+              />
 
             {
               timer[1] ?

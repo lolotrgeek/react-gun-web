@@ -5,7 +5,7 @@ export const newTimerValue = (projectId) => {
     return {
         created: start,
         started: start,
-        ended: "",
+        ended: '',
         type: 'timer',
         project: projectId,
         status: 'running',

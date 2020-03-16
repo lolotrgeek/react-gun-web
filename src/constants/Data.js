@@ -61,6 +61,12 @@ export const updateTimer = (timer) => {
   gun.get('timers').get(editedTimer[1].project).get(editedTimer[0]).put(editedTimer[1])
 }
 
+export const endTimer = (timer) => {
+  console.log('Ending', timer)
+  gun.get('history').get('timers').get(timer[1].project).get(timer[0]).set(timer[1])
+  gun.get('timers').get(timer[1].project).get(timer[0]).put(timer[1])
+}
+
 export const deleteTimer = (timer) => {
   console.log('Deleting', timer)
   const timerDelete = timer
@@ -92,12 +98,12 @@ export const finishTimer = (timer) => {
         splitTimer[1].started = dayEntry.start
         splitTimer[1].ended = dayEntry.end
         console.log('Split', i, splitTimer)
-        if(i === 0) {updateTimer(splitTimer)} // use initial timer id for first day
+        if(i === 0) {endTimer(splitTimer)} // use initial timer id for first day
         else {addTimer(splitTimer[1].project, splitTimer[1])}
         return splitTimer
       })
     } else {
-      updateTimer(done)
+      endTimer(done)
     }
   } else { return timer }
 }

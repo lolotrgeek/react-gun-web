@@ -46,11 +46,27 @@ export default function SpacingGrid(props) {
 
 export function UnEvenGrid(props) {
   const classes = useStyles();
-
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
         <Grid container direction='row' justify="space-between" alignItems="center" >
+          {props.values ? props.values.map((value, index) => (
+            <Grid className={classes.control} key={index}>
+              {value}
+            </Grid>
+          )) : ''}
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+}
+
+export function EvenGrid(props) {
+  const classes = useStyles();
+  return (
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <Grid container direction='row' justify="flex-start" alignItems="center" >
           {props.values ? props.values.map((value, index) => (
             <Grid className={classes.control} key={index}>
               {value}

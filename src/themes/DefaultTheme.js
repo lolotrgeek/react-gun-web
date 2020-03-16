@@ -12,6 +12,9 @@ export const useStyles = makeStyles(theme => ({
     space3: {
         paddingTop: theme.spacing(2)
     },
+    spaceBelow: {
+        paddingBottom: theme.spacing(2)
+    },
     fit: {
         width:'90%'
     },
