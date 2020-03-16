@@ -9,7 +9,7 @@ import { UnEvenGrid } from '../components/Grid'
 import Grid from '@material-ui/core/Grid'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 import { RunningTimer } from '../components/RunningTimer'
-import { projectsListLink, projectEditlink, timerlink, timerRunninglink } from '../routes/routes'
+import { projectsListLink, projectEditlink, projectHistorylink, timerlink, timerRunninglink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 // import { Button } from '../components/Button'
@@ -86,7 +86,7 @@ export default function ProjectRecordScreen() {
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
         console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].created))
+        setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {
@@ -135,7 +135,11 @@ export default function ProjectRecordScreen() {
           }}
         /> : ''}
       <SideMenu
-        options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit', action: () => history.push(projectEditlink(projectId)) }, { name: 'history', action: () => {} }, { name: 'archive', action: () =>{} }]}
+        options={[
+          { name: 'delete', action: () => openPopup() },
+          { name: 'edit', action: () => history.push(projectEditlink(projectId)) },
+          { name: 'history', action: () => history.push(projectHistorylink(projectId)) },
+          { name: 'archive', action: () => { } }]}
       />
       {isRunning(runningTimer) ?
         <RunningTimer
@@ -147,7 +151,7 @@ export default function ProjectRecordScreen() {
         />
         : ''}
       {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
-      {dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created))).map((day, index) => {
+      {dayHeaders(timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started))).map((day, index) => {
         return (
           <Grid key={index} className={classes.listClass} >
             <SubTitle>{sayDay(day.title)}</SubTitle>
@@ -156,17 +160,17 @@ export default function ProjectRecordScreen() {
               if (!isTimer(timer)) return (null)
               if (timer[1].status === 'running') return (null)
               let ended = new Date(timer[1].ended)
-              let created = new Date(timer[1].created)
+              let started = new Date(timer[1].started)
               return (
                 <Link key={timer[0]} to={timerlink(projectId, timer[0])}>
                   <UnEvenGrid
                     values={[
                       // simpleDate(creation),
-                      // timeString(new Date(timer[1].created)) ,'-', timeString(new Date(timer[1].ended)),
-                      <TimePeriod start={created} end={ended} />,
+                      // timeString(new Date(timer[1].started)) ,'-', timeString(new Date(timer[1].ended)),
+                      <TimePeriod start={started} end={ended} />,
                       <EnergyDisplay energy={timer[1].energy} />,
                       <MoodDisplay mood={timer[1].mood} />,
-                      secondsToString(totalTime(created, ended)),
+                      secondsToString(totalTime(started, ended)),
                     ]} />
                 </Link>
               )

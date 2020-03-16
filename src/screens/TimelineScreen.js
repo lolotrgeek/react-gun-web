@@ -41,7 +41,7 @@ export default function TimerScreen() {
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
         console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].created))
+        setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {
@@ -103,7 +103,7 @@ export default function TimerScreen() {
         : ''}
 
       <Grid className={classes.space}>
-        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map((day, index) => {
+        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started)))).map((day, index) => {
           return (
             <Grid key={index} className={classes.listClass}>
               <SubTitle>{sayDay(day.title)}</SubTitle>

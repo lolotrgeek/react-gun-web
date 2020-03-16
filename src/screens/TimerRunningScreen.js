@@ -54,7 +54,7 @@ export default function TimerRunningScreen() {
         setMood(runningTimerFound[1].mood)
         setEnergy(runningTimerFound[1].energy)
         setRunningTimer(runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].created))
+        setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
     }, { change: true })
@@ -108,12 +108,12 @@ export default function TimerRunningScreen() {
   }
 
   const timerComplete = () => {
-    if (!timeRulesEnforcer(runningTimer[1].created, new Date().toString())) return false
+    if (!timeRulesEnforcer(runningTimer[1].started, new Date().toString())) return false
     let completeTimer = runningTimer
     completeTimer[1].ended = new Date().toString()
     completeTimer[1].mood = mood
     completeTimer[1].energy = energy
-    completeTimer[1].total = totalTime(completeTimer[1].created, completeTimer[1].ended)
+    completeTimer[1].total = totalTime(completeTimer[1].started, completeTimer[1].ended)
     if (isTimer(completeTimer)) {
       updateTimer(completeTimer)
       finishTimer(completeTimer)

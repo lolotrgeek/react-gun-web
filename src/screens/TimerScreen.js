@@ -25,7 +25,7 @@ export default function TimerScreen() {
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
         console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].created))
+        setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {

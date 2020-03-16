@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { gun, createProject, updateProject, deleteProject } from '../constants/Data'
+import { gun, createProject, updateProject, updateProjectFix, deleteProject } from '../constants/Data'
 import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
 import { CirclePicker } from 'react-color'
 import { colorValid, nameValid, projectValid } from '../constants/Validators'
 import { SubHeader } from '../components/Header'
 import { useAlert } from 'react-alert'
-import { projectsListLink } from '../routes/routes'
+import { projectsListLink, projectlink } from '../routes/routes'
 import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
@@ -85,7 +85,7 @@ export default function ProjectEditScreen() {
         'Success',
         `Project ${name} Updated!`,
       ])
-      history.push(projectsListLink())
+      history.push(projectlink(projectId))
     }
     else {
       console.log('creating', project)
@@ -94,7 +94,7 @@ export default function ProjectEditScreen() {
         'Success',
         `Project ${name} Created!`,
       ])
-      history.push(projectsListLink())
+      history.push(projectlink(projectId))
     }
   }
 

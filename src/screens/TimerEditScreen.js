@@ -13,7 +13,7 @@ import { useAlert } from 'react-alert'
 import { Title, SubTitle } from '../components/Title'
 // import { Button } from '../components/Button'
 import { SubHeader } from '../components/Header'
-import { projectlink, projectsListLink } from '../routes/routes'
+import { projectlink, projectsListLink, timerHistorylink } from '../routes/routes'
 import SideMenu from '../components/SideMenu'
 import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
@@ -24,7 +24,7 @@ export default function TimerEditScreen() {
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
   const [timer, setTimer] = useState([])
-  const [created, setCreated] = useState('')
+  const [started, setStarted] = useState('')
   const [ended, setEnded] = useState('')
   const [mood, setMood] = useState('')
   const [energy, setEnergy] = useState(0)
@@ -61,11 +61,11 @@ export default function TimerEditScreen() {
       }
       else {
         let foundTimer = [timerId, trimSoul(timerValue)]
-        setCreated(new Date(foundTimer[1].created))
+        setStarted(new Date(foundTimer[1].started))
         setEnded(new Date(foundTimer[1].ended))
         setMood(foundTimer[1].mood)
         setEnergy(foundTimer[1].energy)
-        setTotal(foundTimer[1].total === 0 ? totalTime(created, ended) : foundTimer[1].total)
+        setTotal(foundTimer[1].total === 0 ? totalTime(started, ended) : foundTimer[1].total)
         setTimer(foundTimer)
       }
 
@@ -82,7 +82,7 @@ export default function TimerEditScreen() {
     return () => gun.get('projects').off()
   }, [timer])
   useEffect(() => timer[1] ? setEnergy(timer[1].energy) : timer[1], [timer])
-  useEffect(() => setTotal(totalTime(created, ended)), [created, ended])
+  useEffect(() => setTotal(totalTime(started, ended)), [started, ended])
 
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
@@ -112,12 +112,12 @@ export default function TimerEditScreen() {
     else {
       setPicker(false)
       setAlert(false)
-      return isValid(newTime) ? setCreated(newTime) : false
+      return isValid(newTime) ? setStarted(newTime) : false
     }
   }
 
   const chooseNewEnd = newTime => {
-    if (!timeRules(created, newTime)) {
+    if (!timeRules(started, newTime)) {
       setPicker(false);
       setAlert([
         'Error',
@@ -149,8 +149,8 @@ export default function TimerEditScreen() {
     if (dateRules(newDate)) {
       setPicker(false);
       if (isValid(newDate)) {
-        let newStart = new Date(getYear(newDate), getMonth(newDate), getDate(newDate), getHours(created), getMinutes(created), getSeconds(created))
-        setCreated(newStart)
+        let newStart = new Date(getYear(newDate), getMonth(newDate), getDate(newDate), getHours(started), getMinutes(started), getSeconds(started))
+        setStarted(newStart)
         let newEnd = new Date(getYear(newDate), getMonth(newDate), getDate(newDate), getHours(ended), getMinutes(ended), getSeconds(ended))
         setEnded(newEnd)
       }
@@ -194,13 +194,13 @@ export default function TimerEditScreen() {
   }
 
   const editComplete = () => {
-    if (!timeRulesEnforcer(created, ended)) return false
+    if (!timeRulesEnforcer(started, ended)) return false
     let updatedTimer = timer
-    updatedTimer[1].created = created.toString()
+    updatedTimer[1].started = started.toString()
     updatedTimer[1].ended = ended.toString()
     updatedTimer[1].mood = mood
     updatedTimer[1].energy = energy
-    updatedTimer[1].total = totalTime(created, ended)
+    updatedTimer[1].total = totalTime(started, ended)
     if (isTimer(updatedTimer)) {
       updateTimer(updatedTimer)
       setAlert(['Success', 'Timer Updated!',])
@@ -212,35 +212,35 @@ export default function TimerEditScreen() {
   }
 
   const nextDay = () => {
-    let newDate = add(created, { days: 1 })
-    return chooseNewDate(newDate) ? newDate : created
+    let newDate = add(started, { days: 1 })
+    return chooseNewDate(newDate) ? newDate : started
   }
 
   const previousDay = () => {
-    let newDate = sub(created, { days: 1 })
-    return chooseNewDate(newDate) ? newDate : created
+    let newDate = sub(started, { days: 1 })
+    return chooseNewDate(newDate) ? newDate : started
   }
 
-  const decreaseCreated = () => {
-    let newCreated = addMinutes(new Date(created), -5)
+  const decreaseStarted = () => {
+    let newStarted = addMinutes(new Date(started), -5)
     let checkedEnd = isRunning(timer) ? new Date() : ended
-    return timeRulesEnforcer(newCreated, checkedEnd) ? setCreated(newCreated) : created
+    return timeRulesEnforcer(newStarted, checkedEnd) ? setStarted(newStarted) : started
   }
 
-  const increaseCreated = () => {
-    let newCreated = addMinutes(new Date(created), 5)
+  const increaseStarted = () => {
+    let newStarted = addMinutes(new Date(started), 5)
     let checkedEnd = isRunning(timer) ? new Date() : ended
-    return timeRulesEnforcer(newCreated, checkedEnd) ? setCreated(newCreated) : created
+    return timeRulesEnforcer(newStarted, checkedEnd) ? setStarted(newStarted) : started
   }
 
   const decreaseEnded = () => {
     let newEnded = isRunning(timer) ? new Date() : addMinutes(new Date(ended), -5)
-    return timeRulesEnforcer(created, newEnded) ? setEnded(newEnded) : ended
+    return timeRulesEnforcer(started, newEnded) ? setEnded(newEnded) : ended
   }
 
   const increaseEnded = () => {
     let newEnded = isRunning(timer) ? new Date() : addMinutes(new Date(ended), 5)
-    return timeRulesEnforcer(created, newEnded) ? setEnded(newEnded) : ended
+    return timeRulesEnforcer(started, newEnded) ? setEnded(newEnded) : ended
   }
 
   const removeTimer = () => {
@@ -256,7 +256,7 @@ export default function TimerEditScreen() {
       <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} />
       {timer && isTimer(timer) ?
         <SideMenu
-          options={[{ name: 'delete', action: () => openPopup() }, { name: 'history', action: () => {history.push()} }, { name: 'archive', action: () => { } }, ]}
+          options={[{ name: 'delete', action: () => openPopup() }, { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) }, { name: 'archive', action: () => { } }, ]}
         />
         : ' '}
       {timer && isTimer(timer) ?
@@ -266,19 +266,19 @@ export default function TimerEditScreen() {
           <Grid item xs={12}>
             <PickerDate
               label='Date'
-              startdate={created}
+              startdate={started}
               onDateChange={newDate => chooseNewDate(newDate)}
               maxDate={endOfDay(new Date())}
               previousDay={() => previousDay()}
               nextDay={() => nextDay()}
             />
-            {/* {created.toString()} */}
+            {/* {started.toString()} */}
             <PickerTime
               label='Start'
-              time={created}
+              time={started}
               onTimeChange={newTime => chooseNewStart(newTime)}
-              addMinutes={() => increaseCreated()}
-              subtractMinutes={() => decreaseCreated()}
+              addMinutes={() => increaseStarted()}
+              subtractMinutes={() => decreaseStarted()}
             />
             {/* {ended.toString()} */}
             <PickerTime

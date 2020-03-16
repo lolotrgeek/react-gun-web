@@ -1,16 +1,20 @@
 import Hashids from 'hashids'
 
-export const newTimerValue = (projectId) => ({
-    created: new Date().toString(),
-    ended: "",
-    type: 'timer',
-    project: projectId,
-    status: 'running',
-    edited: '',
-    total: 0,
-    mood: 'good',
-    energy: 50,
-})
+export const newTimerValue = (projectId) => {
+    let start = new Date().toString()
+    return {
+        created: start,
+        started: start,
+        ended: "",
+        type: 'timer',
+        project: projectId,
+        status: 'running',
+        edited: '',
+        total: 0,
+        mood: 'good',
+        energy: 50,
+    }
+}
 
 export const newTimer = value => {
     const hashids = new Hashids()

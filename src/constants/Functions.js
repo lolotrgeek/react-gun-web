@@ -1,4 +1,4 @@
-import { isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO } from 'date-fns'
+import { isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO, format } from 'date-fns'
 import moment from 'moment'
 
 // TODO: REFACTOR SO FUNCTIONS DO NOT NEED ANY DATA STRUCTURE
@@ -40,10 +40,11 @@ export const getMonth = date => {
  */
 export const simpleDate = date => date.getDate() + " " + getMonth(date) + " " + date.getFullYear()
 
+export const fullDate = date => format(date, "yyyy-MM-dd KK:mm:ss")
 /**
  * 
  */
-export const listDay = timers => timers.map(timer => new Date(timer[1].created))
+export const listDay = timers => timers.map(timer => new Date(timer[1].started))
 /**
  * 
  * @param {*} start 
@@ -113,17 +114,17 @@ export const formatTime = t => {
  * 
  * @param {*} timer 
  */
-export const sayRunning = timer => timer[1].ended === timer[1].created ? 'running' : timer[1].ended
+export const sayRunning = timer => timer[1].ended === timer[1].started ? 'running' : timer[1].ended
 /**
  * 
  * @param {*} timer 
  */
 export const isRunning = timer => timer[1].status === 'running' ? true : false
 /**
- * Get amount of time since entry was created
- * @param {string} created datestring when entry was created
+ * Get amount of time since entry was started
+ * @param {string} started datestring when entry was started
  */
-export const elapsedTime = created => differenceInSeconds(new Date(), new Date(created))
+export const elapsedTime = started => differenceInSeconds(new Date(), new Date(started))
 /**
  * find running timers within given days
  * @param {*} days 
@@ -160,35 +161,35 @@ export const findRunning = timers => {
 }
 /**
  * 
- * @param {*} created 
+ * @param {*} started 
  * @param {*} ended 
  */
-export const multiDay = (created, ended) => {
-    if (typeof created === 'string') created = new Date(created)
+export const multiDay = (started, ended) => {
+    if (typeof started === 'string') started = new Date(started)
     if (typeof ended === 'string') ended = new Date(ended)
     if (!ended) ended = new Date()
-    return isSameDay(created, ended) ? false : true
+    return isSameDay(started, ended) ? false : true
 }
 
 /**
  * Split a timer into one timer per day
- * @param {*} created 
+ * @param {*} started 
  * @param {*} ended
  * @return `[{start: DateTime, end: DateTime}, ...]`
  */
-export const newEntryPerDay = (created, ended) => {
-    if (typeof created === 'string') created = new Date(created)
+export const newEntryPerDay = (started, ended) => {
+    if (typeof started === 'string') started = new Date(started)
     if (typeof ended === 'string') ended = new Date(ended)
     if (!ended) ended = new Date()
-    // console.log(created, ended)
+    // console.log(started, ended)
     const secondsinday = 86400
-    let totalSeconds = differenceInSeconds(ended, created)
+    let totalSeconds = differenceInSeconds(ended, started)
     // console.log('total seconds', totalSeconds)
     // get whole days
     if (totalSeconds > secondsinday) {
         const output = []
         let daysfromseconds = totalSeconds / secondsinday
-        let start = created
+        let start = started
         while (daysfromseconds > 1) {
             // console.log(daysfromseconds)
             let end = endOfDay(start)
@@ -243,7 +244,7 @@ export const dayHeaders = timerlist => {
     const output = [] // [days...]
     // organize timers by day
     const timerdays = timerlist.map(timer => {
-        return { day: simpleDate(new Date(timer[1].created)), timer: timer }
+        return { day: simpleDate(new Date(timer[1].started)), timer: timer }
     })
     // //// console.log(pagename + '- DAYHEADERS - TIMERDAYS : ', timerdays)
     timerdays.forEach(timerday => {
@@ -284,8 +285,8 @@ export const sumProjectTimers = dayheaders => {
             // ... group timer entries by project
             if (projects.length === 0) {
                 // console.log('first timer: ', )
-                // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].created, timer[1].ended))
-                let total = totalTime(timer[1].created, timer[1].ended)
+                // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
+                let total = totalTime(timer[1].started, timer[1].ended)
                 projects.push({ project: timer[1].project, totals: [total], total: total, status: timer[1].status, timers: [timer[0]] })
             }
             // for each project get all timer entries and sum the totals
@@ -295,8 +296,8 @@ export const sumProjectTimers = dayheaders => {
                 if (projects[0].timers[0] === timer[0]) {
                     // console.log('existing match')
                 } else {
-                    // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].created, timer[1].ended))
-                    let total = totalTime(timer[1].created, timer[1].ended)
+                    // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
+                    let total = totalTime(timer[1].started, timer[1].ended)
                     match.totals = [...match.totals, total]
                     // console.log('new match')
                     match.total = match.totals.reduce((acc, val) => acc + val) // sum the totals
@@ -304,8 +305,8 @@ export const sumProjectTimers = dayheaders => {
             }
             else {
                 // console.log('last timer: ', timer[0])
-                // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].created, timer[1].ended))
-                let total = totalTime(timer[1].created, timer[1].ended)
+                // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
+                let total = totalTime(timer[1].started, timer[1].ended)
                 projects.push({ project: timer[1].project, totals: [total], total: total, status: timer[1].status })
             }
             // console.log(projects)

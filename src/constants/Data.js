@@ -19,7 +19,15 @@ export const createProject = (name, color) => {
 }
 
 export const updateProject = (project, updates) => {
-  const projectEdit = editedProject(project, updates)
+  let projectEdit = editedProject(project, updates)
+  projectEdit[1].edited = new Date().toString()
+  gun.get('history').get('projects').get(projectEdit[0]).set(projectEdit[1])
+  gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
+}
+
+export const updateProjectFix = (project) => {
+  let projectEdit = project
+  projectEdit[1].edited = new Date().toString()
   gun.get('history').get('projects').get(projectEdit[0]).set(projectEdit[1])
   gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
 }
@@ -77,11 +85,11 @@ export const finishTimer = (timer) => {
   if (isRunning(timer)) {
     let done = doneTimer(timer)
     gun.get('running').get('timer').put(null)
-    if (multiDay(done[1].created, done[1].ended)) {
-      const dayEntries = newEntryPerDay(done[1].created, done[1].ended)
+    if (multiDay(done[1].started, done[1].ended)) {
+      const dayEntries = newEntryPerDay(done[1].started, done[1].ended)
       dayEntries.map((dayEntry, i) => {
         let splitTimer = done
-        splitTimer[1].created = dayEntry.start
+        splitTimer[1].started = dayEntry.start
         splitTimer[1].ended = dayEntry.end
         console.log('Split', i, splitTimer)
         if(i === 0) {updateTimer(splitTimer)} // use initial timer id for first day

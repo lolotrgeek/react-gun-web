@@ -31,7 +31,7 @@ export default function TestScreen() {
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
         console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].created))
+        setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {
@@ -80,6 +80,7 @@ export default function TestScreen() {
 
     let multiDayTimer = {
       created: threeDaysAgo.toString(),
+      started: threeDaysAgo.toString(),
       ended: "",
       type: 'timer',
       project: randomProject[0],
@@ -101,7 +102,7 @@ export default function TestScreen() {
       <button  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; generateDummys() }}>Generate Dummys</button>
       <button  onClick={() => { if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() }; loadDummys() }}>Load Dummys</button>
       <div>
-        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].created) - new Date(a[1].created)))).map(day => {
+        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started)))).map(day => {
           return (
             <div>
               <h2>{`${sayDay(day.title)}`}</h2>
