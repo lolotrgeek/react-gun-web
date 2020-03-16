@@ -117,16 +117,13 @@ export default function TimerHistoryScreen() {
       <Typography className={classes.spaceBelow} variant='h4'> {timer[1] && nameValid(timer[1].name) && isTimer(timer) ? timer[1].name : ' Timer History '}</Typography>
       {edits.map((edit) => {
         return (
-          <Grid key={edit[0]} container >
+          <Grid key={edit[0]} container direction='column' justify='center' alignItems='center'>
             <Typography variant='h6'>
               {displayStatus(edit)}
             </Typography>
 
             <EvenGrid
               values={[
-                // <Typography>
-                //   {edit[1].ended ? <TimePeriod start={new Date(edit[1].started)} end={new Date(edit[1].ended)} /> : ''}
-                // </Typography>,
                 <EnergyDisplay energy={edit[1].energy} />,
                 <MoodDisplay mood={edit[1].mood} />,
                 <Typography>{secondsToString(totalTime(new Date(edit[1].started), new Date(edit[1].ended)))}</Typography>

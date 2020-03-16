@@ -26,11 +26,13 @@ export const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        maxWidth: 500,
+        minWidth: 350,
     },
     listRoot: {
         flexGrow: 1,
-        overflowX: 'hidden'
+        overflowX: 'hidden',
     },
     listClass: {
         flexGrow: 1,

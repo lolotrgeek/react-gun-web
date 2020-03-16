@@ -40,7 +40,7 @@ export const getMonth = date => {
  */
 export const simpleDate = date => date.getDate() + " " + getMonth(date) + " " + date.getFullYear()
 
-export const fullDate = date => format(date, "yyyy-MM-dd KK:mm:ss")
+export const fullDate = date => format(date, "yyyy/MM/dd KK:mm:ss")
 /**
  * 
  */

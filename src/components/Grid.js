@@ -66,7 +66,7 @@ export function EvenGrid(props) {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
-        <Grid container direction='row' justify="flex-start" alignItems="center" >
+        <Grid container direction='row' justify="center" alignItems="center" >
           {props.values ? props.values.map((value, index) => (
             <Grid className={classes.control} key={index}>
               {value}

@@ -88,7 +88,7 @@ export default function ProjectHistory() {
   }, [online]);
 
   return (
-    <Grid className={classes.listRoot}>
+    <Grid className={classes.content}>
       <SubHeader
         className={classes.space}
         title={projectValid(project) ? `${project[1].name} History` : 'Project History'}

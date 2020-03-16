@@ -251,7 +251,7 @@ export default function TimerEditScreen() {
   }
 
   return (
-    <Grid >
+    <Grid className={classes.listRoot}>
       <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
       <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} />
       {timer && isTimer(timer) ?
