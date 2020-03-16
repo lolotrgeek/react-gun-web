@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { trimSoul } from '../constants/Store'
-import { elapsedTime } from '../constants/Functions'
+import { elapsedTime, secondsToString, totalTime } from '../constants/Functions'
 import { isRunning } from '../constants/Validators'
 import { gun, finishTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
-import SpacingGrid from '../components/Grid'
+import { UnEvenGrid } from '../components/Grid'
 import { Grid } from '@material-ui/core/'
 import { timerlink } from '../routes/routes'
 import { RunningTimer } from '../components/RunningTimer'
@@ -14,7 +14,8 @@ import { Button } from '../components/Button'
 import { useStyles } from '../themes/DefaultTheme'
 import Stateless from '../components/Stateless'
 import { useHistory } from 'react-router-dom'
-import {SubHeader} from '../components/Header'
+import { SubHeader } from '../components/Header'
+import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -50,19 +51,27 @@ export default function TimerScreen() {
   return (
     <Grid className={classes.listRoot}>
       {timers && timers.length > 0 ?
-        <SubHeader className={classes.space} title='All Timers'/> :
+        <SubHeader className={classes.space} title='All Timers' /> :
         <Stateless />
       }
-      <Grid>
-        {timers.map(timer => {
-          console.log(timer[0])
-          return (
-            <Link to={timerlink(timer[1].project, timer[0])}>
-              <SpacingGrid values={Object.values(timer[1])}></SpacingGrid>
+      {timers.map(timer => {
+        return (
+          <Grid key={timer[0]} className={classes.listClass} >
+            <Link key={timer[0]} to={timerlink(timer[1].project, timer[0])}>
+              <UnEvenGrid
+                values={[
+                  // simpleDate(creation),
+                  // timeString(new Date(timer[1].started)) ,'-', timeString(new Date(timer[1].ended)),
+                  <TimePeriod start={new Date(timer[1].started)} end={new Date(timer[1].ended)} />,
+                  <EnergyDisplay energy={timer[1].energy} />,
+                  <MoodDisplay mood={timer[1].mood} />,
+                  secondsToString(totalTime(new Date(timer[1].started), new Date(timer[1].ended))),
+                ]} />
             </Link>
-          )
-        })}
-      </Grid>
+          </Grid>
+
+        )
+      })}
     </Grid >
   )
 }
