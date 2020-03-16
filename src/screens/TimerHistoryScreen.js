@@ -99,9 +99,9 @@ export default function TimerHistoryScreen() {
   }, [online]);
 
   const displayStatus = timer => {
-    if (timer[1].edited || timer[1].edited.length > 0) return `Edited : ${fullDate(new Date(timer[1].edited))}`
-    if (timer[1].status === 'running') return `Started : ${fullDate(new Date(timer[1].created))}`
-    if (timer[1].status === 'done') return `Ended : ${fullDate(new Date(timer[1].ended))}`
+    if (timer[1].edited || timer[1].edited.length > 0) return `Edit : ${fullDate(new Date(timer[1].edited))}`
+    if (timer[1].status === 'running') return `Start : ${fullDate(new Date(timer[1].created))}`
+    if (timer[1].status === 'done') return `End : ${fullDate(new Date(timer[1].ended))}`
 
   }
 
