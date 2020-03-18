@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { gun, createProject, updateProject, updateProjectFix, deleteProject } from '../constants/Data'
+import { gun, createProject, updateProject, deleteProject } from '../constants/Data'
 import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
 import { CirclePicker } from 'react-color'
 import { colorValid, nameValid, projectValid } from '../constants/Validators'
@@ -41,7 +41,7 @@ export default function ProjectEditScreen() {
     if (projectId) {
       gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
         console.log(projectValue)
-        setProject([projectId, projectValue])
+        setProject([projectId, trimSoul(projectValue)])
       }, { change: true })
     }
     return () => gun.get('projects').off()
@@ -79,7 +79,7 @@ export default function ProjectEditScreen() {
       return false
     }
     else if (projectId && projectValid(project)) {
-      console.log('updating', project)
+      // console.log('updating', project)
       updateProject(project, { name: name, color: color })
       setAlert([
         'Success',
@@ -88,7 +88,6 @@ export default function ProjectEditScreen() {
       history.push(projectlink(projectId))
     }
     else {
-      console.log('creating', project)
       createProject(name, color)
       setAlert([
         'Success',

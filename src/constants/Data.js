@@ -14,23 +14,26 @@ export const gun = new Gun({
 
 export const createProject = (name, color) => {
   const project = newProject(name, color)
+  console.log('Creating', project)
   gun.get('history').get('projects').get(project[0]).set(project[1])
   gun.get('projects').get(project[0]).put(project[1])
 }
 
 export const updateProject = (project, updates) => {
-  let projectEdit = editedProject(project, updates)
+  let projectEdit = project
+  projectEdit[1] = Object.assign(project[1], updates)
   projectEdit[1].edited = new Date().toString()
-  gun.get('history').get('projects').get(projectEdit[0]).set(projectEdit[1])
+  console.log('Updating', projectEdit)
+  gun.get('history').get('projects').get(project[0]).set(projectEdit[1])
   gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
 }
 
-export const updateProjectFix = (project) => {
-  let projectEdit = project
-  projectEdit[1].edited = new Date().toString()
-  gun.get('history').get('projects').get(projectEdit[0]).set(projectEdit[1])
-  gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
+export const restoreProject = (project, updates) => {
+  let projectRestore = editedProject(project, updates)
+  projectRestore[1].restored = new Date().toString()
+  gun.get('projects').get(projectRestore[0]).put(projectRestore[1])
 }
+
 
 export const deleteProject = (project) => {
   const projectDelete = project
