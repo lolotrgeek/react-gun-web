@@ -107,4 +107,3 @@ export const finishTimer = (timer) => {
     }
   } else { return timer }
 }
-

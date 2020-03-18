@@ -15,8 +15,13 @@ export const useStyles = makeStyles(theme => ({
     spaceBelow: {
         paddingBottom: theme.spacing(2)
     },
+    card: {
+        marginBottom: theme.spacing(5),
+        maxWidth: 360,
+        minWidth: 350,
+    },
     fit: {
-        width:'90%'
+        width: '90%'
     },
     form: {
         '& > *': {
@@ -41,7 +46,18 @@ export const useStyles = makeStyles(theme => ({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
-    
+
+    listContent: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper,
+    },
+    inline: {
+        display: 'inline',
+    },
+    table: {
+        minWidth: 350,
+      },
 }));
 
 
@@ -49,7 +65,7 @@ export const theme = createMuiTheme({
     status: {
         danger: orange[500]
     },
-    maxWidth : 500,
+    maxWidth: 500,
 });
 
 

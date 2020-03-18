@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy, faBolt } from "@fortawesome/free-solid-svg-icons";
-import { format } from 'date-fns'
+import { format, isValid } from 'date-fns'
 
 export function MoodDisplay(props) {
     let mood
@@ -39,5 +39,12 @@ export function EnergyDisplay(props) {
 }
 
 export function TimePeriod(props) {
-    return format(props.start, 'hh:mm aaa') + ' - ' + format(props.end, 'hh:mm aaa')
+    if (isValid(props.end) && isValid(props.start)) {
+        return format(props.start, 'hh:mm aaa') + ' - ' + format(props.end, 'hh:mm aaa')
+    } else if (isValid(props.start)) {
+        return format(props.start, 'hh:mm aaa') + ' -  ... '
+    }
+    else {
+        return ''
+    }
 }

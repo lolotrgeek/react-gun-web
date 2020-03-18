@@ -63,7 +63,7 @@ export default function ProjectCreateScreen() {
     }
   }
   return (
-    <Grid className={classes.content}>
+    <Grid>
       <SubHeader title={nameValid(name) ? name : 'New Project'} color={color ? color : ''} />
       <Grid container direction='column' justify='flex-start' alignItems='center' className={classes.space} >
         <form className={classes.form}>

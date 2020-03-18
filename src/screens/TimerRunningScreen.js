@@ -142,7 +142,7 @@ export default function TimerRunningScreen() {
         : <Stateless />
       }
       {!runningTimer[1] ?
-        <Grid container direction='column' justify='center' alignItems='center'>
+        <Grid container className={classes.space} direction='column' justify='center' alignItems='center'>
           <Button variant="contained" color="primary" onClick={() => history.push(projectsListLink())} > Project List </Button>
         </Grid>
         : ''}
