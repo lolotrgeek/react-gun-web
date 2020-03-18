@@ -94,8 +94,8 @@ export default function TimerScreen() {
       <SubHeader
         className={classes.space}
         title='Timeline'
-        buttonClick={() => timers && timers.length > 0 ? history.push(projectsListLink()) : history.push(projectCreatelink())}
-        buttonText= {timers && timers.length > 0 ? 'Projects' : 'New Project' }
+        buttonClick={() => projects && projects.length > 0 ? history.push(projectsListLink()) : history.push(projectCreatelink())}
+        buttonText= {projects && projects.length > 0 ? 'Projects' : 'New Project' }
       />
       {isRunning(runningTimer) ?
         <RunningTimer
