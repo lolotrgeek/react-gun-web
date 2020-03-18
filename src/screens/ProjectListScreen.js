@@ -17,7 +17,7 @@ import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
 import Stateless from '../components/Stateless'
 
-export default function ProjectCreateScreen() {
+export default function ProjectListScreen() {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const [runningTimer, setRunningTimer] = useState('')

@@ -15,7 +15,7 @@ import * as routes from './routes'
 
 // import { routes } from './routes'
 
-import ProjectScreen from '../screens/ProjectScreen'
+import ProjectListScreen from '../screens/ProjectListScreen'
 import TimerScreen from '../screens/TimerScreen'
 import TimelineScreen from '../screens/TimelineScreen'
 import TimerHistoryScreen from '../screens/TimerHistoryScreen'
@@ -47,7 +47,7 @@ export default function AppRoutes() {
             <Route path={routes.projectCreatelink()} children={<ProjectCreateScreen />} />
             <Route path={routes.projectlink(':projectId')} children={<ProjectRecordScreen />} />
             <Route path={routes.projectHistorylink(':projectId')} children={<ProjectHistoryScreen />} />
-            <Route path={routes.projectsListLink()} children={<ProjectScreen />} />
+            <Route path={routes.projectsListLink()} children={<ProjectListScreen />} />
             
             <Route path={routes.timerlink(':projectId', ':timerId')} children={<TimerEditScreen />} />
             <Route path={routes.timerHistorylink(':projectId', ':timerId')} children={<TimerHistoryScreen />} /> 
