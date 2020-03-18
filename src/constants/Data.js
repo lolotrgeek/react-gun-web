@@ -61,6 +61,13 @@ export const updateTimer = (timer) => {
   gun.get('timers').get(editedTimer[1].project).get(editedTimer[0]).put(editedTimer[1])
 }
 
+export const restoreTimer = (timer) => {
+  let restoredTimer = timer
+  // restoredTimer[1].restored = new Date().toString()
+  console.log('Restoring', restoredTimer)
+  gun.get('timers').get(restoredTimer[1].project).get(restoredTimer[0]).put(restoredTimer[1])
+}
+
 export const endTimer = (timer) => {
   console.log('Ending', timer)
   gun.get('history').get('timers').get(timer[1].project).get(timer[0]).set(timer[1])

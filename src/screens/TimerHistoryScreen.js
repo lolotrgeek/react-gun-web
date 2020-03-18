@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
-import { gun, finishTimer, createTimer } from '../constants/Data'
+import { gun, restoreTimer } from '../constants/Data'
 import { isRunning, nameValid, isTimer } from '../constants/Validators'
 import { elapsedTime, fullDate, secondsToString, totalTime, simpleDate } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import SpacingGrid, { UnEvenGrid, EvenGrid } from '../components/Grid'
 import { Grid, Typography, CardContent, CardActions } from '@material-ui/core/'
 import { RunningTimer } from '../components/RunningTimer'
-import { timerlink } from '../routes/routes'
-import { Title } from '../components/Title'
-import { Link } from '../components/Link'
 import { Button } from '../components/Button'
 import { useStyles } from '../themes/DefaultTheme'
 import { SubHeader } from '../components/Header'
@@ -20,23 +17,8 @@ import { useAlert } from 'react-alert'
 import { projectsListLink, projectlink } from '../routes/routes'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 import Stateless from '../components/Stateless'
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Card from '@material-ui/core/Card';
-import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import FilterListIcon from '@material-ui/icons/FilterList';
+
 
 export default function TimerHistoryScreen() {
   const { projectId, timerId } = useParams()
@@ -51,6 +33,7 @@ export default function TimerHistoryScreen() {
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
   const classes = useStyles();
+
 
 
   useEffect(() => {
@@ -115,6 +98,9 @@ export default function TimerHistoryScreen() {
     return () => gun.get('timers').off()
   }, [online]);
 
+  const openPopup = () => dispatch({ type: "open" });
+  const closePopup = () => dispatch({ type: "close" });
+
   const displayStatusTitle = timer => {
     if (timer[1].edited || timer[1].edited.length > 0) return 'Edit'
     if (timer[1].status === 'running') return 'Start'
@@ -128,19 +114,19 @@ export default function TimerHistoryScreen() {
 
   }
   const displayStatus = edit => {
-    console.log(edit[1].edited.length)
     if (edit[1].status === 'running') return 'Start Entry'
     else if (JSON.stringify(edit[1]) === JSON.stringify(timer[1])) return 'Current Entry'
     else if (edit[1].status === 'done' && edit[1].edited.length === 0) return 'End Entry'
     else if (edit[1].status === 'done' && edit[1].edited.length > 0) return 'Edit Entry'
     else return false
   }
-
-  const restoreEdit = edit => {
-    if(JSON.stringify(edit[1]) === JSON.stringify(timer[1])) return false
+  const displayRestoreButton = edit => {
+    if (JSON.stringify(edit[1]) === JSON.stringify(timer[1])) return false
     else if (edit[1].status === 'done') return true
     else return false
   }
+  const editRestore = edit => restoreTimer([edit[0], edit[1]])
+
   return (
     <Grid className={classes.Content} container direction='column' justify='center' alignItems='center'>
       {project && project[1] ?
@@ -157,7 +143,8 @@ export default function TimerHistoryScreen() {
         let started = new Date(edit[1].started)
         let ended = new Date(edit[1].ended)
         return (
-          <Card key={edit[0]} className={classes.card}>
+          <Card key={edit[2]} className={classes.card}>
+            <Popup content='Confirm Restore?' onAccept={() => { editRestore(edit); closePopup() }} onReject={() => closePopup()} />
             <CardContent>
               <Grid container direction='row' justify='center' alignItems='flex-start'>
                 <Grid item xs={12}><Typography variant='h6'>{displayStatusDate(edit)}</Typography></Grid>
@@ -177,9 +164,9 @@ export default function TimerHistoryScreen() {
             <CardActions>
               <Grid container direction='row' justify='center' alignItems='flex-start'>
 
-                {restoreEdit(edit) === true ? <Button variant='contained' color='primary' size="small" onClick={() => {
-
-                }}> Restore </Button> : ''}
+                {displayRestoreButton(edit) ?
+                  <Button variant='contained' color='primary' size="small" onClick={() => editRestore(edit)}> Restore </Button>
+                  : ''}
 
               </Grid>
 
