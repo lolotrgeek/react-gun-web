@@ -4,7 +4,7 @@ import useCounter from '../hooks/useCounter'
 import { isRunning, isTimer } from '../constants/Validators'
 import { elapsedTime, fullDate } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
-import { gun, finishTimer, createProject, createTimer, updateProject } from '../constants/Data'
+import { gun, restoreProject } from '../constants/Data'
 import SpacingGrid, { UnEvenGrid } from '../components/Grid'
 import { Grid, Typography, makeStyles, Divider, Button } from '@material-ui/core/'
 import { projectValid } from '../constants/Validators'
@@ -23,18 +23,8 @@ export default function ProjectHistory() {
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
   const [edits, setEdits] = useState([])
-  const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
   let history = useHistory()
-
-
-  useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
-      setProject([projectId, trimSoul(projectValue)])
-    }, { change: true })
-    return () => gun.get('projects').off()
-  }, [online]);
-
   useEffect(() => {
     gun.get('history').get('projects').get(projectId).map().on((projectValue, projectGunKey) => {
       console.log('History ', projectValue)
@@ -43,14 +33,25 @@ export default function ProjectHistory() {
     return () => gun.get('history').off()
   }, [online]);
 
+  useEffect(() => {
+    gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
+      setProject([projectId, trimSoul(projectValue)])
+    }, { change: true })
+    return () => gun.get('projects').off()
+  }, [online]);
+
+
   const displayStatus = edit => {
+    console.log(edit[1], project[1])
     if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
+    else if(!edit[1].edited && edits.length > 1) return 'Original Entry'
     else if(edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
-    else return 'Original Entry'
+    else return ''
   }
 
-  const displayRestoreButton = edit => { 
+  const displayRestoreButton = edit => {
     if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return false
+    else if(!edit[1].edited && edits.length > 1) return true  
     else if(edit[1].edited && edit[1].edited.length > 0) return true
     else return false
   }
@@ -81,7 +82,7 @@ export default function ProjectHistory() {
                   values={[
                     <Typography>{displayStatus(edit)}</Typography>,
                     <Button variant="contained" color="primary" onClick={() => {
-
+                      restoreProject(edit)
                     }}>Restore</Button>
                   ]}
                 />

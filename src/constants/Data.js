@@ -28,9 +28,10 @@ export const updateProject = (project, updates) => {
   gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
 }
 
-export const restoreProject = (project, updates) => {
-  let projectRestore = editedProject(project, updates)
-  projectRestore[1].restored = new Date().toString()
+export const restoreProject = (project) => {
+  let projectRestore = project
+  // projectRestore[1].restored = new Date().toString()
+  console.log('Restoring', projectRestore)
   gun.get('projects').get(projectRestore[0]).put(projectRestore[1])
 }
 
