@@ -18,75 +18,55 @@ import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
 import Stateless from '../components/Stateless'
 
-export default function ProjectHistory() {
-  const { projectId, } = useParams()
+export default function ProjectTrash() {
   const [online, setOnline] = useState(false)
-  const [project, setProject] = useState([])
-  const [edits, setEdits] = useState([])
+  const [projects, setProjects] = useState([])
   const classes = useStyles();
   let history = useHistory()
-  useEffect(() => {
-    gun.get('history').get('projects').get(projectId).map().on((projectValue, projectGunKey) => {
-      console.log('History ', projectValue)
-      setEdits(edits => [...edits, [projectId, trimSoul(projectValue), projectGunKey]])
-    }, { change: true })
-    return () => gun.get('history').off()
-  }, [online]);
 
   useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
-      setProject([projectId, trimSoul(projectValue)])
+    gun.get('projects').map().on((projectValue, projectKey) => {
+      if (projectValue.status === 'deleted') {
+        console.log(projectValue)
+        setProjects(projects => [...projects, [projectKey, projectValue]])
+      }
     }, { change: true })
     return () => gun.get('projects').off()
   }, [online]);
 
 
-  const displayStatus = edit => {
-    console.log(edit[1], project[1])
-    if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
-    else if(!edit[1].edited && edits.length > 1) return 'Original Entry'
-    else if(edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
-    else return ''
-  }
+  // const displayStatus = edit => {
+  //   console.log(edit[1], project[1])
+  //   if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
+  //   else if (!edit[1].edited && edits.length > 1) return 'Original Entry'
+  //   else if (edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
+  //   else return ''
+  // }
 
-  const displayRestoreButton = edit => {
-    if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return false
-    else if(!edit[1].edited && edits.length > 1) return true  
-    else if(edit[1].edited && edit[1].edited.length > 0) return true
-    else return false
-  }
+  // const displayRestoreButton = edit => {
+  //   if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return false
+  //   else if (!edit[1].edited && edits.length > 1) return true
+  //   else if (edit[1].edited && edit[1].edited.length > 0) return true
+  //   else return false
+  // }
   return (
     <Grid>
-      {projectValid(project) && edits && edits.length > 0 ?
-        <SubHeader
-          className={classes.space}
-          title={`${project[1].name} History`}
-          buttonClick={() => {
-            history.push(projectEditlink(project[0]))
-          }}
-          buttonText='Edit'
-        /> : <Stateless />}
+      <SubHeader
+        className={classes.space}
+        title='Project Trash'
+      />
 
       <Grid className={classes.space}>
-        {edits.map(edit => {
+        {projects.map(project => {
           return (
-            <Grid key={edit[2]} className={classes.listClass}>
+            <Grid key={project[0]} className={classes.listClass}>
+              <UnEvenGrid
+                values={[
+                  <Title color={project[1].color} variant='h6' >{ project[1].name }</Title>,
+                  <Button variant="contained" color="primary" onClick={() => {restoreProject(project); history.push(projectlink(project[0]))} }>Restore</Button>
+                ]}
+              />
 
-              {edit.length === 3 ? <Title color={edit[1].color} variant='h6' >
-                {edit.length === 3 ? edit[1].name : ''}
-              </Title>
-                : ''}
-
-              {displayRestoreButton(edit) ?
-                <UnEvenGrid
-                  values={[
-                    <Typography>{displayStatus(edit)}</Typography>,
-                    <Button variant="contained" color="primary" onClick={() => {
-                      restoreProject(edit)
-                    }}>Restore</Button>
-                  ]}
-                />
-                : <UnEvenGrid values={[<Typography>{displayStatus(edit)}</Typography>]} />}
             </Grid>
           )
         })}

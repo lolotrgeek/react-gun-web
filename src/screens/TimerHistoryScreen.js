@@ -44,6 +44,7 @@ export default function TimerHistoryScreen() {
     }
     return () => alerted
   }, [alerted])
+  
   useEffect(() => {
     gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
       const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))

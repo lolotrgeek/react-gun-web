@@ -21,7 +21,6 @@ export default function ProjectEditScreen() {
   const [name, setName] = useState('')
   const [color, setColor] = useState('')
   const [project, setProject] = useState([])
-  const [deleted, setDeleted] = useState(false)
   const alert = useAlert()
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
