@@ -147,10 +147,6 @@ export default function TimerRunningScreen() {
         </Grid>
         : ''}
       {runningTimer && runningTimer[1] ?
-        <SideMenu
-          options={[{ name: 'delete', action: () => openPopup() }, { name: 'edit' }, { name: 'history' }, { name: 'archive' }]}
-        /> : ''}
-      {runningTimer && runningTimer[1] ?
         <Grid container direction='column' justify='center' alignItems='center'>
           <Grid item xs={12}> <Title variant='h2'>{secondsToString(count)}</Title> </Grid>
 

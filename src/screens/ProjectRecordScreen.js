@@ -139,9 +139,9 @@ export default function ProjectRecordScreen() {
       }
       <SideMenu
         options={[
-          { name: 'delete', action: () => openPopup() },
           { name: 'edit', action: () => history.push(projectEditlink(projectId)) },
           { name: 'history', action: () => history.push(projectHistorylink(projectId)) },
+          { name: 'delete', action: () => openPopup() },
           { name: 'trash', action: () => history.push(timerTrashlink(projectId)) }]}
       />
       {isRunning(runningTimer) ?

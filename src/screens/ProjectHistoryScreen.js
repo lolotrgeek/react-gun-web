@@ -57,16 +57,17 @@ export default function ProjectHistory() {
   }, [online]);
 
   const displayStatusDate = edit => {
-    if (edit[1].edited || edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
-    if (edit[1].deleted && typeof edit[1].deleted === 'string') return fullDate(new Date(edit[1].created))
-    if (edit[1].status === 'done') return fullDate(new Date(edit[1].ended))
-
+    if (edit[1]) {
+      if (edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
+      else if (edit[1].deleted && typeof edit[1].deleted === 'string') return fullDate(new Date(edit[1].deleted))
+      else return fullDate(new Date(edit[1].created))
+    }
   }
 
   const displayStatus = edit => {
     // console.log(edit[1], project[1])
     if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
-    else if (edit[1].deleted && typeof edit[1].deleted === 'string') return 'Restored Entry'
+    else if (edit[1].deleted && typeof edit[1].deleted === 'string') return 'Deleted Entry'
     else if (!edit[1].edited && edits.length > 1) return 'Original Entry'
     // else if (edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
     else if (edit[1].edited && edit[1].edited.length > 0) return 'Edit Entry'
@@ -103,17 +104,17 @@ export default function ProjectHistory() {
                 {edit.length === 3 ? edit[1].name : ''}
               </Title>
                 : ''}
-
+              <Typography>{displayStatus(edit)}</Typography>
               {displayRestoreButton(edit) ?
                 <UnEvenGrid
                   values={[
-                    <Typography>{displayStatus(edit)}</Typography>,
+                    <Typography>{displayStatusDate(edit)}</Typography>,
                     <Button variant="contained" color="primary" onClick={() => {
                       editRestore(edit)
                     }}>Restore</Button>
                   ]}
                 />
-                : <UnEvenGrid values={[<Typography>{displayStatus(edit)}</Typography>]} />}
+                : <UnEvenGrid values={[<Typography>{displayStatusDate(edit)}</Typography>]} />}
             </Grid>
           )
         })}

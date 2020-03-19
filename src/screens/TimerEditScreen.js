@@ -255,13 +255,16 @@ export default function TimerEditScreen() {
     <Grid className={classes.listRoot}>
       <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
       {projectValid(project) && isTimer(timer) ?
-        <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} /> 
+        <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} />
         : <Stateless />
       }
 
       {timer && isTimer(timer) ?
         <SideMenu
-          options={[{ name: 'delete', action: () => openPopup() }, { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) }, { name: 'archive', action: () => { } },]}
+          options={[
+            { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) },
+            { name: 'delete', action: () => openPopup() }
+          ]}
         />
         : ' '}
       {timer && isTimer(timer) ?
