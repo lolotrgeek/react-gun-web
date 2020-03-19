@@ -9,7 +9,7 @@ import { UnEvenGrid } from '../components/Grid'
 import Grid from '@material-ui/core/Grid'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
 import { RunningTimer } from '../components/RunningTimer'
-import { projectsListLink, projectEditlink, projectHistorylink, timerlink, timerRunninglink } from '../routes/routes'
+import { projectsListLink, projectEditlink, projectHistorylink, timerlink, timerRunninglink, timerTrashlink } from '../routes/routes'
 import { Title, SubTitle } from '../components/Title'
 import { Link } from '../components/Link'
 // import { Button } from '../components/Button'
@@ -142,7 +142,7 @@ export default function ProjectRecordScreen() {
           { name: 'delete', action: () => openPopup() },
           { name: 'edit', action: () => history.push(projectEditlink(projectId)) },
           { name: 'history', action: () => history.push(projectHistorylink(projectId)) },
-          { name: 'archive', action: () => { } }]}
+          { name: 'trash', action: () => history.push(timerTrashlink(projectId)) }]}
       />
       {isRunning(runningTimer) ?
         <RunningTimer

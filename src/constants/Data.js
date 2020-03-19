@@ -59,6 +59,7 @@ export const runTimer = (timer) => {
 
 export const updateTimer = (timer) => {
   let editedTimer = timer
+  if (editedTimer[1].deleted) { editedTimer[1].deleted = null }
   editedTimer[1].edited = new Date().toString()
   console.log('Updating', editedTimer)
   gun.get('history').get('timers').get(editedTimer[1].project).get(editedTimer[0]).set(editedTimer[1])
@@ -68,6 +69,10 @@ export const updateTimer = (timer) => {
 export const restoreTimer = (timer) => {
   let restoredTimer = timer
   // restoredTimer[1].restored = new Date().toString()
+  if (restoredTimer[1].status === 'deleted') {
+    restoredTimer[1].status = 'done'
+    gun.get('history').get('timers').get(restoredTimer[1].project).get(restoredTimer[0]).set(restoredTimer[1])
+  }
   console.log('Restoring', restoredTimer)
   gun.get('timers').get(restoredTimer[1].project).get(restoredTimer[0]).put(restoredTimer[1])
 }
@@ -81,7 +86,7 @@ export const endTimer = (timer) => {
 export const deleteTimer = (timer) => {
   console.log('Deleting', timer)
   const timerDelete = timer
-  timerDelete[1].edited = new Date().toString()
+  timerDelete[1].deleted = new Date().toString()
   timerDelete[1].status = 'deleted'
   gun.get('timers').get(timer[1].project).get(timer[0]).put(timerDelete[1])
 }
@@ -109,8 +114,8 @@ export const finishTimer = (timer) => {
         splitTimer[1].started = dayEntry.start
         splitTimer[1].ended = dayEntry.end
         console.log('Split', i, splitTimer)
-        if(i === 0) {endTimer(splitTimer)} // use initial timer id for first day
-        else {addTimer(splitTimer[1].project, splitTimer[1])}
+        if (i === 0) { endTimer(splitTimer) } // use initial timer id for first day
+        else { addTimer(splitTimer[1].project, splitTimer[1]) }
         return splitTimer
       })
     } else {

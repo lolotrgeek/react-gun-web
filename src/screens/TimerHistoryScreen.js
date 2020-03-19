@@ -116,6 +116,7 @@ export default function TimerHistoryScreen() {
   const displayStatus = edit => {
     if (edit[1].status === 'running') return 'Start Entry'
     else if (JSON.stringify(edit[1]) === JSON.stringify(timer[1])) return 'Current Entry'
+    else if(edit[1].deleted && typeof edit[1].deleted === 'string') return 'Restored Entry'
     else if (edit[1].status === 'done' && edit[1].edited.length === 0) return 'End Entry'
     else if (edit[1].status === 'done' && edit[1].edited.length > 0) return 'Edit Entry'
     else return false
@@ -140,6 +141,7 @@ export default function TimerHistoryScreen() {
 
 
       {edits.map((edit) => {
+        console.log(edit[1])
         let started = new Date(edit[1].started)
         let ended = new Date(edit[1].ended)
         return (

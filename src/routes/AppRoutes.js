@@ -19,6 +19,7 @@ import ProjectListScreen from '../screens/ProjectListScreen'
 import TimerScreen from '../screens/TimerScreen'
 import TimelineScreen from '../screens/TimelineScreen'
 import TimerHistoryScreen from '../screens/TimerHistoryScreen'
+import TimerTrashScreen from '../screens/TimerTrashScreen'
 import TimerEditScreen from '../screens/TimerEditScreen'
 import TimerRunningScreen from '../screens/TimerRunningScreen'
 import TestScreen from '../screens/TestScreen'
@@ -53,6 +54,7 @@ export default function AppRoutes() {
             <Route path={routes.timerHistorylink(':projectId', ':timerId')} children={<TimerHistoryScreen />} /> 
             <Route path={routes.timerListlink()} children={<TimerScreen />} />
             <Route path={routes.timerRunninglink()} children={<TimerRunningScreen />} />
+            <Route path={routes.timerTrashlink(':projectId')} children={<TimerTrashScreen />} />
             
             <Route path="/test">
               <TestScreen />
