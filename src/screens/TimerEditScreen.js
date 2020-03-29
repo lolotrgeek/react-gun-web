@@ -2,23 +2,14 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer } from '../constants/Data'
-import { addMinutes, isValid, endOfDay, sub, add, getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
-import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
-import { PickerDate, PickerTime } from '../components/Pickers'
-import { EnergySlider } from '../components/EnergySlider'
-import { MoodPicker } from '../components/MoodPicker'
-import { isRunning, isTimer, projectValid } from '../constants/Validators'
-import { Grid, makeStyles, Button } from '@material-ui/core/'
+import { addMinutes, isValid, sub, add, getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
+import { timeRules, dateRules, totalTime } from '../constants/Functions'
+import { isRunning, isTimer } from '../constants/Validators'
 import { useAlert } from 'react-alert'
-import { Title, SubTitle } from '../components/Title'
-// import { Button } from '../components/Button'
-import { SubHeader } from '../components/Header'
 import { projectlink, projectsListLink, timerHistorylink } from '../routes/routes'
-import SideMenu from '../components/SideMenu'
-import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
-import Stateless from '../components/Stateless'
+import TimerEdit from '../components/TimerEdit'
 
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()
@@ -252,77 +243,33 @@ export default function TimerEditScreen() {
   }
 
   return (
-    <Grid className={classes.listRoot}>
-      <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
-      {projectValid(project) && isTimer(timer) ?
-        <SubHeader title={projectValid(project) ? `${project[1].name}` : 'No Timer Here'} color={projectValid(project) ? project[1].color : ''} />
-        : <Stateless />
-      }
-
-      {timer && isTimer(timer) ?
-        <SideMenu
-          options={[
-            { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) },
-            { name: 'delete', action: () => openPopup() }
-          ]}
-        />
-        : ' '}
-      {timer && isTimer(timer) ?
-        <Grid container direction='column' justify='flex-start' alignItems='center'>
-          <Grid item xs={12}> <Title variant='h5'>{secondsToString(total)}</Title> </Grid>
-
-          <Grid item xs={12}>
-            <PickerDate
-              label='Date'
-              startdate={started}
-              onDateChange={newDate => chooseNewDate(newDate)}
-              maxDate={endOfDay(new Date())}
-              previousDay={() => previousDay()}
-              nextDay={() => nextDay()}
-            />
-            {/* {started.toString()} */}
-            <PickerTime
-              label='Start'
-              time={started}
-              onTimeChange={newTime => chooseNewStart(newTime)}
-              addMinutes={() => increaseStarted()}
-              subtractMinutes={() => decreaseStarted()}
-            />
-            {/* {ended.toString()} */}
-            <PickerTime
-              label='End'
-              time={ended}
-              onTimeChange={newTime => chooseNewEnd(newTime)}
-              addMinutes={() => increaseEnded()}
-              running={isRunning(timer)}
-              subtractMinutes={() => decreaseEnded()}
-            />
-
-            {
-              timer[1] ?
-                <EnergySlider
-                  startingEnergy={energy}
-                  onEnergySet={(event, value) => setEnergy(value)}
-                /> : ''
-            }
-            <MoodPicker
-              onGreat={() => setMood('great')}
-              onGood={() => setMood('good')}
-              onMeh={() => setMood('meh')}
-              onBad={() => setMood('bad')}
-              onAwful={() => setMood('awful')}
-              selected={mood}
-            />
-          </Grid >
-          <Grid item className={classes.space2} xs={12}>
-            <Button variant="contained" color="primary" onClick={() => editComplete()}>Save</Button>
-          </Grid>
-        </Grid >
-        :
-        <Grid container direction='column' justify='center' alignItems='center'>
-          <Button variant="contained" color="primary" onClick={(() => history.push(projectsListLink()))}> Projects </Button>
-        </Grid>
-      }
-    </Grid >
+    <TimerEdit
+      classes={classes}
+      timer={timer}
+      project={project}
+      popupAccept={removeTimer}
+      sideMenuOptions={[
+        { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) },
+        { name: 'delete', action: () => openPopup() }
+      ]}
+      total={total}
+      started={started}
+      ended={ended}
+      chooseNewDate={chooseNewDate}
+      previousDay={previousDay}
+      nextDay={nextDay}
+      chooseNewStart={chooseNewStart}
+      increaseStarted={increaseStarted}
+      decreaseStarted={decreaseStarted}
+      chooseNewEnd={chooseNewEnd}
+      increaseEnded={increaseEnded}
+      decreaseEnded={decreaseEnded}
+      energy={energy}
+      setEnergy={setEnergy}
+      setMood={setMood}
+      mood={mood}
+      saveButtonAction={editComplete}
+      noTimersAction={() => history.push(projectsListLink())}
+    />
   )
 }

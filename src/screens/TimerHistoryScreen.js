@@ -1,24 +1,15 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, restoreTimer } from '../constants/Data'
-import { isRunning, nameValid, isTimer } from '../constants/Validators'
-import { elapsedTime, fullDate, secondsToString, totalTime, simpleDate } from '../constants/Functions'
+import { isRunning,} from '../constants/Validators'
+import { elapsedTime, fullDate } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
-import SpacingGrid, { UnEvenGrid, EvenGrid } from '../components/Grid'
-import { Grid, Typography, CardContent, CardActions } from '@material-ui/core/'
-import { RunningTimer } from '../components/RunningTimer'
-import { Button } from '../components/Button'
 import { useStyles } from '../themes/DefaultTheme'
-import { SubHeader } from '../components/Header'
-import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from 'react-alert'
-import { projectsListLink, projectlink } from '../routes/routes'
-import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
-import Stateless from '../components/Stateless'
-import Card from '@material-ui/core/Card';
-
+import { projectlink } from '../routes/routes'
+import TimerHistory from '../components/TimerHistory'
 
 export default function TimerHistoryScreen() {
   const { projectId, timerId } = useParams()
@@ -33,8 +24,6 @@ export default function TimerHistoryScreen() {
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
   const classes = useStyles();
-
-
 
   useEffect(() => {
     if (alerted && alerted.length > 0) {
@@ -127,57 +116,22 @@ export default function TimerHistoryScreen() {
     else if (edit[1].status === 'done') return true
     else return false
   }
-  const editRestore = edit => restoreTimer([edit[0], edit[1]])
+  const editRestore = edit => {
+    restoreTimer([edit[0], edit[1]])
+    closePopup()
+  }
 
   return (
-    <Grid className={classes.Content} container direction='column' justify='center' alignItems='center'>
-      {project && project[1] ?
-        <SubHeader
-          color={project[1].color}
-          title={nameValid(project[1].name) ? project[1].name : ''}
-        />
-        : <Stateless />}
-
-      <Typography className={classes.spaceBelow} variant='h4'> {timer[1] && nameValid(timer[1].name) && isTimer(timer) ? timer[1].name : ' Timer History '}</Typography>
-
-
-      {edits.map((edit) => {
-        console.log(edit[1])
-        let started = new Date(edit[1].started)
-        let ended = new Date(edit[1].ended)
-        return (
-          <Card key={edit[2]} className={classes.card}>
-            <Popup content='Confirm Restore?' onAccept={() => { editRestore(edit); closePopup() }} onReject={() => closePopup()} />
-            <CardContent>
-              <Grid container direction='row' justify='center' alignItems='flex-start'>
-                <Grid item xs={12}><Typography variant='h6'>{displayStatusDate(edit)}</Typography></Grid>
-              </Grid>
-              <Grid container direction='row' justify='center' alignItems='flex-start'>
-                <Grid item xs={12}>
-                  <Typography variant='subtitle1'>{displayStatus(edit)}</Typography>
-                </Grid>
-              </Grid>
-              <Grid className={classes.space3} container direction='row' justify='space-evenly' alignItems='flex-start'>
-                <Grid item xs={3}><TimePeriod start={started} end={ended} /></Grid>
-                <Grid item xs={1}><EnergyDisplay energy={edit[1].energy} /></Grid>
-                <Grid item xs={1}><MoodDisplay mood={edit[1].mood} /></Grid>
-                <Grid item xs={2}>{secondsToString(totalTime(started, ended))}</Grid>
-              </Grid>
-            </CardContent>
-            <CardActions>
-              <Grid container direction='row' justify='center' alignItems='flex-start'>
-
-                {displayRestoreButton(edit) ?
-                  <Button variant='contained' color='primary' size="small" onClick={() => editRestore(edit)}> Restore </Button>
-                  : ''}
-
-              </Grid>
-
-            </CardActions>
-          </Card>
-        )
-      })}
-
-    </Grid >
+    <TimerHistory 
+      classes={classes}
+      project={project}
+      timer={timer}
+      edits={edits}
+      popupAccept={editRestore}
+      displayRestoreButton={displayRestoreButton}
+      displayStatusDate={displayStatusDate}
+      displayStatus={displayStatus}
+      restoreButtonAction={editRestore}
+    />
   )
 }

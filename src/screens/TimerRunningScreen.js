@@ -2,25 +2,15 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer, createTimer, finishTimer } from '../constants/Data'
-import { addMinutes, isValid, endOfDay, sub, add } from 'date-fns'
-import { timeRules, dateRules, totalTime, secondsToString } from '../constants/Functions'
-import { EnergySlider } from '../components/EnergySlider'
-import { MoodPicker } from '../components/MoodPicker'
-import { isRunning, isTimer, projectValid } from '../constants/Validators'
-import { Grid, makeStyles } from '@material-ui/core/'
+import { timeRules, totalTime } from '../constants/Functions'
+import { isTimer } from '../constants/Validators'
 import { useAlert } from 'react-alert'
-import { Title, SubTitle } from '../components/Title'
-import { Button } from '../components/Button'
-import { SubHeader } from '../components/Header'
 import { projectlink, projectsListLink } from '../routes/routes'
-import SideMenu from '../components/SideMenu'
-import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import useCounter from '../hooks/useCounter'
 import { elapsedTime } from '../constants/Functions'
-import Stateless from '../components/Stateless'
-
 import { useStyles } from '../themes/DefaultTheme'
+import TimerRunning from '../components/TimerRunning'
 
 export default function TimerRunningScreen() {
 
@@ -116,6 +106,7 @@ export default function TimerRunningScreen() {
     completeTimer[1].energy = energy
     completeTimer[1].total = totalTime(completeTimer[1].started, completeTimer[1].ended)
     if (isTimer(completeTimer)) {
+      stop()
       finishTimer(completeTimer)
       setAlert(['Success', 'Timer Updated!',])
       history.push((projectlink(completeTimer[1].project)))
@@ -135,49 +126,19 @@ export default function TimerRunningScreen() {
   }
 
   return (
-    <Grid >
-      <Popup content='Confirm Delete?' onAccept={() => removeTimer()} onReject={() => closePopup()} />
-      {projectValid(runningProject) && isTimer(runningTimer) ?
-        <SubHeader title={projectValid(runningProject) ? `${runningProject[1].name}` : 'Timer'} color={projectValid(runningProject) ? runningProject[1].color : ''} />
-        : <Stateless />
-      }
-      {!runningTimer[1] ?
-        <Grid container className={classes.space} direction='column' justify='center' alignItems='center'>
-          <Button variant="contained" color="primary" onClick={() => history.push(projectsListLink())} > Project List </Button>
-        </Grid>
-        : ''}
-      {runningTimer && runningTimer[1] ?
-        <Grid container direction='column' justify='center' alignItems='center'>
-          <Grid item xs={12}> <Title variant='h2'>{secondsToString(count)}</Title> </Grid>
-
-          <Grid item xs={12}>
-
-            <MoodPicker
-              onGreat={() => setMood('great')}
-              onGood={() => setMood('good')}
-              onMeh={() => setMood('meh')}
-              onBad={() => setMood('bad')}
-              onAwful={() => setMood('awful')}
-              selected={mood}
-            />
-
-            <EnergySlider
-              startingEnergy={energy}
-              onEnergySet={(event, value) => setEnergy(value)}
-            />
-
-
-          </Grid >
-          <Grid item className={classes.space} xs={12}>
-            <Button variant="contained" color="primary" onClick={() => {
-              if (isRunning(runningTimer)) {
-                timerComplete()
-                stop()
-              };
-            }}>Done</Button>
-          </Grid>
-        </Grid >
-        : ''}
-    </Grid >
+    <TimerRunning 
+      classes={classes}
+      runningTimer={runningTimer}
+      runningProject={runningProject}
+      count={count}
+      popupAccept={removeTimer}
+      popupReject={closePopup}
+      noTimerAction={() => history.push(projectsListLink())}
+      mood={mood}
+      setMood={setMood}
+      energy={energy}
+      setEnergy={setEnergy}
+      timerCompleteAction={timerComplete}
+      />
   )
 }
