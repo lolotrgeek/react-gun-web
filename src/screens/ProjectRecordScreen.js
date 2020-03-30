@@ -5,25 +5,14 @@ import { dayHeaders, elapsedTime, simpleDate, timeString, sayDay, totalTime, sec
 import useCounter from '../hooks/useCounter'
 import { gun, createProject, finishTimer, createTimer, deleteProject } from '../constants/Data'
 import { isRunning, isTimer } from '../constants/Validators'
-import { UnEvenGrid } from '../components/Grid'
-import Grid from '@material-ui/core/Grid'
-import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
-import { RunningTimer } from '../components/RunningTimer'
 import { projectsListLink, projectEditlink, projectHistorylink, timerlink, timerRunninglink, timerTrashlink } from '../routes/routes'
-import { Title, SubTitle } from '../components/Title'
-import { Link } from '../components/Link'
-// import { Button } from '../components/Button'
-import { SubHeader } from '../components/Header'
 import { useAlert } from 'react-alert'
-import SideMenu from '../components/SideMenu'
-import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
-import Stateless from '../components/Stateless'
-
+import ProjectRecord from '../components/ProjectRecord'
 
 export default function ProjectRecordScreen() {
-  const { projectId, } = useParams()
+  const { projectId } = useParams()
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
   const [timers, setTimers] = useState([])
@@ -119,70 +108,34 @@ export default function ProjectRecordScreen() {
     history.push((projectsListLink()))
   }
 
-
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
+
+  const startTimer = (project) => {
+    createTimer(project[0])
+    history.push(timerRunninglink())
+  }
+
   return (
-    <Grid>
-      <Popup content='Confirm Delete?' onAccept={() => removeProject()} onReject={() => closePopup()} />
-      {project && project[1] ?
-        <SubHeader
-          color={project[1].color}
-          title={project[1].name}
-          buttonText='Start Timer'
-          buttonClick={() => {
-            if (isRunning(runningTimer)) { stop(); finishTimer(runningTimer) }
-            createTimer(projectId)
-            history.push(timerRunninglink())
-          }}
-        /> : <Stateless />
-      }
-      <SideMenu
-        options={[
+    <ProjectRecord 
+      classes={classes}
+      project={project}
+      timers={timers}
+      runningProject={runningProject}
+      runningTimer={runningTimer}
+      count={count}
+      stop={stop}
+      timerlink={timerlink}
+      startTimer={startTimer}
+      finishTimer={finishTimer}
+      popupAccept={closePopup}
+      popupReject={removeProject}
+      sideMenuOptions={[
           { name: 'edit', action: () => history.push(projectEditlink(projectId)) },
           { name: 'history', action: () => history.push(projectHistorylink(projectId)) },
           { name: 'delete', action: () => openPopup() },
-          { name: 'trash', action: () => history.push(timerTrashlink(projectId)) }]}
+          { name: 'trash', action: () => history.push(timerTrashlink(projectId)) }
+        ]}
       />
-      {isRunning(runningTimer) ?
-        <RunningTimer
-          className={classes.space}
-          name={runningProject[1] ? runningProject[1].name : ''}
-          color={runningProject[1] ? runningProject[1].color : ''}
-          count={count}
-          stop={() => { finishTimer(runningTimer); stop() }}
-        />
-        : ''}
-      {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
-      {dayHeaders(timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started))).map((day, index) => {
-        return (
-          <Grid key={index} className={classes.listClass} >
-            <SubTitle>{sayDay(day.title)}</SubTitle>
-            {/* {console.log(day.data)} */}
-            {day.data.map(timer => {
-              if (!isTimer(timer)) return (null)
-              if (timer[1].status === 'running') return (null)
-              let ended = new Date(timer[1].ended)
-              let started = new Date(timer[1].started)
-              return (
-                <Link key={timer[0]} to={timerlink(projectId, timer[0])}>
-                  <UnEvenGrid
-                    values={[
-                      // simpleDate(creation),
-                      // timeString(new Date(timer[1].started)) ,'-', timeString(new Date(timer[1].ended)),
-                      <TimePeriod start={started} end={ended} />,
-                      <EnergyDisplay energy={timer[1].energy} />,
-                      <MoodDisplay mood={timer[1].mood} />,
-                      secondsToString(totalTime(started, ended)),
-                    ]} />
-                </Link>
-              )
-
-
-            })}
-          </Grid>
-        )
-      })}
-    </Grid >
   )
 }

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { createProject } from '../constants/Data'
-import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
-import { CirclePicker } from 'react-color'
-import { colorValid, nameValid, projectValid } from '../constants/Validators'
-import { SubHeader } from '../components/Header'
+import { colorValid, nameValid } from '../constants/Validators'
 import { useAlert } from 'react-alert'
 import { projectsListLink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
-
+import ProjectCreate from '../components/ProjectCreate'
 
 export default function ProjectCreateScreen() {
   const [alerted, setAlert] = useState([])
@@ -63,17 +60,13 @@ export default function ProjectCreateScreen() {
     }
   }
   return (
-    <Grid>
-      <SubHeader title={nameValid(name) ? name : 'New Project'} color={color ? color : ''} />
-      <Grid container direction='column' justify='flex-start' alignItems='center' className={classes.space} >
-        <form className={classes.form}>
-          <TextField variant="outlined" label="name" value={nameValid(name) ? name : ''} onChange={event => setName(event.target.value)} />
-        </form>
-        <Grid item xs className={classes.space}>< CirclePicker  onChangeComplete={handleSelectedColor} /></Grid>
-        <Grid item xs className={classes.space} >
-          <Button variant="contained" color="primary" onClick={() => handleSubmitProject()}>Submit</Button>
-        </Grid>
-      </Grid>
-    </Grid>
+    <ProjectCreate
+      classes={classes}
+      name={name}
+      setName={setName}
+      color={color}
+      selectColor={handleSelectedColor}
+      submitProject={handleSubmitProject}
+      />
   )
 }

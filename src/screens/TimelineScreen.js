@@ -1,19 +1,13 @@
-import { Grid, Button, makeStyles } from '@material-ui/core/'
 import React, { useEffect, useState } from 'react'
-import SpacingGrid, { UnEvenGrid } from '../components/Grid'
-import { RunningTimer } from '../components/RunningTimer'
 import { createTimer, finishTimer, gun } from '../constants/Data'
-import { dayHeaders, elapsedTime, sayDay, secondsToString, sumProjectTimers } from '../constants/Functions'
+import { elapsedTime } from '../constants/Functions'
+import { isRunning, isTimer } from '../constants/Validators'
 import { trimSoul } from '../constants/Store'
-import { isRunning, projectValid, isTimer } from '../constants/Validators'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
-import { Title, SubTitle } from '../components/Title'
-import { Link } from '../components/Link'
-// import { Button } from '../components/Button'
-import { Header, SubHeader } from '../components/Header'
 import { useStyles } from '../themes/DefaultTheme'
 import { useHistory } from "react-router-dom"
+import Timeline from '../components/Timeline'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)
@@ -89,57 +83,26 @@ export default function TimerScreen() {
     return () => gun.get('timers').off()
   }, [online]);
 
-  return (
-    <Grid className={classes.listRoot} >
-      <SubHeader
-        className={classes.space}
-        title='Timeline'
-        buttonClick={() => projects && projects.length > 0 ? history.push(projectsListLink()) : history.push(projectCreatelink())}
-        buttonText= {projects && projects.length > 0 ? 'Projects' : 'New Project' }
-      />
-      {isRunning(runningTimer) ?
-        <RunningTimer
-          className={classes.space}
-          name={runningProject[1] ? runningProject[1].name : ''}
-          color={runningProject[1] ? runningProject[1].color : ''}
-          count={count}
-          stop={() => { finishTimer(runningTimer); stop() }}
-        />
-        : ''}
+  const startTimer = (project) => {
+    createTimer(project[0])
+    history.push(timerRunninglink())
+  }
 
-      <Grid className={classes.space}>
-        {sumProjectTimers(dayHeaders(timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started)))).map((day, index) => {
-          return (
-            <Grid key={index} className={classes.listClass}>
-              <SubTitle>{sayDay(day.title)}</SubTitle>
-              {day.data.map(item => projects.map(project => {
-                if (item.status === 'running') return (null)
-                if (project[0] === item.project) {
-                  return (
-                    <UnEvenGrid key={project[0]} values={[
-                      <Link to={projectlink(item.project)}>
-                        <Title variant='h6' color={project[1].color} >{projectValid(project) ? project[1].name : ''}</Title>
-                      </Link>,
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                          if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
-                          createTimer(item.project)
-                          history.push(timerRunninglink())
-                        }}>
-                        {secondsToString(item.total)}
-                      </Button>
-                    ]} />
-                  )
-                }
-                else return (null)
-              })
-              )}
-            </Grid>
-          )
-        })}
-      </Grid>
-    </Grid >
+  return (
+    <Timeline 
+      classes={classes}
+      projects={projects}
+      timers={timers}
+      headerButtonAction={() => projects && projects.length > 0 ? history.push(projectsListLink()) : history.push(projectCreatelink())}
+      runningProject={runningProject}
+      runningTimer={runningTimer}
+      count={count}
+      stop={stop}
+      projectlink={projectlink}
+      finishTimer={finishTimer}
+      createTimer={createTimer}
+      startTimer={startTimer}
+      countButtonAction={() => history.push(timerRunninglink())}
+      />
   )
 }

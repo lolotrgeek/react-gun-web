@@ -1,28 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from "react-router-dom"
 import useCounter from '../hooks/useCounter'
-import { isRunning, isTimer } from '../constants/Validators'
+import { isRunning, isTimer, projectValid } from '../constants/Validators'
 import { elapsedTime, fullDate } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { gun, restoreProject } from '../constants/Data'
-import SpacingGrid, { UnEvenGrid } from '../components/Grid'
-import { Grid, Typography, makeStyles, Divider, Button } from '@material-ui/core/'
-import { projectValid } from '../constants/Validators'
 import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
-import { Title } from '../components/Title'
-import { Link } from '../components/Link'
-// import { Button } from '../components/Button'
-import { Header, SubHeader } from '../components/Header'
-import { RunningTimer } from '../components/RunningTimer'
 import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
-import Stateless from '../components/Stateless'
-import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from 'react-alert'
+import ProjectHistory from '../components/ProjectHistory'
 
-
-export default function ProjectHistory() {
+export default function ProjectHistoryScreen() {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])
@@ -84,41 +74,16 @@ export default function ProjectHistory() {
   const editRestore = edit => restoreProject([edit[0], edit[1]])
 
   return (
-    <Grid>
-      {projectValid(project) && edits && edits.length > 0 ?
-        <SubHeader
-          className={classes.space}
-          title={`${project[1].name} History`}
-          buttonClick={() => {
-            history.push(projectEditlink(project[0]))
-          }}
-          buttonText='Edit'
-        /> : <Stateless />}
+    <ProjectHistory
+      classes={classes}
+      project={project}
+      edits={edits}
+      headerButtonAction={() => history.push(projectEditlink(project[0]))}
+      displayStatus={displayStatus}
+      displayStatusDate={displayStatusDate}
+      displayRestoreButton={displayRestoreButton}
+      restoreButtonAction={editRestore}
+    />
 
-      <Grid className={classes.space}>
-        {edits.map(edit => {
-          return (
-            <Grid key={edit[2]} className={classes.listClass}>
-
-              {edit.length === 3 ? <Title color={edit[1].color} variant='h6' >
-                {edit.length === 3 ? edit[1].name : ''}
-              </Title>
-                : ''}
-              <Typography>{displayStatus(edit)}</Typography>
-              {displayRestoreButton(edit) ?
-                <UnEvenGrid
-                  values={[
-                    <Typography>{displayStatusDate(edit)}</Typography>,
-                    <Button variant="contained" color="primary" onClick={() => {
-                      editRestore(edit)
-                    }}>Restore</Button>
-                  ]}
-                />
-                : <UnEvenGrid values={[<Typography>{displayStatusDate(edit)}</Typography>]} />}
-            </Grid>
-          )
-        })}
-      </Grid>
-    </Grid >
   )
 }

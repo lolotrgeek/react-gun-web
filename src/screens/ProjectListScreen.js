@@ -4,18 +4,10 @@ import { isRunning, isTimer } from '../constants/Validators'
 import { elapsedTime } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { gun, finishTimer, createTimer } from '../constants/Data'
-import SpacingGrid, { UnEvenGrid } from '../components/Grid'
-import { Grid, TextField, makeStyles, Divider, Button } from '@material-ui/core/'
-import { projectValid } from '../constants/Validators'
 import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
-import { Title } from '../components/Title'
-import { Link } from '../components/Link'
-// import { Button } from '../components/Button'
-import { Header, SubHeader } from '../components/Header'
-import { RunningTimer } from '../components/RunningTimer'
 import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
-import Stateless from '../components/Stateless'
+import ProjectList from '../components/ProjectList'
 
 export default function ProjectListScreen() {
   const [online, setOnline] = useState(false)
@@ -69,47 +61,23 @@ export default function ProjectListScreen() {
     }
   }, [runningTimer])
 
+  const startTimer = (project) => {
+    createTimer(project[0])
+    history.push(timerRunninglink())
+  }
+
   return (
-    <Grid className={classes.listRoot}>
-      {projects && projects.length > 0 ?
-        <SubHeader className={classes.space} title='Projects' buttonClick={() => history.push(projectCreatelink())} buttonText='New Project' /> :
-        <Stateless />
-      }
-
-      {isRunning(runningTimer) ?
-        <RunningTimer
-          className={classes.space}
-          name={runningProject[1] ? runningProject[1].name : ''}
-          color={runningProject[1] ? runningProject[1].color : ''}
-          count={count}
-          stop={() => { finishTimer(runningTimer); stop() }}
-        />
-        : ''}
-
-      <Grid className={classes.space}>
-        {projects.map(project => {
-          return (
-            <Grid key={project[0]} className={classes.listClass}>
-              <UnEvenGrid
-                values={[
-                  <Link to={projectlink(project[0])} >
-                    <Title color={project[1].color} variant='h6'>
-                      {projectValid(project) ? project[1].name : ''}
-                    </Title>
-                  </Link>,
-                  <Button variant="contained" color="primary" onClick={() => {
-                    if (isRunning(runningTimer)) { finishTimer(runningTimer); stop() };
-                    createTimer(project[0])
-                    history.push(timerRunninglink())
-                  }}>Start</Button>
-
-                ]}
-              />
-            </Grid>
-          )
-        })}
-      </Grid>
-    </Grid>
-
+    <ProjectList
+      classes={classes}
+      projects={projects}
+      projectlink={projectlink}
+      runningProject={runningProject}
+      runningTimer={runningTimer}
+      startTimer={startTimer}
+      headerButtonAction={() => history.push(projectCreatelink())}
+      finishTimer={finishTimer}
+      stop={stop}
+      count={count}
+      />
   )
 }

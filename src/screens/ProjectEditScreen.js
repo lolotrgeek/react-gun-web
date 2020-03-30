@@ -2,17 +2,12 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, createProject, updateProject, deleteProject } from '../constants/Data'
-import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
-import { CirclePicker } from 'react-color'
 import { colorValid, nameValid, projectValid } from '../constants/Validators'
-import { SubHeader } from '../components/Header'
 import { useAlert } from 'react-alert'
 import { projectsListLink, projectlink } from '../routes/routes'
-import SideMenu from '../components/SideMenu'
-import Popup from '../components/Popup'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
-
+import ProjectEdit from '../components/ProjectEdit'
 
 export default function ProjectEditScreen() {
   const { projectId, } = useParams()
@@ -105,21 +100,16 @@ export default function ProjectEditScreen() {
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
   return (
-    <Grid container direction='column' justify='center' alignItems='center'>
-      <Popup content='Confirm Delete?' onAccept={() => removeProject()} onReject={() => closePopup()} />
-      <SubHeader title={nameValid(name) ? name : 'New Project'} color={color ? color : ''} />
-      <SideMenu
-        options={[ { name: 'delete', action: () => openPopup() }]}
-      />
-      <Grid container direction='column' justify='flex-start' alignItems='center' className={classes.space}>
-        <form className={classes.form}>
-          <TextField variant="outlined" label="name" value={nameValid(name) ? name : ''} onChange={event => setName(event.target.value)} />
-        </form>
-        <Grid item xs className={classes.space}><CirclePicker onChangeComplete={handleSelectedColor} /></Grid>
-        <Grid item xs className={classes.space}>
-          <Button variant="contained" color="primary" onClick={() => handleSubmitProject()}>Submit</Button>
-        </Grid>
-      </Grid>
-    </Grid>
+    <ProjectEdit
+      classes={classes}
+      name={name}
+      setName={setName}
+      color={color}
+      selectColor={handleSelectedColor}
+      sideMenuOptions={[{ name: 'delete', action: () => openPopup() }]}
+      popupAccept={removeProject}
+      popupReject={closePopup}
+      submitProject={handleSubmitProject}
+    />
   )
 }
