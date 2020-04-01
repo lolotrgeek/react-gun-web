@@ -6,7 +6,7 @@ import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from 'react-alert'
 import { projectlink } from '../routes/routes'
-import TrashList from '../components/TrashList'
+import TrashList from '../components/templates/TrashList'
 
 export default function TimerTrashScreen() {
   const { projectId } = useParams()

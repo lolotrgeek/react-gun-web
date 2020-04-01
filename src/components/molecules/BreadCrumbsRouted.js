@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography } from '@material-ui/core'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
-import { Route, Link as RouterLink, } from "react-router-dom"
+import { Route, Link as RouterLink } from "react-router-dom"
 
 const LinkRouter = props => <Link {...props} component={RouterLink} />;
 

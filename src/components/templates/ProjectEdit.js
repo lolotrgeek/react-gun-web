@@ -1,10 +1,10 @@
 import React from 'react'
-import Popup from './Popup'
-import SideMenu from './SideMenu'
-import { SubHeader } from './Header'
+import Popup from '../atoms/Popup'
+import SideMenu from '../molecules/SideMenu'
+import { SubHeader } from '../atoms/Header'
 import { Grid, Button, TextField } from '@material-ui/core/'
 import { CirclePicker } from 'react-color'
-import { nameValid } from '../constants/Validators'
+import { nameValid } from '../../constants/Validators'
 
 /**
  * 

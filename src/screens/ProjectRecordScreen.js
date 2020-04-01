@@ -9,7 +9,7 @@ import { projectsListLink, projectEditlink, projectHistorylink, timerlink, timer
 import { useAlert } from 'react-alert'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
-import ProjectRecord from '../components/ProjectRecord'
+import ProjectRecord from '../components/templates/ProjectRecord'
 
 export default function ProjectRecordScreen() {
   const { projectId } = useParams()

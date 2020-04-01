@@ -1,11 +1,11 @@
 import React from 'react'
-import { UnEvenGrid } from './Grid'
+import { UnEvenGrid } from '../atoms/Grid'
 import { Grid } from '@material-ui/core/'
-import { SubHeader } from './Header'
-import Stateless from './Stateless'
-import { Link } from './Link'
-import { secondsToString, totalTime } from '../constants/Functions'
-import { MoodDisplay, EnergyDisplay, TimePeriod } from './TimerDisplay'
+import { SubHeader } from '../atoms/Header'
+import Stateless from '../molecules/Stateless'
+import { Link } from '../atoms/Link'
+import { secondsToString, totalTime } from '../../constants/Functions'
+import { MoodDisplay, EnergyDisplay, TimePeriod } from '../molecules/TimerDisplay'
 
 /**
  * 

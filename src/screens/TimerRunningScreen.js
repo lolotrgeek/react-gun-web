@@ -10,7 +10,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import useCounter from '../hooks/useCounter'
 import { elapsedTime } from '../constants/Functions'
 import { useStyles } from '../themes/DefaultTheme'
-import TimerRunning from '../components/TimerRunning'
+import TimerRunning from '../components/templates/TimerRunning'
 
 export default function TimerRunningScreen() {
 

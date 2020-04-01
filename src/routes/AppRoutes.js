@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
-import { MainMenu } from '../components/Menus'
+import { MainMenu } from '../components/organisms/Menus'
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,7 +22,6 @@ import TimerHistoryScreen from '../screens/TimerHistoryScreen'
 import TimerTrashScreen from '../screens/TimerTrashScreen'
 import TimerEditScreen from '../screens/TimerEditScreen'
 import TimerRunningScreen from '../screens/TimerRunningScreen'
-import TestScreen from '../screens/TestScreen'
 import ProjectCreateScreen from '../screens/ProjectCreateScreen'
 import ProjectEditScreen from '../screens/ProjectEditScreen'
 import ProjectTrashScreen from '../screens/ProjectTrashScreen'
@@ -60,9 +59,6 @@ export default function AppRoutes() {
             <Route path={routes.timerRunninglink()} children={<TimerRunningScreen />} />
             <Route path={routes.timerTrashlink(':projectId')} children={<TimerTrashScreen />} />
             
-            <Route path="/test">
-              <TestScreen />
-            </Route>
           </Switch>
         }
       />

@@ -4,7 +4,7 @@ import { gun } from '../constants/Data'
 import { timerlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import { useHistory } from 'react-router-dom'
-import TimerList from '../components/TimerList'
+import TimerList from '../components/templates/TimerList'
 
 export default function TimerScreen() {
   const [online, setOnline] = useState(false)

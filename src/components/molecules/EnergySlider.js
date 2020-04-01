@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
 import useResizeObserver from "use-resize-observer";
-import { useStyles } from '../themes/DefaultTheme'
+import { useStyles } from '../../themes/DefaultTheme'
 
 
 const sliderBackground = 'linear-gradient(0deg, rgba(191,191,191,0) 0%, rgba(0,125,255,0) 25%, rgba(39,255,0,0) 50%, rgba(255,252,0,0) 75%, rgba(255,154,0,1) 100%)'

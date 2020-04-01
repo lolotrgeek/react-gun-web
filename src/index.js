@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { AppRegistry } from 'react-native';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import './index.css';
@@ -28,7 +29,9 @@ const Root = () => (
   </ThemeProvider>
 )
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+// ReactDOM.render(<Root />, document.getElementById('root'));
+AppRegistry.registerComponent('Root', () => Root);
+AppRegistry.runApplication('Root', { rootTag: document.getElementById('root') });
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

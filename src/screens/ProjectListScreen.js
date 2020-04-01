@@ -7,7 +7,7 @@ import { gun, finishTimer, createTimer } from '../constants/Data'
 import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
 import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
-import ProjectList from '../components/ProjectList'
+import ProjectList from '../components/templates/ProjectList'
 
 export default function ProjectListScreen() {
   const [online, setOnline] = useState(false)

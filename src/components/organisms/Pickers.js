@@ -6,8 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';
-import { secondsToString } from '../constants/Functions'
-import { Typography } from '@material-ui/core';
+import { secondsToString } from '../../constants/Functions'
 
 export function PickerDate(props) {
   return (

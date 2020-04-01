@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import SpacingGrid from '../components/Grid'
+import SpacingGrid from '../atoms/Grid'
 import { Grid, Button, TextField, makeStyles } from '@material-ui/core/'
 
 

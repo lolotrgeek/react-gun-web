@@ -1,14 +1,14 @@
 import React from 'react'
-import { Title } from '../components/Title'
-import { Button } from '../components/Button'
-import { SubHeader } from '../components/Header'
-import Popup from '../components/Popup'
-import Stateless from '../components/Stateless'
-import { EnergySlider } from '../components/EnergySlider'
-import { MoodPicker } from '../components/MoodPicker'
+import { Title } from '../atoms/Title'
+import { Button } from '../atoms/Button'
+import { SubHeader } from '../atoms/Header'
+import Popup from '../atoms/Popup'
+import Stateless from '../molecules/Stateless'
+import { EnergySlider } from '../molecules/EnergySlider'
+import { MoodPicker } from '../molecules/MoodPicker'
 import { Grid } from '@material-ui/core/'
-import { isTimer, projectValid, isRunning } from '../constants/Validators'
-import { secondsToString } from '../constants/Functions'
+import { isTimer, projectValid, isRunning } from '../../constants/Validators'
+import { secondsToString } from '../../constants/Functions'
 
 /**
  * 

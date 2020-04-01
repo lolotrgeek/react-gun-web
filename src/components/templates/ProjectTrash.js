@@ -1,7 +1,7 @@
 import React from 'react'
-import { SubHeader } from './Header'
-import { Title } from './Title'
-import { UnEvenGrid } from './Grid'
+import { SubHeader } from '../atoms/Header'
+import { Title } from '../atoms/Title'
+import { UnEvenGrid } from '../atoms/Grid'
 import { Grid, Button } from '@material-ui/core/'
 
 /**

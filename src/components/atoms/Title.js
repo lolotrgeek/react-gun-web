@@ -1,8 +1,8 @@
 import React from 'react'
-import { colorValid } from '../constants/Validators'
+import { colorValid } from '../../constants/Validators'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-// import Typography from '@material-ui/core/Typography'
-import { Grid, Typography } from '@material-ui/core/'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
 
 const truncate = (input) => input.length > 15 ? `${input.substring(0, 15)}...` : input
 /**

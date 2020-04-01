@@ -1,10 +1,10 @@
 import React from 'react'
-import Stateless from './Stateless'
-import { Title } from './Title'
-import { SubHeader } from './Header'
-import { UnEvenGrid } from './Grid'
+import Stateless from '../molecules/Stateless'
+import { Title } from '../atoms/Title'
+import { SubHeader } from '../atoms/Header'
+import { UnEvenGrid } from '../atoms/Grid'
 import { Grid, Typography, Button } from '@material-ui/core/'
-import { projectValid } from '../constants/Validators'
+import { projectValid } from '../../constants/Validators'
 
 /**
  * 

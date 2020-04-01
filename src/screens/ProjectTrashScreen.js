@@ -3,7 +3,7 @@ import { gun, restoreProject } from '../constants/Data'
 import { projectlink } from '../routes/routes'
 import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
-import ProjectTrash from '../components/ProjectTrash'
+import ProjectTrash from '../components/templates/ProjectTrash'
 
 
 export default function ProjectTrashScreen() {

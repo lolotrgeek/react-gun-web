@@ -16,9 +16,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Link } from './Link'
-import { BreadCrumbsRouted } from './BreadCrumbsRouted'
-import SideMenu from './SideMenu'
+import { Link } from '../atoms/Link'
+import { BreadCrumbsRouted } from '../molecules/BreadCrumbsRouted'
+import SideMenu from '../molecules/SideMenu'
 
 // Source: https://material-ui.com/components/drawers/#persistent-drawer
 

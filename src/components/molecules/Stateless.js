@@ -1,5 +1,5 @@
 import React from 'react'
-import {SubHeader} from './Header'
+import {SubHeader} from '../atoms/Header'
 import  {useHistory} from 'react-router-dom'
 
 export default function Stateless() {

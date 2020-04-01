@@ -5,7 +5,7 @@ import { colorValid, nameValid } from '../constants/Validators'
 import { useAlert } from 'react-alert'
 import { projectsListLink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
-import ProjectCreate from '../components/ProjectCreate'
+import ProjectCreate from '../components/templates/ProjectCreate'
 
 export default function ProjectCreateScreen() {
   const [alerted, setAlert] = useState([])

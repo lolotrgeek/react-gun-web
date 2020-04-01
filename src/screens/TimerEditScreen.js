@@ -9,7 +9,7 @@ import { useAlert } from 'react-alert'
 import { projectlink, projectsListLink, timerHistorylink } from '../routes/routes'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
-import TimerEdit from '../components/TimerEdit'
+import TimerEdit from '../components/templates/TimerEdit'
 
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()

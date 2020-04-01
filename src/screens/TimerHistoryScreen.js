@@ -9,7 +9,7 @@ import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from 'react-alert'
 import { projectlink } from '../routes/routes'
-import TimerHistory from '../components/TimerHistory'
+import TimerHistory from '../components/templates/TimerHistory'
 
 export default function TimerHistoryScreen() {
   const { projectId, timerId } = useParams()

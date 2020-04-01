@@ -7,7 +7,7 @@ import { useAlert } from 'react-alert'
 import { projectsListLink, projectlink } from '../routes/routes'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
-import ProjectEdit from '../components/ProjectEdit'
+import ProjectEdit from '../components/templates/ProjectEdit'
 
 export default function ProjectEditScreen() {
   const { projectId, } = useParams()

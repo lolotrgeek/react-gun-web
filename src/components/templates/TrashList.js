@@ -1,13 +1,13 @@
 import React from 'react'
+import { fullDate, secondsToString, totalTime } from '../../constants/Functions'
+import { nameValid, isTimer } from '../../constants/Validators'
 import { Grid, Typography, CardContent, CardActions } from '@material-ui/core/'
-import { MoodDisplay, EnergyDisplay, TimePeriod } from '../components/TimerDisplay'
-import { fullDate, secondsToString, totalTime } from '../constants/Functions'
-import { nameValid, isTimer } from '../constants/Validators'
-import { SubHeader } from '../components/Header'
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
-import Popup from './Popup'
-import Stateless from '../components/Stateless'
+import { SubHeader } from '../atoms/Header'
+import Popup from '../atoms/Popup'
+import { MoodDisplay, EnergyDisplay, TimePeriod } from '../molecules/TimerDisplay'
+import Stateless from '../molecules/Stateless'
 
 
 /**
