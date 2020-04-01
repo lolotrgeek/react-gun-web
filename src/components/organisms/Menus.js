@@ -17,7 +17,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from '../atoms/Link'
-import { BreadCrumbsRouted } from '../molecules/BreadCrumbsRouted'
 import SideMenu from '../molecules/SideMenu'
 
 // Source: https://material-ui.com/components/drawers/#persistent-drawer
@@ -161,8 +160,6 @@ export function MainMenu(props) {
             </Drawer>
             <main className={classes.content}>
                 {/* <div className={classes.drawerHeader} /> */}
-                {props.showBreadcrumbs ? <BreadCrumbsRouted home={props.links[0].text} /> : ''}
-                {props.showBreadcrumbs ? <div className={classes.breadcrumbs} /> : ''}
                 {props.content}
             </main>
         </div>
