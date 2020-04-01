@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import { Grid as WebGrid } from '@material-ui/core/';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
@@ -15,12 +15,28 @@ const useStyles = makeStyles(theme => ({
   control: {
     padding: theme.spacing(1),
   },
-  typography : {
+  typography: {
     fontSize: '1.1rem'
   }
 }));
 
-export default function SpacingGrid(props) {
+export default function Grid(props) {
+  return <WebGrid
+    spacing={props.spacing}
+    className={props.className}
+    container={props.container}
+    item={props.item}
+    xs={props.xs}
+    wrap={props.wrap}
+    justify={props.justify}
+    direction={props.direction}
+    alignItems={props.alignItems}
+    children={props.children}
+  />
+
+}
+
+export function SpacingGrid(props) {
   const classes = useStyles();
 
   return (
@@ -77,3 +93,4 @@ export function EvenGrid(props) {
     </Grid>
   );
 }
+
