@@ -3,7 +3,8 @@ import Stateless from '../molecules/Stateless'
 import { Title } from '../atoms/Title'
 import { SubHeader } from '../atoms/Header'
 import { UnEvenGrid } from '../atoms/Grid'
-import { Grid, Typography, Button } from '@material-ui/core/'
+import {Typography, Button } from '@material-ui/core/'
+import Grid from '../atoms/Grid'
 import { projectValid } from '../../constants/Validators'
 
 /**

@@ -1,6 +1,6 @@
 import React from 'react'
 import { UnEvenGrid } from '../atoms/Grid'
-import { Grid } from '@material-ui/core/'
+import Grid from '../atoms/Grid'
 import { SubHeader } from '../atoms/Header'
 import Stateless from '../molecules/Stateless'
 import { Link } from '../atoms/Link'

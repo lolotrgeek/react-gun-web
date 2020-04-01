@@ -6,7 +6,7 @@ import Popup from '../atoms/Popup'
 import Stateless from '../molecules/Stateless'
 import { EnergySlider } from '../molecules/EnergySlider'
 import { MoodPicker } from '../molecules/MoodPicker'
-import { Grid } from '@material-ui/core/'
+import Grid from '../atoms/Grid'
 import { isTimer, projectValid, isRunning } from '../../constants/Validators'
 import { secondsToString } from '../../constants/Functions'
 

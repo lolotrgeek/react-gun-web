@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
-import Grid from '@material-ui/core/Grid'
+import Grid from '../atoms/Grid'
 import IconButton from '@material-ui/core/IconButton';
 import { useStyles } from '../../themes/DefaultTheme'
 

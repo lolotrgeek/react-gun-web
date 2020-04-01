@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import Grid from '../atoms/Grid'
 import { PopupContext } from '../../contexts/PopupContext'
 
 const useStyles = makeStyles(theme => ({

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Typography, Button, Grid } from '@material-ui/core';
+import { Typography, Button} from '@material-ui/core';
+import Grid from '../atoms/Grid'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';

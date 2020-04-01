@@ -2,7 +2,7 @@ import React from 'react'
 import { colorValid } from '../../constants/Validators'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
+import Grid from '../atoms/Grid'
 
 const truncate = (input) => input.length > 15 ? `${input.substring(0, 15)}...` : input
 /**

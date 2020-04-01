@@ -1,9 +1,13 @@
 import React from 'react'
 import { fullDate, secondsToString, totalTime } from '../../constants/Functions'
 import { nameValid, isTimer } from '../../constants/Validators'
-import { Grid, Typography, CardContent, CardActions } from '@material-ui/core/'
+
+import { Typography, CardContent, CardActions } from '@material-ui/core/'
+import Grid from '../atoms/Grid'
+
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
+
 import { SubHeader } from '../atoms/Header'
 import Popup from '../atoms/Popup'
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../molecules/TimerDisplay'

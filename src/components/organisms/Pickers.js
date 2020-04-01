@@ -1,6 +1,6 @@
 import React from 'react';
 import 'date-fns';
-import Grid from '@material-ui/core/Grid';
+import Grid from '../atoms/Grid'
 import IconButton from '@material-ui/core/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";

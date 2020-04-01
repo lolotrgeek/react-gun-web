@@ -1,6 +1,7 @@
 import React from 'react'
 import { SubHeader } from '../atoms/Header'
-import { Grid, Button, TextField } from '@material-ui/core/'
+import { Button, TextField } from '@material-ui/core/'
+import Grid from '../atoms/Grid'
 import { CirclePicker } from 'react-color'
 import { nameValid } from '../../constants/Validators'
 
