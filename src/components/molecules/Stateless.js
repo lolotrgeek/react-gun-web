@@ -1,6 +1,6 @@
 import React from 'react'
 import {SubHeader} from '../atoms/Header'
-import  {useHistory} from 'react-router-dom'
+import  {useHistory} from 'react-router-dom' // TODO inherit useHistory from props to decouple router from component
 
 export default function Stateless() {
     const history = useHistory()

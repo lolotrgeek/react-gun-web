@@ -41,9 +41,9 @@ export default function TimerRunning(props) {
                 : ''}
             {props.runningTimer && props.runningTimer[1] ?
                 <Grid container direction='column' justify='center' alignItems='center'>
-                    <Grid item xs={12}> <Title variant='h2'>{secondsToString(props.count)}</Title> </Grid>
+                    <Grid item> <Title variant='h2'>{secondsToString(props.count)}</Title> </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid item>
                         <MoodPicker
                             onGreat={() => props.setMood('great')}
                             onGood={() => props.setMood('good')}
@@ -57,7 +57,7 @@ export default function TimerRunning(props) {
                             onEnergySet={(event, value) => props.setEnergy(value)}
                         />
                     </Grid >
-                    <Grid item className={props.classes.space} xs={12}>
+                    <Grid item className={props.classes.space}>
                         <Button variant="contained" color="primary" onClick={() => {
                             if (isRunning(props.runningTimer)) {
                                 props.timerCompleteAction()

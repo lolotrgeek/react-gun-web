@@ -1,7 +1,7 @@
 import React from 'react'
+import { format, isValid } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy, faBolt } from "@fortawesome/free-solid-svg-icons";
-import { format, isValid } from 'date-fns'
 
 export function MoodDisplay(props) {
     let mood

@@ -1,22 +1,14 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { makeStyles } from '@material-ui/core/styles';
+
 import { Link } from '../atoms/Link'
 
-const ITEM_HEIGHT = 48;
+import {IconButton} from '../atoms/IconButton';
+import {NativeIcon} from '../atoms/Icon';
+import Menu from '@material-ui/core/Menu'; // TODO native Menu
+import MenuItem from '@material-ui/core/MenuItem';
+import { useStyles } from '../../themes/DefaultTheme';
 
-const useStyles = makeStyles(theme => ({
-    sidemenu: {
-        position: 'absolute',
-        background: 'transparent',
-        top: theme.spacing(1),
-        right: theme.spacing(1),
-        zIndex: 1101, //https://material-ui.com/customization/z-index/
-    }
-}))
+const ITEM_HEIGHT = 48;
 
 /**
  * 
@@ -42,13 +34,10 @@ export default function SideMenu(props) {
     return (
         <div className={classes.sidemenu}>
             <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
                 onClick={handleClick}
-                style={{ color: 'white' }} // set this to theme
+                style={{ color: 'white' }} // TODO set this to theme
             >
-                <MoreVertIcon />
+                <NativeIcon name='more_vert' />
             </IconButton>
             <Menu
                 id="long-menu"

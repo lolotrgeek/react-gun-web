@@ -1,7 +1,7 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core/'
-// import { Button } from './Button'
-import Button from '@material-ui/core/Button';
+import Grid from '../atoms/Grid'
+import Typography from '../atoms/Typography'
+import {Button} from '../atoms/Button';
 import { Title } from './Title'
 
 
@@ -27,7 +27,6 @@ export function Header(props) {
 
                 </Grid> : ''
             }
-            <Grid item></Grid>
         </Grid >
     )
 }
@@ -46,19 +45,13 @@ export function SubHeader(props) {
             // style={{ background: `linear-gradient(0deg, #303030  0%, ${props.color}  100%)` }}
         >
             <Grid item>
-                <Grid container direction='row' justify='flex-start' alignItems='center'
-                    style={props.margin === 'none' ? {} : { marginTop: '2rem', marginBottom: '2rem' }}
-                >
                     <Title color={props.color} variant='h4' >{props.title}</Title>
-                </Grid>
-
             </Grid>
             {props.buttonText ?
                 <Grid item>
                     <Button variant="contained" color="secondary" onClick={props.buttonClick}>{props.buttonText}</Button>
                 </Grid> : ''
             }
-            <Grid item></Grid>
         </Grid >
     )
 }

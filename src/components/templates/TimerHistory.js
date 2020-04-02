@@ -1,14 +1,16 @@
 import React from 'react'
-import Card from '@material-ui/core/Card';
+import { nameValid, isTimer } from '../../constants/Validators'
+import { secondsToString, totalTime } from '../../constants/Functions'
+
 import { MoodDisplay, EnergyDisplay, TimePeriod } from '../molecules/TimerDisplay'
 import Stateless from '../molecules/Stateless'
 import { SubHeader } from '../atoms/Header'
 import Popup from '../atoms/Popup'
-import {Typography, CardContent, CardActions } from '@material-ui/core/'
 import Grid from '../atoms/Grid'
 import { Button } from '../atoms/Button'
-import { nameValid, isTimer } from '../../constants/Validators'
-import { secondsToString, totalTime } from '../../constants/Functions'
+
+import { Card, CardContent, CardActions } from '../atoms/Card';
+import Typography from '../atoms/Typography'
 
 /**
  * 
@@ -44,16 +46,10 @@ export default function TimerHistory(props) {
                 let ended = new Date(edit[1].ended)
                 return (
                     <Card key={edit[2]} className={props.classes.card}>
-                        <Popup content='Confirm Restore?' onAccept={() => props.popupAccept() } onReject={() => props.popupReject()} />
+                        <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
                         <CardContent>
-                            <Grid container direction='row' justify='center' alignItems='flex-start'>
-                                <Grid item xs={12}><Typography variant='h6'>{props.displayStatusDate(edit)}</Typography></Grid>
-                            </Grid>
-                            <Grid container direction='row' justify='center' alignItems='flex-start'>
-                                <Grid item xs={12}>
-                                    <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
-                                </Grid>
-                            </Grid>
+                            <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
+                            <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
                             <Grid className={props.classes.space3} container direction='row' justify='space-evenly' alignItems='flex-start'>
                                 <Grid item xs={3}><TimePeriod start={started} end={ended} /></Grid>
                                 <Grid item xs={1}><EnergyDisplay energy={edit[1].energy} /></Grid>

@@ -1,23 +1,11 @@
 import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Popover from '@material-ui/core/Popover'; //TODO native popup
+
+import Typography  from '../atoms/Typography';
+import { Button } from '../atoms/Button';
 import Grid from '../atoms/Grid'
 import { PopupContext } from '../../contexts/PopupContext'
-
-const useStyles = makeStyles(theme => ({
-    typography: {
-        padding: theme.spacing(2),
-    },
-    popup: {
-        padding: theme.spacing(2)
-    },
-    button: {
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2)
-    }
-}));
+import { useStyles } from '../../themes/DefaultTheme'
 
 /**
  * 
@@ -52,11 +40,11 @@ export default function Popup(props) {
                 <div className={classes.popup}>
                     <Typography className={classes.typography}>{props.content}</Typography>
                     <Grid container direction='row' justify='space-evenly' alignItems='flex-start' >
-                        <Grid className={classes.button} item >
-                            <Button aria-describedby={id} variant="contained" color="primary" onClick={props.onAccept} > Accept </Button>
+                        <Grid className={classes.buttonPopup} item >
+                            <Button variant="contained" color="primary" onClick={props.onAccept} > Accept </Button>
                         </Grid>
-                        <Grid className={classes.button} item >
-                            <Button aria-describedby={id} variant="contained" color="secondary" onClick={props.onReject} > Reject </Button>
+                        <Grid className={classes.buttonPopup} item >
+                            <Button variant="contained" color="secondary" onClick={props.onReject} > Reject </Button>
                         </Grid>
 
 

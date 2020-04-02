@@ -1,14 +1,14 @@
 import React from 'react'
+import { projectValid, isRunning } from '../../constants/Validators'
+
 import Stateless from '../molecules/Stateless'
 import { SubHeader } from '../atoms/Header'
 import { RunningTimer } from '../organisms/RunningTimer'
 import { UnEvenGrid } from '../atoms/Grid'
 import { Title } from '../atoms/Title'
 import { Link } from '../atoms/Link'
-import { Button } from '@material-ui/core/'
+import {Button} from '../atoms/Button'
 import Grid from '../atoms/Grid'
-// import { Button } from './Button'
-import { projectValid, isRunning } from '../../constants/Validators'
 
 /**
  * 

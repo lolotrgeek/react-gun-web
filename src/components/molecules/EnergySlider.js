@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Grid from '../atoms/Grid'
-import IconButton from '@material-ui/core/IconButton';
+import { useStyles } from '../../themes/DefaultTheme'
+
+//TODO Native energy slider
+
+import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import useResizeObserver from "use-resize-observer";
-import { useStyles } from '../../themes/DefaultTheme'
 
 
 const sliderBackground = 'linear-gradient(0deg, rgba(191,191,191,0) 0%, rgba(0,125,255,0) 25%, rgba(39,255,0,0) 50%, rgba(255,252,0,0) 75%, rgba(255,154,0,1) 100%)'
@@ -127,7 +127,6 @@ export function EnergySlider(props) {
                     ref={ref}
                     style={{ color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy) }}
                     valueLabelDisplay="on"
-                    aria-label="pretto slider"
                     onChange={(event, value) => setColor(calcColor(width, value))}
                     defaultValue={props.startingEnergy}
                     onChangeCommitted={props.onEnergySet}

@@ -1,11 +1,15 @@
 import React from 'react'
+import { nameValid } from '../../constants/Validators'
+
 import Popup from '../atoms/Popup'
 import SideMenu from '../molecules/SideMenu'
 import { SubHeader } from '../atoms/Header'
-import {  Button, TextField } from '@material-ui/core/'
 import Grid from '../atoms/Grid'
-import { CirclePicker } from 'react-color'
-import { nameValid } from '../../constants/Validators'
+import { CirclePicker } from 'react-color' // TODO native color picker
+
+import { Button } from '../atoms/Button'
+import { TextField } from '../atoms/TextField'
+
 
 /**
  * 
@@ -13,22 +17,20 @@ import { nameValid } from '../../constants/Validators'
  * @param {Object} props.classes
  */
 export default function Name(props) {
-    return (
-        <Grid container direction='column' justify='center' alignItems='center'>
-        <Popup content='Confirm Delete?' onAccept={() => props.popupAccept() } onReject={() => props.popupReject()} />
-        <SubHeader title={nameValid(props.name) ? props.name : 'New Project'} color={props.color ? props.color : ''} />
-        <SideMenu
-          options={props.sideMenuOptions}
-        />
-        <Grid container direction='column' justify='flex-start' alignItems='center' className={props.classes.space}>
-          <form className={props.classes.form}>
-            <TextField variant="outlined" label="name" value={nameValid(props.name) ? props.name : ''} onChange={event => props.setName(event.target.value)} />
-          </form>
-          <Grid item xs className={props.classes.space}><CirclePicker onChangeComplete={props.selectColor} /></Grid>
-          <Grid item xs className={props.classes.space}>
-            <Button variant="contained" color="primary" onClick={() => props.submitProject()}>Submit</Button>
-          </Grid>
+  return (
+    <Grid container direction='column' justify='center' alignItems='center'>
+      <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
+      <SubHeader title={nameValid(props.name) ? props.name : 'New Project'} color={props.color ? props.color : ''} />
+      <SideMenu
+        options={props.sideMenuOptions}
+      />
+      <Grid container direction='column' justify='flex-start' alignItems='center' className={props.classes.form}>
+        <TextField variant="outlined" label="name" value={nameValid(props.name) ? props.name : ''} onChange={event => props.setName(event.target.value)} />
+        <Grid item className={props.classes.space}><CirclePicker onChangeComplete={props.selectColor} /></Grid>
+        <Grid item className={props.classes.space}>
+          <Button variant="contained" color="primary" onClick={() => props.submitProject()}>Submit</Button>
         </Grid>
       </Grid>
-    )
+    </Grid>
+  )
 }

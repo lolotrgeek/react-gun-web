@@ -2,11 +2,10 @@ import React from 'react'
 import { fullDate, secondsToString, totalTime } from '../../constants/Functions'
 import { nameValid, isTimer } from '../../constants/Validators'
 
-import { Typography, CardContent, CardActions } from '@material-ui/core/'
+import {Card, CardActions, CardContent} from '../atoms/Card';
+import {Button} from '../atoms/Button';
+import Typography from '../atoms/Typography'
 import Grid from '../atoms/Grid'
-
-import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
 
 import { SubHeader } from '../atoms/Header'
 import Popup from '../atoms/Popup'
@@ -44,16 +43,10 @@ export default function TrashList(props) {
         let deleted = new Date(timer[1].deleted)
         return (
           <Card key={timer[0]} className={props.classes.card}>
-            <Popup content='Confirm Restore?' onAccept={() => props.popupAccept(timer) } onReject={() => props.popupReject()} />
+            <Popup content='Confirm Restore?' onAccept={() => props.popupAccept(timer)} onReject={() => props.popupReject()} />
             <CardContent>
-              <Grid container direction='row' justify='center' alignItems='flex-start'>
-                <Grid item xs={12}><Typography variant='h6'>{fullDate(deleted)}</Typography></Grid>
-              </Grid>
-              <Grid container direction='row' justify='center' alignItems='flex-start'>
-                <Grid item xs={12}>
-                  <Typography variant='subtitle1'>{'Deleted'}</Typography>
-                </Grid>
-              </Grid>
+              <Typography variant='h6'>{fullDate(deleted)}</Typography>
+              <Typography variant='subtitle1'>{'Deleted'}</Typography>
               <Grid className={props.classes.space3} container direction='row' justify='space-evenly' alignItems='flex-start'>
                 <Grid item xs={3}><TimePeriod start={started} end={ended} /></Grid>
                 <Grid item xs={1}><EnergyDisplay energy={timer[1].energy} /></Grid>

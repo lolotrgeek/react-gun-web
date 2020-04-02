@@ -1,12 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { AppRegistry } from 'react-native';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
-import './index.css';
+// import './index.css';
 import { PopupContextProvider } from '../src/contexts/PopupContext';
-import { ThemeProvider } from "@material-ui/core/styles";
-import { theme, darkTheme } from './themes/DefaultTheme'
+import { DarkTheme, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -19,14 +17,27 @@ const alertOptions = {
   transition: transitions.FADE
 }
 
+// https://callstack.github.io/react-native-paper/getting-started.html#customization
+// https://callstack.github.io/react-native-paper/theming.html
+const theme = {
+  ...DefaultTheme,
+  // dark: true,
+  // mode: 'exact',
+  // colors: {
+  //   ...DarkTheme.colors,
+  //   background: 'black',
+  //   surface : 'black'
+  // }
+}
+
 const Root = () => (
-  <ThemeProvider theme={darkTheme}>
+  <PaperProvider theme={theme}>
     <AlertProvider template={AlertTemplate} {...alertOptions}>
       <PopupContextProvider>
         <App />
       </PopupContextProvider>
     </AlertProvider>
-  </ThemeProvider>
+  </PaperProvider >
 )
 
 // ReactDOM.render(<Root />, document.getElementById('root'));

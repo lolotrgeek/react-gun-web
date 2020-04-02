@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Grid from '../atoms/Grid'
 
-
-
 export function TimerStartNotes(props) {
     return (
         <Grid

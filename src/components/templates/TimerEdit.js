@@ -1,4 +1,8 @@
 import React from 'react'
+import { isRunning, isTimer, projectValid } from '../../constants/Validators'
+import { secondsToString } from '../../constants/Functions'
+import { endOfDay } from 'date-fns' // TODO move to functions
+
 import Stateless from '../molecules/Stateless'
 import SideMenu from '../molecules/SideMenu'
 import Popup from '../atoms/Popup'
@@ -7,12 +11,10 @@ import { Title, } from '../atoms/Title'
 import { MoodPicker } from '../molecules/MoodPicker'
 import { PickerDate, PickerTime } from '../organisms/Pickers'
 import { EnergySlider } from '../molecules/EnergySlider'
-import { Button } from '@material-ui/core/'
 import Grid from '../atoms/Grid'
-import { secondsToString } from '../../constants/Functions'
-import { endOfDay } from 'date-fns'
-import { isRunning, isTimer, projectValid } from '../../constants/Validators'
-// import { Button } from './Button'
+
+import {Button} from '../atoms/Button'
+
 
 /**
  * 
@@ -25,7 +27,7 @@ import { isRunning, isTimer, projectValid } from '../../constants/Validators'
  * @param {function} props.popupReject
  * @param {function} props.onDateChange
  */
-export default function Name(props) {
+export default function TimerEdit(props) {
     return (
         <Grid className={props.classes.listRoot}>
             <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
@@ -41,9 +43,9 @@ export default function Name(props) {
                 : ' '}
             {props.timer && isTimer(props.timer) ?
                 <Grid container direction='column' justify='flex-start' alignItems='center'>
-                    <Grid item xs={12}> <Title variant='h5'>{secondsToString(props.total)}</Title> </Grid>
+                    <Grid item> <Title variant='h5'>{secondsToString(props.total)}</Title> </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid item>
                         <PickerDate
                             label='Date'
                             startdate={props.started}
@@ -86,7 +88,7 @@ export default function Name(props) {
                             selected={props.mood}
                         />
                     </Grid >
-                    <Grid item className={props.classes.space2} xs={12}>
+                    <Grid item className={props.classes.space2}>
                         <Button variant="contained" color="primary" onClick={() => props.saveButtonAction()}>Save</Button>
                     </Grid>
                 </Grid >

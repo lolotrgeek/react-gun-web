@@ -1,9 +1,9 @@
 import React from 'react';
+import Grid from '../atoms/Grid'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
-import Grid from '../atoms/Grid'
-import IconButton from '@material-ui/core/IconButton';
-import { useStyles } from '../../themes/DefaultTheme'
+import {IconButton} from '../atoms/IconButton';
 
 export function MoodPicker(props) {
     let moods = [
@@ -22,7 +22,7 @@ export function MoodPicker(props) {
                 </Grid>
                 {moods.map(mood => (
                     <Grid key={mood.name} item>
-                        <IconButton aria-label={mood.name} edge='end' onClick={mood.click} >
+                        <IconButton edge='end' onClick={mood.click} >
                             <FontAwesomeIcon
                                 icon={mood.icon}
                                 color={mood.color}

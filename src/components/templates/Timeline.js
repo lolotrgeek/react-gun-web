@@ -1,15 +1,15 @@
 import React from 'react'
 import { isRunning, projectValid } from '../../constants/Validators'
 import { dayHeaders, sayDay, secondsToString, sumProjectTimers } from '../../constants/Functions'
-import { Button } from '@material-ui/core/'
+
+import {Button} from '../atoms/Button'
+
 import Grid from '../atoms/Grid'
 import { SubHeader } from '../atoms/Header'
 import { Title, SubTitle } from '../atoms/Title'
 import { Link } from '../atoms/Link'
 import { UnEvenGrid } from '../atoms/Grid'
 import { RunningTimer } from '../organisms/RunningTimer'
-// import { Button } from './Button'
-import { View, Text } from 'react-native';
 
 
 /**
@@ -33,9 +33,6 @@ import { View, Text } from 'react-native';
 export default function Timeline(props) {
     return (
         <Grid className={props.classes.listRoot} >
-            <View>
-                <Text>Hello, world!</Text>
-            </View>
             <SubHeader
                 className={props.classes.space}
                 title='Timeline'

@@ -1,8 +1,23 @@
 import React from "react";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { orange } from "@material-ui/core/colors";
 
-export const useStyles = makeStyles(theme => ({
+
+export const theme = {
+    spacing: scale => scale * 8,
+    breakpoint: {
+        xs: '0px',
+        sm: '600px',
+        md: '960px',
+        lg: '1280px',
+        xl: '1920px'
+    }
+
+}
+
+export const useStyles = () => ({
+    root: {
+        flexGrow: 1,
+        marginBottom: '1.2rem'
+    },
     space: {
         paddingTop: theme.spacing(5)
     },
@@ -50,28 +65,52 @@ export const useStyles = makeStyles(theme => ({
     listContent: {
         width: '100%',
         maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
     },
     inline: {
         display: 'inline',
     },
     table: {
         minWidth: 350,
-      },
-}));
-
-
-export const theme = createMuiTheme({
-    status: {
-        danger: orange[500]
     },
-    maxWidth: 500,
-});
-
-
-export const darkTheme = createMuiTheme({
-    palette: {
-        type: 'dark',
+    control: {
+        padding: theme.spacing(1),
     },
-    // TODO: https://material-ui.com/customization/palette/#user-preference
-});
+    rootCard: {
+        minWidth: 275,
+    },
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    title: {
+        fontSize: 14,
+    },
+    pos: {
+        marginTop: theme.spacing(5),
+        marginBottom: 12,
+        maxWidth: 350,
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    button: {
+        right: 0,
+    },
+    typography: {
+        padding: theme.spacing(2),
+    },
+    popup: {
+        padding: theme.spacing(2)
+    },
+    buttonPopup: {
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2)
+    },
+    sidemenu: {
+        position: 'absolute',
+        background: 'transparent',
+        top: theme.spacing(1),
+        right: theme.spacing(1),
+        zIndex: 1101, //https://material-ui.com/customization/z-index/
+    }
+})
