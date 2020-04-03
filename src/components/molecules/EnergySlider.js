@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Grid from '../atoms/Grid'
 import { useStyles } from '../../themes/DefaultTheme'
-import Slider from '@react-native-community/slider'
 
-
-import useResizeObserver from "use-resize-observer"; // check for native compat
+import { withStyles } from '@material-ui/core/styles';
+import Slider from '@material-ui/core/Slider';
+import useResizeObserver from "use-resize-observer";
 
 
 const sliderBackground = 'linear-gradient(0deg, rgba(191,191,191,0) 0%, rgba(0,125,255,0) 25%, rgba(39,255,0,0) 50%, rgba(255,252,0,0) 75%, rgba(255,154,0,1) 100%)'
@@ -82,7 +82,7 @@ const calcColor = (sliderWidth, energy) => {
     return result
 }
 
-const PrettoSlider = () => ({
+const PrettoSlider = withStyles(theme => ({
     root: {
         height: 8,
     },
@@ -109,7 +109,7 @@ const PrettoSlider = () => ({
         height: 8,
         borderRadius: 4,
     },
-});
+}))(Slider);
 
 export function EnergySlider(props) {
     const classes = useStyles();
@@ -121,17 +121,13 @@ export function EnergySlider(props) {
                 <h3>{props.label ? props.label : 'Energy'}</h3>
             </Grid>
             <Grid item xs>
-                <Slider
+                <PrettoSlider
                     ref={ref}
-                    style={{ width: '100%', height: 50, color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy) }}
-                    minimumValue={0}
-                    maximumValue={100}
-                    step={1}
-                    minimumTrackTintColor='#028910'
-                    maximumTrackTintColor='#000000'
-                    onSlidingComplete={props.onEnergySet}
-                    onValueChange={(event, value) => setColor(calcColor(width, value))}
-                    value={props.startingEnergy}
+                    style={{ color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy) }}
+                    valueLabelDisplay="on"
+                    onChange={(event, value) => setColor(calcColor(width, value))}
+                    defaultValue={props.startingEnergy}
+                    onChangeCommitted={props.onEnergySet}
                 />
             </Grid>
         </Grid>
