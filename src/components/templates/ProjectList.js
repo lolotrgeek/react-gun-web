@@ -38,7 +38,7 @@ export default function ProjectList(props) {
                 />
                 : ''}
 
-            <Grid className={props.classes.space}>
+            <Grid container className={props.classes.space}>
                 {props.projects.map(project => {
                     return (
                         <Grid key={project[0]} className={props.classes.listClass}>

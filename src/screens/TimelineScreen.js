@@ -16,7 +16,7 @@ export default function TimerScreen() {
   const [runningTimer, setRunningTimer] = useState('')
   const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
-  const classes = useStyles();
+  const classes = useStyles()
   const history = useHistory()
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function TimerScreen() {
     }, { change: true })
 
     return () => gun.get('running').off()
-  }, [online, setCount, start, stop]);
+  }, [online, setCount, start, stop])
 
   useEffect(() => {
     if (runningTimer[1] && isTimer(runningTimer)) {

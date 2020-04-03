@@ -1,9 +1,4 @@
-# Timer Web
+# Timer Cross Platform
 
-## Stack 
-- React 
-- Gundb
-- material ui
-- react color picker
--  
-
+## Web
+https://callstack.github.io/react-native-paper/using-on-the-web.html

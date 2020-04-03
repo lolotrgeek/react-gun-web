@@ -49,7 +49,7 @@ export default function Timeline(props) {
                 />
                 : ''}
 
-            <Grid className={props.classes.space}>
+            <Grid container className={props.classes.space}>
                 {sumProjectTimers(dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started)))).map((day, index) => {
                     return (
                         <Grid key={index} className={props.classes.listClass}>

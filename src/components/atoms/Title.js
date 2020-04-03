@@ -15,7 +15,7 @@ export function Title(props) {
 
     return (
         <Grid container direction='row' justify='flex-start' alignItems='center'>
-            {colorValid(props.color) ? <NativeIcon name='mdi-checkbox-blank-circle' style={{ color: props.color }} /> : ''}
+            {colorValid(props.color) ? <NativeIcon name='circle' size={30} color={props.color} /> : ''}
             <Typography variant={props.variant} color="textPrimary" style={{ textTransform: 'capitalize' }}>
                 {truncate(props.children)}
             </Typography>

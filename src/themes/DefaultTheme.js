@@ -1,5 +1,9 @@
 import React from "react";
+import { Dimensions,  StyleSheet } from 'react-native'
 
+// Menu
+const window = Dimensions.get('window');
+const drawerWidth = 240;
 
 export const theme = {
     spacing: scale => scale * 8,
@@ -49,10 +53,14 @@ export const useStyles = () => ({
         overflowX: 'hidden',
         maxWidth: 500,
         minWidth: 350,
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     listRoot: {
         flexGrow: 1,
         overflowX: 'hidden',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     listClass: {
         flexGrow: 1,
@@ -112,5 +120,56 @@ export const useStyles = () => ({
         top: theme.spacing(1),
         right: theme.spacing(1),
         zIndex: 1101, //https://material-ui.com/customization/z-index/
+    },
+    rootMenu: {
+        display: 'flex',
+        height: window.height,
+    },
+    appBar: {
+        background: 'transparent',
+        // transition: theme.transitions.create(['margin', 'width'], {
+        //     easing: theme.transitions.easing.sharp,
+        //     duration: theme.transitions.duration.leavingScreen,
+        // }),
+    },
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        // transition: theme.transitions.create(['margin', 'width'], {
+        //     easing: theme.transitions.easing.easeOut,
+        //     duration: theme.transitions.duration.enteringScreen,
+        // }),
+    },
+    menuButton: {
+        marginRight: 0,
+    },
+    hide: {
+        display: 'none',
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(1),
+        justifyContent: 'flex-end',
+    },
+    titleMenu : {
+        flexGrow: 1,
+    },
+    breadcrumbs: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(1),
+        justifyContent: 'flex-end',
+    },
+    contentMenu: {
+        flexGrow: 1,
+
+    },
+    menu: {
+        height: window.height,
+        width: window.width / 3,
+    },
+    menuItem:{
+        zIndex: 99999,
     }
 })
