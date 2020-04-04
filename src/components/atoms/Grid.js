@@ -4,6 +4,11 @@ import { View } from 'react-native';
 import { useStyles, theme } from '../../themes/DefaultTheme'
 
 
+/**
+ * Native Grid Implementation
+ * https://material-ui.com/components/grid/#interactive
+ * @param {*} props 
+ */
 export default function Grid(props) {
 
   return <View
@@ -18,6 +23,7 @@ export default function Grid(props) {
       flexWrap: props.wrap ? props.wrap : 'wrap',
       // padding: props.spacing ? theme.spacing(props.spacing) : 0,
       margin: props.item ? theme.spacing(2) : 0,
+      ...props.style,
       ...props.className,
     }}
     xs={props.xs}

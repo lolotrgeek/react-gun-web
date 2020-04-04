@@ -1,5 +1,5 @@
 import React from 'react';
-import View from 'react-native';
+import {View , TextInput} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 /**

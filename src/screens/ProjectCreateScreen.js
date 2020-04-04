@@ -26,10 +26,9 @@ export default function ProjectCreateScreen() {
   }, [alerted])
 
 
-  const handleSelectedColor = (color, event) => {
+  const handleSelectedColor = (color) => {
     console.log(color)
-    console.log(event)
-    setColor(color.hex)
+    setColor(color)
   }
 
   const handleSubmitProject = () => {
