@@ -11,6 +11,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerEdit from '../components/templates/TimerEdit'
 
+
 export default function TimerEditScreen() {
   const { projectId, timerId } = useParams()
   const [online, setOnline] = useState(false)
@@ -22,7 +23,6 @@ export default function TimerEditScreen() {
   const [energy, setEnergy] = useState(0)
   const [alerted, setAlert] = useState([])
   const [total, setTotal] = useState(0)
-  const [picker, setPicker] = useState(false)
   const alert = useAlert()
   let history = useHistory()
   const classes = useStyles()
@@ -79,28 +79,28 @@ export default function TimerEditScreen() {
 
   const chooseNewStart = newTime => {
     if (!timeRules(newTime, ended)) {
-      setPicker(false);
+      
       setAlert([
         'Error',
         'Cannot Start after End.',
       ])
     }
     else if (!timeRules(newTime, new Date())) {
-      setPicker(false);
+      
       setAlert([
         'Error',
         'Cannot Start before now.',
       ])
     }
     else if (newTime && !dateRules(newTime)) {
-      setPicker(false);
+      
       setAlert([
         'Error',
         'Cannot Pick Date before Today.',
       ])
     }
     else {
-      setPicker(false)
+      
       setAlert(false)
       return isValid(newTime) ? setStarted(newTime) : false
     }
@@ -108,28 +108,28 @@ export default function TimerEditScreen() {
 
   const chooseNewEnd = newTime => {
     if (!timeRules(started, newTime)) {
-      setPicker(false);
+      
       setAlert([
         'Error',
         'Cannot Start after End.',
       ])
     }
     else if (!timeRules(newTime, new Date())) {
-      setPicker(false);
+      
       setAlert([
         'Error',
         'Cannot End before now.',
       ])
     }
     else if (newTime && !dateRules(newTime)) {
-      setPicker(false);
+      
       setAlert([
         'Error',
         'Cannot Pick Date before Today.',
       ])
     }
     else {
-      setPicker(false)
+      
       setAlert(false)
       return isValid(newTime) ? setEnded(newTime) : false
     }
@@ -137,7 +137,7 @@ export default function TimerEditScreen() {
 
   const chooseNewDate = newDate => {
     if (dateRules(newDate)) {
-      setPicker(false);
+      
       if (isValid(newDate)) {
         let newStart = new Date(getYear(newDate), getMonth(newDate), getDate(newDate), getHours(started), getMinutes(started), getSeconds(started))
         setStarted(newStart)
@@ -146,7 +146,7 @@ export default function TimerEditScreen() {
       }
       else return false
     } else {
-      setPicker(false);
+      
       setAlert([
         'Error',
         'Cannot Pick Date before Today.'
@@ -246,6 +246,7 @@ export default function TimerEditScreen() {
       timer={timer}
       project={project}
       popupAccept={removeTimer}
+      popupReject={closePopup}
       sideMenuOptions={[
         { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) },
         { name: 'delete', action: () => openPopup() }
@@ -269,5 +270,6 @@ export default function TimerEditScreen() {
       saveButtonAction={editComplete}
       noTimersAction={() => history.push(projectsListLink())}
     />
+    
   )
 }

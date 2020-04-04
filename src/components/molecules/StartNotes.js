@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '../atoms/Grid'
+import TextField from '../atoms/TextField'
 
-export function TimerStartNotes(props) {
+export function StartNotes(props) {
     return (
         <Grid
             container
@@ -9,7 +10,7 @@ export function TimerStartNotes(props) {
             justify="center"
             alignItems="center"
         >
-            <textarea
+            <TextField
                 multiline={false}
                 placeholder="Motivation"
                 placeholderGridColor="#abbabb"

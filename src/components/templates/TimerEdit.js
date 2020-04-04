@@ -12,8 +12,7 @@ import { MoodPicker } from '../molecules/MoodPicker'
 import { PickerDate, PickerTime } from '../organisms/Pickers'
 import { EnergySlider } from '../molecules/EnergySlider'
 import Grid from '../atoms/Grid'
-
-import {Button} from '../atoms/Button'
+import { Button } from '../atoms/Button'
 
 
 /**
@@ -30,6 +29,8 @@ import {Button} from '../atoms/Button'
 export default function TimerEdit(props) {
     return (
         <Grid className={props.classes.listRoot}>
+            {console.log('firing')}
+
             <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
             {projectValid(props.project) && isTimer(props.timer) ?
                 <SubHeader
@@ -44,32 +45,31 @@ export default function TimerEdit(props) {
             {props.timer && isTimer(props.timer) ?
                 <Grid container direction='column' justify='flex-start' alignItems='center'>
                     <Grid item> <Title variant='h5'>{secondsToString(props.total)}</Title> </Grid>
-
                     <Grid item>
                         <PickerDate
                             label='Date'
                             startdate={props.started}
-                            onDateChange={newDate => props.chooseNewDate(newDate)}
+                            onDateChange={props.chooseNewDate}
                             maxDate={endOfDay(new Date())}
-                            previousDay={() => props.previousDay()}
-                            nextDay={() => props.nextDay()}
+                            previousDay={props.previousDay}
+                            nextDay={props.nextDay}
                         />
                         {/* {started.toString()} */}
                         <PickerTime
                             label='Start'
                             time={props.started}
-                            onTimeChange={newTime => props.chooseNewStart(newTime)}
-                            addMinutes={() => props.increaseStarted()}
-                            subtractMinutes={() => props.decreaseStarted()}
+                            onTimeChange={props.chooseNewStart}
+                            addMinutes={props.increaseStarted}
+                            subtractMinutes={props.decreaseStarted}
                         />
                         {/* {ended.toString()} */}
                         <PickerTime
                             label='End'
                             time={props.ended}
-                            onTimeChange={newTime => props.chooseNewEnd(newTime)}
-                            addMinutes={() => props.increaseEnded()}
+                            onTimeChange={props.chooseNewEnd}
+                            addMinutes={props.increaseEnded}
                             running={isRunning(props.timer)}
-                            subtractMinutes={() => props.decreaseEnded()}
+                            subtractMinutes={props.decreaseEnded}
                         />
 
                         {
