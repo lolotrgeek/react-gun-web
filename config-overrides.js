@@ -2,6 +2,8 @@ const path = require('path');
 const { override, addBabelPlugins, addBabelPresets, babelInclude, disableEsLint } = require('customize-cra');
 const fs = require("fs");
 
+// Toolbar fix for react-native-vector-icons
+// https://github.com/oblador/react-native-vector-icons/issues/1104#issuecomment-599393489
 (() => {
   const filePath = require.resolve(`react-native-vector-icons/lib/toolbar-android.js`);
   const code = fs.readFileSync(filePath).toString();
@@ -21,6 +23,7 @@ module.exports = override(
   babelInclude([
     path.resolve(__dirname, 'node_modules/react-native-elements'),
     path.resolve(__dirname, 'node_modules/@react-native-community/slider'),
+    path.resolve(__dirname, 'node_modules/@react-native-community/datetimepicker'),
     path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
     path.resolve(__dirname, 'node_modules/react-native-ratings'),
     path.resolve(__dirname, 'src'),

@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Link } from '../atoms/Link'
-
-import {IconButton} from '../atoms/IconButton';
-import {NativeIcon} from '../atoms/Icon';
-import Menu from '@material-ui/core/Menu'; // TODO native Menu
-import MenuItem from '@material-ui/core/MenuItem';
+import { IconButton } from '../atoms/IconButton';
+import { Menu, MenuItem } from '../atoms/Menu';
 import { useStyles } from '../../themes/DefaultTheme';
+import MoreVert from '@material-ui/icons/MoreVert'; // TODO native Icon
+import Grid from '../atoms/Grid'
+import { View } from 'react-native'
 
 const ITEM_HEIGHT = 48;
 
@@ -18,58 +18,62 @@ const ITEM_HEIGHT = 48;
  *  
  */
 export default function SideMenu(props) {
+    const [show, setShow] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const classes = useStyles();
 
 
     const handleClick = event => {
-        setAnchorEl(event.currentTarget);
+        setShow(true);
     };
 
     const handleClose = () => {
-        setAnchorEl(null);
+        setShow(false);
     };
 
+
     return (
-        <div className={classes.sidemenu}>
-            <IconButton
-                onClick={handleClick}
-                style={{ color: 'white' }} // TODO set this to theme
-            >
-                <NativeIcon name='more_vert' />
-            </IconButton>
-            <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                    style: {
+        <View onLayout={event => setAnchorEl(event.nativeEvent.layout)} >
+            <Grid style={classes.sidemenu}>
+                {console.log(anchorEl)}
+                <IconButton
+                    onClick={handleClick}
+                    style={{ color: 'black' }} // TODO set this to theme
+                >
+                    <MoreVert />
+                </IconButton>
+
+                <Menu
+                    anchor={anchorEl}
+                    keepMounted
+                    visible={show}
+                    onDismiss={handleClose}
+                    contentStyle={{
                         maxHeight: ITEM_HEIGHT * 4.5,
                         width: 200,
-                    },
-                }}
-            >
-                {Array.isArray(props.options) ? props.options.map(option => (
-                    option.link ?
-                        <Link to={option.link}>
+                    }
+                    }
+                >
+                    {Array.isArray(props.options) ? props.options.map(option => (
+                        option.link ?
+                            <Link to={option.link}>
+                                <MenuItem key={option.name} onClick={() => {
+                                    handleClose()
+                                    if (option.action) return option.action()
+                                }}>
+                                    {option.name}
+                                </MenuItem>
+                            </Link> :
                             <MenuItem key={option.name} onClick={() => {
                                 handleClose()
                                 if (option.action) return option.action()
                             }}>
                                 {option.name}
                             </MenuItem>
-                        </Link> :
-                        <MenuItem key={option.name} onClick={() => {
-                            handleClose()
-                            if (option.action) return option.action()
-                        }}>
-                            {option.name}
-                        </MenuItem>
-                )) : ''}
-            </Menu>
-        </div>
+                    )) : ''}
+                </Menu>
+            </Grid >
+        </View>
     );
 }

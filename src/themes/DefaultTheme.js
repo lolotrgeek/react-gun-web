@@ -115,11 +115,9 @@ export const useStyles = () => ({
         marginRight: theme.spacing(2)
     },
     sidemenu: {
-        position: 'absolute',
+        // position: 'absolute',
         background: 'transparent',
-        top: theme.spacing(1),
-        right: theme.spacing(1),
-        zIndex: 1101, //https://material-ui.com/customization/z-index/
+        zIndex: 1500, //https://material-ui.com/customization/z-index/
     },
     rootMenu: {
         display: 'flex',
@@ -170,6 +168,5 @@ export const useStyles = () => ({
         width: window.width / 3,
     },
     menuItem:{
-        zIndex: 99999,
     }
 })
