@@ -1,10 +1,9 @@
 import React from 'react'
-import { MainMenu } from '../components/organisms/Menus'
+import MainMenu  from '../components/organisms/MainMenu'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link as RouterLink,
 } from "react-router-dom"
 import * as routes from './routes'
 
