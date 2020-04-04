@@ -1,5 +1,5 @@
 import React from 'react'
-import { dayHeaders, sayDay, totalTime, secondsToString } from '../../constants/Functions'
+import { dayHeaders, sayDay, totalTime, secondsToString, TimePeriod } from '../../constants/Functions'
 import { isRunning, isTimer } from '../../constants/Validators'
 
 import Stateless from '../molecules/Stateless'
@@ -10,7 +10,8 @@ import { Link } from '../atoms/Link'
 import { SubHeader } from '../atoms/Header'
 import { UnEvenGrid } from '../atoms/Grid'
 import Grid from '../atoms/Grid'
-import { MoodDisplay, EnergyDisplay, TimePeriod } from '../molecules/TimerDisplay'
+import EnergyDisplay from '../molecules/EnergyDisplay'
+import MoodDisplay from '../molecules/MoodDisplay'
 import { RunningTimer } from '../organisms/RunningTimer'
 
 

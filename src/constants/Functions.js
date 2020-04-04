@@ -1,4 +1,4 @@
-import { isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO, format } from 'date-fns'
+import { isValid, isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO, format } from 'date-fns'
 import moment from 'moment'
 
 // TODO: REFACTOR SO FUNCTIONS DO NOT NEED ANY DATA STRUCTURE
@@ -106,6 +106,20 @@ export const formatTime = t => {
         if (t.length === 4) return '-00:' + t.charAt(0) + t.charAt(1) + ':' + t.charAt(2) + t.charAt(3)
         if (t.length === 5) return '-0' + t.charAt(0) + ':' + t.charAt(1) + t.charAt(2) + ':' + t.charAt(3) + t.charAt(4)
         if (t.length > 5) return '-' + t.charAt(0) + t.charAt(1) + ':' + t.charAt(2) + t.charAt(3) + ':' + t.charAt(4) + t.charAt(5)
+    }
+}
+/**
+ * 
+ * @param {*} props 
+ */
+export function TimePeriod(props) {
+    if (isValid(props.end) && isValid(props.start)) {
+        return format(props.start, 'hh:mm aaa') + ' - ' + format(props.end, 'hh:mm aaa')
+    } else if (isValid(props.start)) {
+        return format(props.start, 'hh:mm aaa') + ' -  ... '
+    }
+    else {
+        return ''
     }
 }
 

@@ -9,7 +9,6 @@ import { IconButton } from '../atoms/IconButton';
 import { NativeIcon } from '../atoms/Icon';
 import { useStyles } from '../../themes/DefaultTheme'
 import { Modal, Portal, Surface } from 'react-native-paper';
-import { useHistory } from 'react-router-dom'
 
 import { View } from 'react-native'
 

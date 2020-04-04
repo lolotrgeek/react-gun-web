@@ -1,5 +1,5 @@
 import React from 'react'
-import { fullDate, secondsToString, totalTime } from '../../constants/Functions'
+import { fullDate, secondsToString, totalTime, TimePeriod} from '../../constants/Functions'
 import { nameValid, isTimer } from '../../constants/Validators'
 
 import {Card, CardActions, CardContent} from '../atoms/Card';
@@ -9,7 +9,8 @@ import Grid from '../atoms/Grid'
 
 import { SubHeader } from '../atoms/Header'
 import Popup from '../atoms/Popup'
-import { MoodDisplay, EnergyDisplay, TimePeriod } from '../molecules/TimerDisplay'
+import EnergyDisplay  from '../molecules/EnergyDisplay'
+import MoodDisplay from '../molecules/MoodDisplay'
 import Stateless from '../molecules/Stateless'
 
 
