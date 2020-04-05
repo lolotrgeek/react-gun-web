@@ -108,7 +108,8 @@ export const useStyles = () => ({
         padding: theme.spacing(2),
     },
     popup: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(1),
+        background: 'white',
     },
     buttonPopup: {
         marginLeft: theme.spacing(2),
