@@ -6,10 +6,9 @@ import { trimSoul } from '../constants/Store'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
-import { useHistory } from "react-router-dom"
 import Timeline from '../components/templates/Timeline'
 
-export default function TimerScreen() {
+export default function TimerScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const [timers, setTimers] = useState([])

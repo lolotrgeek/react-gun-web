@@ -1,8 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-//TODO Native Menu
-
 import { Link } from '../atoms/Link'
 import SideMenu from '../molecules/SideMenu'
 

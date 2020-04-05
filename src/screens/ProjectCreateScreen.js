@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from "react-router-dom"
 import { createProject } from '../constants/Data'
 import { colorValid, nameValid } from '../constants/Validators'
 import { useAlert } from 'react-alert'
@@ -7,7 +6,7 @@ import { projectsListLink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectCreate from '../components/templates/ProjectCreate'
 
-export default function ProjectCreateScreen() {
+export default function ProjectCreateScreen({useParams, useHistory}) {
   const [alerted, setAlert] = useState([])
   const [name, setName] = useState('')
   const [color, setColor] = useState('')

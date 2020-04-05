@@ -3,10 +3,9 @@ import { trimSoul } from '../constants/Store'
 import { gun } from '../constants/Data'
 import { timerlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
-import { useHistory } from 'react-router-dom'
 import TimerList from '../components/templates/TimerList'
 
-export default function TimerScreen() {
+export default function TimerScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
   const classes = useStyles()

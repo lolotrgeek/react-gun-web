@@ -37,10 +37,7 @@ export default function SideMenu(props) {
         <View onLayout={event => setAnchorEl(event.nativeEvent.layout)} >
             <Grid style={classes.sidemenu}>
                 {console.log(anchorEl)}
-                <IconButton
-                    onClick={handleClick}
-                    style={{ color: 'black' }} // TODO set this to theme
-                >
+                <IconButton onClick={handleClick} style={classes.sidemenuIcon} >
                     <MenuIcon />
                 </IconButton>
 

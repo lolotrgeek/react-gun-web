@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { dayHeaders, elapsedTime, simpleDate, timeString, sayDay, totalTime, secondsToString } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
@@ -11,7 +10,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectRecord from '../components/templates/ProjectRecord'
 
-export default function ProjectRecordScreen() {
+export default function ProjectRecordScreen({useParams, useHistory}) {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])

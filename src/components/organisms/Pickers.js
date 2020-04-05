@@ -1,12 +1,12 @@
 import React from 'react';
 import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns'; // TODO add to functions
+import DateFnsUtils from '@date-io/date-fns'; 
 import { secondsToString } from '../../constants/Functions'
 
 import Grid from '../atoms/Grid'
 
 import { IconButton } from '../atoms/IconButton';
-import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers'; // TODO native date pickers
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";

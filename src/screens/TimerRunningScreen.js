@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer, createTimer, finishTimer } from '../constants/Data'
 import { timeRules, totalTime } from '../constants/Functions'
@@ -12,7 +11,7 @@ import { elapsedTime } from '../constants/Functions'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerRunning from '../components/templates/TimerRunning'
 
-export default function TimerRunningScreen() {
+export default function TimerRunningScreen({useParams, useHistory}) {
 
   const [online, setOnline] = useState(false)
   const [runningProject, setRunningProject] = useState([])

@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams } from "react-router-dom"
 import useCounter from '../hooks/useCounter'
 import { isRunning, isTimer, projectValid } from '../constants/Validators'
 import { elapsedTime, fullDate } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { gun, restoreProject } from '../constants/Data'
 import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
-import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from 'react-alert'
 import ProjectHistory from '../components/templates/ProjectHistory'
 
-export default function ProjectHistoryScreen() {
+export default function ProjectHistoryScreen({useParams, useHistory}) {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])

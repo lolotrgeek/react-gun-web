@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer } from '../constants/Data'
 import { addMinutes, isValid, sub, add, getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
@@ -12,7 +11,7 @@ import { useStyles } from '../themes/DefaultTheme'
 import TimerEdit from '../components/templates/TimerEdit'
 
 
-export default function TimerEditScreen() {
+export default function TimerEditScreen({useParams, useHistory}) {
   const { projectId, timerId } = useParams()
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])

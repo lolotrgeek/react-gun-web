@@ -5,11 +5,10 @@ import { elapsedTime } from '../constants/Functions'
 import { trimSoul } from '../constants/Store'
 import { gun, finishTimer, createTimer } from '../constants/Data'
 import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
-import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectList from '../components/templates/ProjectList'
 
-export default function ProjectListScreen() {
+export default function ProjectListScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const [runningTimer, setRunningTimer] = useState('')

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, restoreTimer } from '../constants/Data'
 import { isRunning,} from '../constants/Validators'
@@ -11,7 +10,7 @@ import { useAlert } from 'react-alert'
 import { projectlink } from '../routes/routes'
 import TimerHistory from '../components/templates/TimerHistory'
 
-export default function TimerHistoryScreen() {
+export default function TimerHistoryScreen({useParams, useHistory}) {
   const { projectId, timerId } = useParams()
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])

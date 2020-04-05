@@ -73,5 +73,4 @@ export const darkTheme = createMuiTheme({
     palette: {
         type: 'dark',
     },
-    // TODO: https://material-ui.com/customization/palette/#user-preference
 });

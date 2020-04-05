@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, createProject, updateProject, deleteProject } from '../constants/Data'
 import { colorValid, nameValid, projectValid } from '../constants/Validators'
@@ -9,7 +8,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectEdit from '../components/templates/ProjectEdit'
 
-export default function ProjectEditScreen() {
+export default function ProjectEditScreen({useParams, useHistory}) {
   const { projectId, } = useParams()
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { gun, restoreProject } from '../constants/Data'
 import { projectlink } from '../routes/routes'
-import { useHistory } from "react-router-dom"
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectTrash from '../components/templates/ProjectTrash'
 
 
-export default function ProjectTrashScreen() {
+export default function ProjectTrashScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const classes = useStyles();

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, useHistory } from "react-router-dom"
 import { trimSoul } from '../constants/Store'
 import { gun, restoreTimer } from '../constants/Data'
 import { useStyles } from '../themes/DefaultTheme'
@@ -8,7 +7,7 @@ import { useAlert } from 'react-alert'
 import { projectlink } from '../routes/routes'
 import TrashList from '../components/templates/TrashList'
 
-export default function TimerTrashScreen() {
+export default function TimerTrashScreen({useParams, useHistory}) {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])

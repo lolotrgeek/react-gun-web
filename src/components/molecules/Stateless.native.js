@@ -1,6 +1,6 @@
 import React from 'react'
-import {SubHeader} from '../atoms/Header'
-import {useHistory} from 'react-router-dom'
+import { SubHeader } from '../atoms/Header'
+import { useHistory } from 'react-router-native'
 /**
  * 
  * @param {*} props 
@@ -12,7 +12,7 @@ export default function Stateless(props) {
     return (
         <SubHeader
             title={'Nothing Here'}
-            buttonText= {props.buttonText ? props.buttonText : 'Go Home'}
+            buttonText={props.buttonText ? props.buttonText : 'Go Home'}
             buttonClick={() => history.push('/')}
         />
     )

@@ -1,7 +1,6 @@
 import React from 'react'
 import MainMenu from '../components/organisms/MainMenu'
-import { BrowserRouter as Router, Switch, Route, useParams, useHistory } from "react-router-dom"
-
+import { NativeRouter as Router, Switch, Route, useParams, useHistory } from "react-router-native"
 import * as routes from './routes'
 
 // NOTE: order matters for parameter routing

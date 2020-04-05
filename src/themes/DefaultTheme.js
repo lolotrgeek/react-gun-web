@@ -120,6 +120,9 @@ export const useStyles = () => ({
         background: 'transparent',
         zIndex: 1500, //https://material-ui.com/customization/z-index/
     },
+    sidemenuIcon : {
+        color: 'black' 
+    },
     rootMenu: {
         display: 'flex',
         height: window.height,
