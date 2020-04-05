@@ -1,5 +1,5 @@
 import React from 'react'
-import { Title } from '../atoms/Title'
+import { Title } from '../molecules/Title'
 import { Button } from '../atoms/Button'
 import { SubHeader } from '../atoms/Header'
 import Popup from '../atoms/Popup'

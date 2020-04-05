@@ -6,7 +6,7 @@ import {Button} from '../atoms/Button'
 
 import Grid from '../atoms/Grid'
 import { SubHeader } from '../atoms/Header'
-import { Title, SubTitle } from '../atoms/Title'
+import { Title, SubTitle } from '../molecules/Title'
 import { Link } from '../atoms/Link'
 import { UnEvenGrid } from '../atoms/Grid'
 import { RunningTimer } from '../organisms/RunningTimer'

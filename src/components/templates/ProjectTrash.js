@@ -1,6 +1,6 @@
 import React from 'react'
 import { SubHeader } from '../atoms/Header'
-import { Title } from '../atoms/Title'
+import { Title } from '../molecules/Title'
 import { UnEvenGrid } from '../atoms/Grid'
 import Grid from '../atoms/Grid'
 

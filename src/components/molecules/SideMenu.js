@@ -4,7 +4,7 @@ import { Link } from '../atoms/Link'
 import { IconButton } from '../atoms/IconButton';
 import { Menu, MenuItem } from '../atoms/Menu';
 import { useStyles } from '../../themes/DefaultTheme';
-import MoreVert from '@material-ui/icons/MoreVert'; // TODO native Icon
+import {MenuIcon} from '../atoms/Icon'
 import Grid from '../atoms/Grid'
 import { View } from 'react-native'
 
@@ -41,7 +41,7 @@ export default function SideMenu(props) {
                     onClick={handleClick}
                     style={{ color: 'black' }} // TODO set this to theme
                 >
-                    <MoreVert />
+                    <MenuIcon />
                 </IconButton>
 
                 <Menu

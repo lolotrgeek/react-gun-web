@@ -2,7 +2,7 @@ import React from 'react'
 import Grid from '../atoms/Grid'
 import Typography from '../atoms/Typography'
 import {Button} from '../atoms/Button';
-import { Title } from './Title'
+import { Title } from '../molecules/Title'
 
 
 /**

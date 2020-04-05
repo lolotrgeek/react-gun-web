@@ -6,7 +6,7 @@ import { ListItem, ListHeader } from '../atoms/List';
 import { AppBar } from '../atoms/AppBar';
 import { Divider } from '../atoms/Divider';
 import { IconButton } from '../atoms/IconButton';
-import { NativeIcon } from '../atoms/Icon';
+import { DrawerIcon } from '../atoms/Icon.native';
 import { useStyles } from '../../themes/DefaultTheme'
 import { Modal, Portal, Surface } from 'react-native-paper';
 
@@ -20,7 +20,7 @@ function DrawerMenu(props) {
         <View >
             <ListHeader className={classes.drawerHeader}>
                 <IconButton onClick={props.close}>
-                    <NativeIcon name='chevron-left' />
+                    <DrawerIcon />
                 </IconButton>
             </ListHeader>
             <Divider />

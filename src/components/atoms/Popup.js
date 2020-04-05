@@ -23,7 +23,7 @@ export default function Popup(props) {
     let handleClose = () => dispatch({ type: "close" });
     return (
         <Portal>
-            <Modal visible={state}  onDismiss={handleClose}>
+            <Modal visible={state} style={classes.modal}  onDismiss={handleClose}>
                 <Grid container className={classes.popup} direction='column' justify='center' alignItems='center'>
                     <Typography variant='h6' className={classes.typography}>{props.content}</Typography>
                     <Grid>

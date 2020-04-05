@@ -2,7 +2,7 @@ import React from 'react'
 import { projectValid } from '../../constants/Validators'
 
 import Stateless from '../molecules/Stateless'
-import { Title } from '../atoms/Title'
+import { Title } from '../molecules/Title'
 import { SubHeader } from '../atoms/Header'
 import { UnEvenGrid } from '../atoms/Grid'
 import Grid from '../atoms/Grid'

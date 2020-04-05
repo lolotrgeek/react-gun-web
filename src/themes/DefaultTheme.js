@@ -169,5 +169,8 @@ export const useStyles = () => ({
         width: window.width / 3,
     },
     menuItem:{
+    },
+    modal : {
+        height: window.height
     }
 })
