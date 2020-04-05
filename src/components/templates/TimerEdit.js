@@ -29,9 +29,7 @@ import { Button } from '../atoms/Button'
 export default function TimerEdit(props) {
     return (
         <Grid className={props.classes.listRoot}>
-            {console.log('firing')}
-
-            <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
+            <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
             {projectValid(props.project) && isTimer(props.timer) ?
                 <SubHeader
                     title={projectValid(props.project) ? `${props.project[1].name}` : 'No Timer Here'}

@@ -1,6 +1,6 @@
 import React from 'react'
-import MainMenu from '../components/organisms/MainMenu'
-import { NativeRouter as Router, Switch, Route, useParams, useHistory } from "react-router-native"
+import MainMenu from '../components/organisms/MainMenu.native'
+import { NativeRouter, Switch, Route, useParams, useHistory } from "react-router-native"
 import * as routes from './routes'
 
 // NOTE: order matters for parameter routing
@@ -20,7 +20,7 @@ import ProjectHistoryScreen from '../screens/ProjectHistoryScreen';
 
 export default function AppRoutes() {
   return (
-    <Router>
+    <NativeRouter>
       <MainMenu
         showBreadcrumbs={false}
         links={[
@@ -50,6 +50,6 @@ export default function AppRoutes() {
           </Switch>
         }
       />
-    </Router >
+    </NativeRouter >
   );
 }

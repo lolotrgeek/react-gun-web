@@ -44,7 +44,7 @@ function DrawerMenu(props) {
  * @param {Array} props.links list of links, first link will be home
  * @param {Boolean} props.breadcrumbs default `true` set `false` to hide
  */
-export function MainMenu(props) {
+export default function MainMenu(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 

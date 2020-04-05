@@ -1,21 +1,12 @@
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import AlertTemplate from 'react-alert-template-basic'
+
 // import './index.css';
-import { PopupContextProvider } from '../src/contexts/PopupContext';
+
 import { DarkTheme, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './src/serviceWorker';
 
-const alertOptions = {
-  // you can also just use 'bottom center'
-  position: positions.BOTTOM_CENTER,
-  timeout: 5000,
-  offset: '30px',
-  // you can also just use 'scale'
-  transition: transitions.FADE
-}
 
 // https://callstack.github.io/react-native-paper/getting-started.html#customization
 // https://callstack.github.io/react-native-paper/theming.html
@@ -32,11 +23,7 @@ const theme = {
 
 const Root = () => (
   <PaperProvider theme={theme}>
-    <AlertProvider template={AlertTemplate} {...alertOptions}>
-      <PopupContextProvider>
-        <App />
-      </PopupContextProvider>
-    </AlertProvider>
+    <App />
   </PaperProvider >
 )
 
