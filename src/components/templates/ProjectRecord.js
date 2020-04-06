@@ -45,12 +45,12 @@ export default function ProjectRecord(props) {
             {isRunning(props.runningTimer) ?
                 <RunningTimer
                     className={props.classes.space}
-                    name={props.runningProject[1] ? props.runningProject[1].name : ''}
-                    color={props.runningProject[1] ? props.runningProject[1].color : ''}
+                    name={props.runningProject[1] ? props.runningProject[1].name : null}
+                    color={props.runningProject[1] ? props.runningProject[1].color : null}
                     count={props.count}
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
-                : ''}
+                : null}
             {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
             {dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started))).map((day, index) => {
                 return (

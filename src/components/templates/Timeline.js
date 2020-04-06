@@ -42,12 +42,12 @@ export default function Timeline(props) {
             {isRunning(props.runningTimer) ?
                 <RunningTimer
                     className={props.classes.space}
-                    name={props.runningProject[1] ? props.runningProject[1].name : ''}
-                    color={props.runningProject[1] ? props.runningProject[1].color : ''}
+                    name={props.runningProject[1] ? props.runningProject[1].name : null}
+                    color={props.runningProject[1] ? props.runningProject[1].color : null}
                     count={props.count}
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
-                : ''}
+                : null}
 
             <Grid container className={props.classes.space}>
                 {sumProjectTimers(dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started)))).map((day, index) => {
@@ -60,7 +60,7 @@ export default function Timeline(props) {
                                     return (
                                         <UnEvenGrid key={project[0]} values={[
                                             <Link to={props.projectlink(item.project)}>
-                                                <Title variant='h6' color={project[1].color} >{projectValid(project) ? project[1].name : ''}</Title>
+                                                <Title variant='h6' color={project[1].color} >{projectValid(project) ? project[1].name : null}</Title>
                                             </Link>,
                                             <Button
                                                 variant="contained"

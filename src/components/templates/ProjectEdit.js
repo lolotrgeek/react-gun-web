@@ -20,12 +20,12 @@ export default function Name(props) {
   return (
     <Grid container direction='column' justify='center' alignItems='center'>
       <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
-      <SubHeader title={nameValid(props.name) ? props.name : 'New Project'} color={props.color ? props.color : ''} />
+      <SubHeader title={nameValid(props.name) ? props.name : 'New Project'} color={props.color ? props.color : null} />
       <SideMenu
         options={props.sideMenuOptions}
       />
       <Grid container direction='column' justify='flex-start' alignItems='center' className={props.classes.form}>
-        <TextField variant="outlined" label="name" value={nameValid(props.name) ? props.name : ''} onChange={event => props.setName(event.target.value)} />
+        <TextField variant="outlined" label="name" value={nameValid(props.name) ? props.name : null} onChange={event => props.setName(event.target.value)} />
         <Grid item className={props.classes.space}><CirclePicker selectColor={props.selectColor} /></Grid>
         <Grid item className={props.classes.space}>
           <Button variant="contained" color="primary" onClick={() => props.submitProject()}>Submit</Button>

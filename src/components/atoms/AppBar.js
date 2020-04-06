@@ -21,7 +21,7 @@ export const AppBar = props => (
         {props.children}
         {props.action ?
             <PaperAppbar.Action icon="menu" onPress={() => {console.log('Doing Action...'); props.action()}} />
-            : ''
+            : null
         }
         <PaperAppbar.Content
             title={props.title}
@@ -30,7 +30,7 @@ export const AppBar = props => (
 
         {props.sideMenu ?
             <PaperAppbar.Action icon="dots-vertical" onPress={props.sideMenu} />
-            : ''
+            : null
         }
     </PaperAppbar.Header>
 );

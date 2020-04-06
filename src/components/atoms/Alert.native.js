@@ -2,7 +2,6 @@ import React from 'react'
 import { ToastAndroid } from "react-native";
 
 /**
- * @param {*} props 
- * @param {*} props.message 
+ * @param {*} message
  */
-export const Alert = props => ToastAndroid.show(props.message, ToastAndroid.SHORT);
+export const Alert = (message, type) => ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.BOTTOM);

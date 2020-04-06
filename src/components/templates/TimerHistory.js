@@ -33,7 +33,7 @@ export default function TimerHistory(props) {
             {props.project && props.project[1] ?
                 <SubHeader
                     color={props.project[1].color}
-                    title={nameValid(props.project[1].name) ? props.project[1].name : ''}
+                    title={nameValid(props.project[1].name) ? props.project[1].name : null}
                 />
                 : <Stateless />}
 
@@ -63,7 +63,7 @@ export default function TimerHistory(props) {
 
                                 {props.displayRestoreButton(edit) ?
                                     <Button variant='contained' color='primary' size="small" onClick={() => props.restoreButtonAction(edit)}> Restore </Button>
-                                    : ''}
+                                    : null}
 
                             </Grid>
 

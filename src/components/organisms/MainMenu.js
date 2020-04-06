@@ -124,7 +124,7 @@ export default function MainMenu(props) {
                     <Typography variant="h6" noWrap className={classes.title}>
                         {props.title}
                     </Typography>
-                    {props.options ? <SideMenu options={props.options} /> : ''}
+                    {props.options ? <SideMenu options={props.options} /> : null}
 
                 </Toolbar>
 
@@ -150,7 +150,7 @@ export default function MainMenu(props) {
                     {props.links.map((link, index) => (
                         <Link key={index} color='inherit' style={{ textDecoration: 'none' }} to={link.route}>
                             <ListItem button key={link.text}>
-                            {props.icon ? <ListItemIcon> {props.icon}</ListItemIcon> : '' }
+                            {props.icon ? <ListItemIcon> {props.icon}</ListItemIcon>: null }
                                 <ListItemText primary={link.text} />
                             </ListItem>
                         </Link>

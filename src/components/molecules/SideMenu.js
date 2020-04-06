@@ -68,7 +68,7 @@ export default function SideMenu(props) {
                             }}>
                                 {option.name}
                             </MenuItem>
-                    )) : ''}
+                    )): null}
                 </Menu>
             </Grid >
         </View>

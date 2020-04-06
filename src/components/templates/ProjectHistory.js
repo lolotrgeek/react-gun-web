@@ -34,9 +34,9 @@ export default function ProjectHistory(props) {
               <Grid key={edit[2]} className={props.classes.listClass}>
   
                 {edit.length === 3 ? <Title color={edit[1].color} variant='h6' >
-                  {edit.length === 3 ? edit[1].name : ''}
+                  {edit.length === 3 ? edit[1].name : null}
                 </Title>
-                  : ''}
+                  :null}
                 <Typography>{props.displayStatus(edit)}</Typography>
                 {props.displayRestoreButton(edit) ?
                   <UnEvenGrid

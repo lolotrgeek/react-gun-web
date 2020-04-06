@@ -15,7 +15,7 @@ export function Title(props) {
 
     return (
         <Grid container direction='row' justify='flex-start' alignItems='center'>
-            {colorValid(props.color) ? <TitleIcon name='circle' size={20} color={props.color} /> : ''}
+            {colorValid(props.color) ? <TitleIcon name='circle' size={20} color={props.color} /> : null}
             <Typography variant={props.variant} color="textPrimary" style={{ textTransform: 'capitalize' }}>
                 {truncate(props.children)}
             </Typography>

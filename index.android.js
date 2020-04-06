@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, Platform } from 'react-native';
+import { AppRegistry } from 'react-native';
 import { DarkTheme, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import App from './src/App';
 
@@ -15,7 +15,7 @@ const theme = {
   //   surface : 'black'
   // }
 }
-
+console.log('Running on Android')
 const Root = () => (
   <PaperProvider theme={theme}>
     <App />
@@ -23,8 +23,3 @@ const Root = () => (
 )
 
 AppRegistry.registerComponent('Notify', () => Root);
-
-if (Platform.OS === 'web') {
-  const rootTag = document.getElementById('root') || document.getElementById('main');
-  AppRegistry.runApplication('Notify', { rootTag });
-}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { trimSoul } from '../constants/Store'
+import { trimSoul } from '../constants/Functions'
 import { gun } from '../constants/Data'
 import { timerlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'

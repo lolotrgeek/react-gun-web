@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { createTimer, finishTimer, gun } from '../constants/Data'
-import { elapsedTime } from '../constants/Functions'
+import { elapsedTime, trimSoul } from '../constants/Functions'
 import { isRunning, isTimer } from '../constants/Validators'
-import { trimSoul } from '../constants/Store'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import Timeline from '../components/templates/Timeline'
 
-export default function TimerScreen({useParams, useHistory}) {
+export default function TimelineScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const [timers, setTimers] = useState([])

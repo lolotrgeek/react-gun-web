@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { trimSoul } from '../constants/Store'
+import { trimSoul } from '../constants/Functions'
 import { gun, createProject, updateProject, deleteProject } from '../constants/Data'
 import { colorValid, nameValid, projectValid } from '../constants/Validators'
 import { useAlert } from 'react-alert'

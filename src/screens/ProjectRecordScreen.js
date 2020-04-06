@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { trimSoul } from '../constants/Store'
-import { dayHeaders, elapsedTime, simpleDate, timeString, sayDay, totalTime, secondsToString } from '../constants/Functions'
+import { dayHeaders, elapsedTime, simpleDate, timeString, sayDay, totalTime, secondsToString, trimSoul } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import { gun, createProject, finishTimer, createTimer, deleteProject } from '../constants/Data'
 import { isRunning, isTimer } from '../constants/Validators'

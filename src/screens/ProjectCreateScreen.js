@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { createProject } from '../constants/Data'
 import { colorValid, nameValid } from '../constants/Validators'
-import { useAlert } from 'react-alert'
+import { useAlert } from '../hooks/useAlert'
 import { projectsListLink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectCreate from '../components/templates/ProjectCreate'

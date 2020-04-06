@@ -7,7 +7,7 @@ import { RunningTimer } from '../organisms/RunningTimer'
 import { UnEvenGrid } from '../atoms/Grid'
 import { Title } from '../molecules/Title'
 import { Link } from '../atoms/Link'
-import {Button} from '../atoms/Button'
+import { Button } from '../atoms/Button'
 import Grid from '../atoms/Grid'
 
 /**
@@ -18,7 +18,7 @@ import Grid from '../atoms/Grid'
  */
 export default function ProjectList(props) {
     return (
-        <Grid className={props.classes.listRoot}>
+        <Grid container direction='column' justify="center" alignItems="center" className={props.classes.listRoot}>
             {props.projects && props.projects.length > 0 ?
                 <SubHeader
                     className={props.classes.space}
@@ -31,31 +31,31 @@ export default function ProjectList(props) {
             {isRunning(props.runningTimer) ?
                 <RunningTimer
                     className={props.classes.space}
-                    name={props.runningProject[1] ? props.runningProject[1].name : ''}
-                    color={props.runningProject[1] ? props.runningProject[1].color : ''}
+                    name={props.runningProject[1] ? props.runningProject[1].name : null}
+                    color={props.runningProject[1] ? props.runningProject[1].color : null}
                     count={props.count}
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
-                : ''}
+                : null}
 
-            <Grid container className={props.classes.space}>
+            <Grid container direction='column' justify="center" alignItems="center" className={props.classes.content}>
                 {props.projects.map(project => {
                     return (
-                        <Grid key={project[0]} className={props.classes.listClass}>
-                            <UnEvenGrid
-                                values={[
-                                    <Link to={props.projectlink(project[0])} >
-                                        <Title color={project[1].color} variant='h6'>
-                                            {projectValid(project) ? project[1].name : ''}
-                                        </Title>
-                                    </Link>,
-                                    <Button variant="contained" color="primary" onClick={() => {
-                                        if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
-                                        props.startTimer(project)
-                                    }}>Start</Button>
-                                ]}
-                            />
-                        </Grid>
+                        <UnEvenGrid
+                            style={props.classes.listClass}
+                            key={project[0]}
+                            values={[
+                                <Link to={props.projectlink(project[0])} >
+                                    <Title color={project[1].color} variant='h6'>
+                                        {projectValid(project) ? project[1].name : null}
+                                    </Title>
+                                </Link>,
+                                <Button variant="contained" color="primary" onClick={() => {
+                                    if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
+                                    props.startTimer(project)
+                                }}>Start</Button>
+                            ]}
+                        />
                     )
                 })}
             </Grid>

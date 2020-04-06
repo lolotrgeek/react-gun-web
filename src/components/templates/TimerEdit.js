@@ -33,7 +33,7 @@ export default function TimerEdit(props) {
             {projectValid(props.project) && isTimer(props.timer) ?
                 <SubHeader
                     title={projectValid(props.project) ? `${props.project[1].name}` : 'No Timer Here'}
-                    color={projectValid(props.project) ? props.project[1].color : ''} />
+                    color={projectValid(props.project) ? props.project[1].color : null} />
                 : <Stateless />
             }
 
@@ -75,7 +75,7 @@ export default function TimerEdit(props) {
                                 <EnergySlider
                                     startingEnergy={props.energy}
                                     onEnergySet={(event, value) => props.setEnergy(value)}
-                                /> : ''
+                                /> : null
                         }
                         <MoodPicker
                             onGreat={() => props.setMood('great')}

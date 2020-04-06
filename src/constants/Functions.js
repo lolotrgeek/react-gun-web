@@ -2,6 +2,16 @@ import { isValid, isSameDay, isDate, differenceInSeconds, startOfToday, compareA
 import moment from 'moment'
 
 // TODO: REFACTOR SO FUNCTIONS DO NOT NEED ANY DATA STRUCTURE
+// DATA FUNCTIONS
+/**
+ * removes soul from given data
+ * @param {*} data 
+ */
+export const trimSoul = data => {
+    if (!data || !data['_'] || typeof data['_'] !== 'object') return data
+    delete data['_']
+    return data
+}
 
 // TIME FUNCTIONS
 /**
@@ -23,7 +33,7 @@ export const secondsToString = seconds => {
     let day = moment("2015-01-01")
     let start = day.startOf('day')
     let second = start.seconds(seconds)
-    return moment.isMoment(second) ? second.format('H:mm:ss') : ''};
+    return moment.isMoment(second) ? second.format('H:mm:ss') : null};
 
 /**
  * return full month name from date.

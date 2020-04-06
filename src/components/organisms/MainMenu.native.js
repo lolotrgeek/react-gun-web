@@ -29,7 +29,7 @@ function DrawerMenu(props) {
                 <ListItem button
                     key={link.text + index}
                     title={link.text}
-                    icon={props.icon ? props.icon : ''}
+                    icon={props.icon ? props.icon : null}
                     onClick={() => link.route} />
             ))}
             <Divider />

@@ -25,7 +25,7 @@ export function Header(props) {
                 <Grid item>
                     <Button variant="contained" color="secondary" onClick={props.buttonClick}>{props.buttonText}</Button>
 
-                </Grid> : ''
+                </Grid> : null
             }
         </Grid >
     )
@@ -50,7 +50,7 @@ export function SubHeader(props) {
             {props.buttonText ?
                 <Grid item>
                     <Button variant="contained" color="secondary" onClick={props.buttonClick}>{props.buttonText}</Button>
-                </Grid> : ''
+                </Grid> : null
             }
         </Grid >
     )

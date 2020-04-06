@@ -5,7 +5,7 @@ import { AppRegistry } from 'react-native';
 
 import { DarkTheme, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import App from './App';
-import * as serviceWorker from './src/serviceWorker';
+import * as serviceWorker from './serviceWorker';
 
 
 // https://callstack.github.io/react-native-paper/getting-started.html#customization

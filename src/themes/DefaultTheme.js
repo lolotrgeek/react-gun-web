@@ -1,8 +1,7 @@
 import React from "react";
-import { Dimensions,  StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 // Menu
-const window = Dimensions.get('window');
 const drawerWidth = 240;
 
 export const theme = {
@@ -17,10 +16,10 @@ export const theme = {
 
 }
 
-export const useStyles = () => ({
+export const useStyles =  () =>({
     root: {
         flexGrow: 1,
-        marginBottom: '1.2rem'
+        marginBottom: 1
     },
     space: {
         paddingTop: theme.spacing(5)
@@ -43,14 +42,14 @@ export const useStyles = () => ({
         width: '90%'
     },
     form: {
-        '& > *': {
-            margin: theme.spacing(1),
-            width: 200,
-        },
+
+        margin: theme.spacing(1),
+        width: 200,
+
     },
     content: {
         flexGrow: 1,
-        overflowX: 'hidden',
+        overflow: 'hidden',
         maxWidth: 500,
         minWidth: 350,
         marginLeft: 'auto',
@@ -58,7 +57,7 @@ export const useStyles = () => ({
     },
     listRoot: {
         flexGrow: 1,
-        overflowX: 'hidden',
+        overflow: 'hidden',
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -74,9 +73,6 @@ export const useStyles = () => ({
         width: '100%',
         maxWidth: 360,
     },
-    inline: {
-        display: 'inline',
-    },
     table: {
         minWidth: 350,
     },
@@ -85,11 +81,6 @@ export const useStyles = () => ({
     },
     rootCard: {
         minWidth: 275,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
     },
     title: {
         fontSize: 14,
@@ -109,7 +100,7 @@ export const useStyles = () => ({
     },
     popup: {
         padding: theme.spacing(1),
-        background: 'white',
+        backgroundColor: 'white',
     },
     buttonPopup: {
         marginLeft: theme.spacing(2),
@@ -117,18 +108,17 @@ export const useStyles = () => ({
     },
     sidemenu: {
         // position: 'absolute',
-        background: 'transparent',
+        backgroundColor: 'transparent',
         zIndex: 1500, //https://material-ui.com/customization/z-index/
     },
-    sidemenuIcon : {
-        color: 'black' 
+    sidemenuIcon: {
+        color: 'black'
     },
     rootMenu: {
         display: 'flex',
-        height: window.height,
     },
     appBar: {
-        background: 'transparent',
+        backgroundColor: 'transparent',
         // transition: theme.transitions.create(['margin', 'width'], {
         //     easing: theme.transitions.easing.sharp,
         //     duration: theme.transitions.duration.leavingScreen,
@@ -154,7 +144,7 @@ export const useStyles = () => ({
         padding: theme.spacing(1),
         justifyContent: 'flex-end',
     },
-    titleMenu : {
+    titleMenu: {
         flexGrow: 1,
     },
     breadcrumbs: {
@@ -166,14 +156,5 @@ export const useStyles = () => ({
     contentMenu: {
         flexGrow: 1,
 
-    },
-    menu: {
-        height: window.height,
-        width: window.width / 3,
-    },
-    menuItem:{
-    },
-    modal : {
-        height: window.height
     }
 })

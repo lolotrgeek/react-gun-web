@@ -1,5 +1,6 @@
 {
   "name": "timer",
+  "main" : "./src/index.js",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +18,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "date-fns": "^2.10.0",
-    "gun": "^0.2020.116",
+    "gun": "^0.2020.401",
     "hashids": "^2.2.1",
     "jetifier": "^1.6.5",
     "material-colors": "^1.2.6",
@@ -45,7 +46,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "android": "react-native run-android"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { trimSoul } from '../constants/Store'
 import { gun, updateTimer, deleteTimer, createTimer, finishTimer } from '../constants/Data'
-import { timeRules, totalTime } from '../constants/Functions'
+import { timeRules, totalTime, trimSoul } from '../constants/Functions'
 import { isTimer } from '../constants/Validators'
 import { useAlert } from 'react-alert'
 import { projectlink, projectsListLink } from '../routes/routes'

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { trimSoul } from '../constants/Store'
+import { trimSoul } from '../constants/Functions'
 import { gun, restoreTimer } from '../constants/Data'
 import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'

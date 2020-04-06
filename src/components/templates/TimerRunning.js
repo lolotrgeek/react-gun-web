@@ -30,7 +30,7 @@ export default function TimerRunning(props) {
             {projectValid(props.runningProject) && isTimer(props.runningTimer) ?
                 <SubHeader
                     title={projectValid(props.runningProject) ? `${props.runningProject[1].name}` : 'Timer'}
-                    color={projectValid(props.runningProject) ? props.runningProject[1].color : ''}
+                    color={projectValid(props.runningProject) ? props.runningProject[1].color : null}
                 />
                 : <Stateless />
             }
@@ -38,7 +38,7 @@ export default function TimerRunning(props) {
                 <Grid container className={props.classes.space} direction='column' justify='center' alignItems='center'>
                     <Button variant="contained" color="primary" onClick={() => props.noTimerAction()} > Project List </Button>
                 </Grid>
-                : ''}
+                : null}
             {props.runningTimer && props.runningTimer[1] ?
                 <Grid container direction='column' justify='center' alignItems='center'>
                     <Grid item> <Title variant='h2'>{secondsToString(props.count)}</Title> </Grid>
@@ -65,7 +65,7 @@ export default function TimerRunning(props) {
                         }}>Done</Button>
                     </Grid>
                 </Grid >
-                : ''}
+                : null}
         </Grid >
     )
 }
