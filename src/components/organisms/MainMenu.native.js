@@ -5,37 +5,12 @@ import Main from '../atoms/Main'
 import { ListItem, ListHeader } from '../atoms/List';
 import { AppBar } from '../atoms/AppBar';
 import { Divider } from '../atoms/Divider';
-import { IconButton } from '../atoms/IconButton';
-import { DrawerIcon } from '../atoms/Icon.native';
 import { useStyles } from '../../themes/DefaultTheme'
-import { Modal, Portal, Surface } from 'react-native-paper';
 
-import { View } from 'react-native'
+import RBSheet from "react-native-raw-bottom-sheet";
+import { View, Button } from 'react-native'
+import { useHistory } from 'react-router-native'
 
-function DrawerMenu(props) {
-    const classes = useStyles();
-
-
-    return (
-        <View >
-            <ListHeader className={classes.drawerHeader}>
-                <IconButton onClick={props.close}>
-                    <DrawerIcon />
-                </IconButton>
-            </ListHeader>
-            <Divider />
-
-            {props.links.map((link, index) => (
-                <ListItem button
-                    key={link.text + index}
-                    title={link.text}
-                    icon={props.icon ? props.icon : null}
-                    onClick={() => link.route} />
-            ))}
-            <Divider />
-        </View>
-    )
-}
 
 /**
  * 
@@ -45,35 +20,45 @@ function DrawerMenu(props) {
  * @param {Boolean} props.breadcrumbs default `true` set `false` to hide
  */
 export default function MainMenu(props) {
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-
-
+    const history = useHistory()
+    const refRBSheet = React.useRef();
     return (
-        <Main >
-            <Portal>
-                {/* theme={{ colors: { backdrop: 'transparent' } }} */}
-                <Modal visible={open} onDismiss={() => setOpen(!open)}>
-                    <View style={{justifyContent: 'flex-end', flex: 2 }}>
-                        <Surface>
-                            <DrawerMenu links={props.links} close={() => setOpen(!open)} />
-                        </Surface>
-                    </View>
-                </Modal>
-            </Portal>
-            <AppBar
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}
-                action={() => setOpen(!open)}
-                actionIcon={'menu'}
-                title={props.title}
-            />
-            <Main className={classes.contentMenu}>
-                {props.content}
-            </Main>
-        </Main>
-
-
+        <View
+            style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            {props.children}
+            <Button title="OPEN BOTTOM SHEET" onPress={() => refRBSheet.current.open()} />
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown={true}
+                closeOnPressMask={false}
+                height={340}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: "transparent"
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#000"
+                    }
+                }}
+            >
+                <View>
+                    {props.links.map((link, index) => (
+                        <View key={link.text + index} >
+                            <ListItem button
+                                title={link.text}
+                                onClick={() => history.push(link.route)}
+                            />
+                            <Divider />
+                        </View>
+                    ))
+                    }
+                </View>
+            </RBSheet>
+        </View>
     );
 }

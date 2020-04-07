@@ -76,6 +76,7 @@ export const gun = new Gun({
 })
 
 
+// TODO IMPORT FUNCTIONS FROM ./Data.js
 
 export const createProject = (name, color) => {
   const project = newProject(name, color)
@@ -206,4 +207,17 @@ export const finishTimer = (timer) => {
       endTimer(done)
     }
   } else { return timer }
+}
+
+/**
+ *  Delete entire async Storage
+ * @param {function} state
+ */
+export const removeAll = async () => {
+  try {
+      console.info('ASYNC STORAGE - REMOVING ALL')
+      await AsyncStorage.clear()
+  } catch (error) {
+      console.error(error)
+  }
 }

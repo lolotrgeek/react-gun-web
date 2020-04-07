@@ -1,7 +1,6 @@
 import React from 'react'
 import { projectValid, isRunning } from '../../constants/Validators'
 
-import Stateless from '../molecules/Stateless'
 import { SubHeader } from '../atoms/Header'
 import { RunningTimer } from '../organisms/RunningTimer'
 import { UnEvenGrid } from '../atoms/Grid'
@@ -18,15 +17,13 @@ import Grid from '../atoms/Grid'
  */
 export default function ProjectList(props) {
     return (
-        <Grid container direction='column' justify="center" alignItems="center" className={props.classes.listRoot}>
-            {props.projects && props.projects.length > 0 ?
-                <SubHeader
-                    className={props.classes.space}
-                    title='Projects'
-                    buttonClick={props.headerButtonAction}
-                    buttonText='New Project' /> :
-                <Stateless />
-            }
+        <Grid className={props.classes.listRoot}>
+            <SubHeader
+                className={props.classes.space}
+                title='Projects'
+                buttonClick={props.headerButtonAction}
+                buttonText='New Project'
+            />
 
             {isRunning(props.runningTimer) ?
                 <RunningTimer
@@ -38,7 +35,7 @@ export default function ProjectList(props) {
                 />
                 : null}
 
-            <Grid container direction='column' justify="center" alignItems="center" className={props.classes.content}>
+            <Grid container className={props.classes.space}>
                 {props.projects.map(project => {
                     return (
                         <UnEvenGrid

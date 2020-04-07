@@ -41,7 +41,9 @@ export default function TimerRunning(props) {
                 : null}
             {props.runningTimer && props.runningTimer[1] ?
                 <Grid container direction='column' justify='center' alignItems='center'>
-                    <Grid item> <Title variant='h2'>{secondsToString(props.count)}</Title> </Grid>
+                    <Grid item>
+                        <Title variant='h2'>{secondsToString(props.count)}</Title>
+                    </Grid>
 
                     <Grid item>
                         <MoodPicker

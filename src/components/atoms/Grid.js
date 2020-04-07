@@ -7,6 +7,11 @@ import { useStyles, theme } from '../../themes/DefaultTheme'
  * Native Grid Implementation
  * https://material-ui.com/components/grid/#interactive
  * @param {*} props 
+ * @param {boolean} props.container 
+ * @param {boolean} props.item 
+ * @param {String} props.alignItems 
+ * @param {String} props.justify 
+ * @param {String} props.direction 
  */
 export default function Grid(props) {
 

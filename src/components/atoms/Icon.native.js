@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
  * @param {string} props.color 
  * @param {number} props.size 
  */
-export const TitleIcon = props => <Icon name='fa-circle' size={props.size} color={props.color} children={props.children}  />
+export const TitleIcon = props => <Icon name='circle' size={props.size} color={props.color} children={props.children}  />
 
 /**
  * @param {*} props 

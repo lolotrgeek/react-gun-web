@@ -4,9 +4,10 @@ import Grid from '../atoms/Grid'
 import { SubHeader } from '../atoms/Header'
 import Stateless from '../molecules/Stateless'
 import { Link } from '../atoms/Link'
-import { secondsToString, totalTime, TimePeriod} from '../../constants/Functions'
+import { secondsToString, totalTime} from '../../constants/Functions'
 import EnergyDisplay  from '../molecules/EnergyDisplay'
 import MoodDisplay from '../molecules/MoodDisplay'
+import { TimePeriod } from '../molecules/TimePeriod'
 
 /**
  * 

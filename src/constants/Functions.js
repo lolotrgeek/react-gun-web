@@ -119,20 +119,6 @@ export const formatTime = t => {
         if (t.length > 5) return '-' + t.charAt(0) + t.charAt(1) + ':' + t.charAt(2) + t.charAt(3) + ':' + t.charAt(4) + t.charAt(5)
     }
 }
-/**
- * 
- * @param {*} props 
- */
-export function TimePeriod(props) {
-    if (isValid(props.end) && isValid(props.start)) {
-        return format(props.start, 'hh:mm aaa') + ' - ' + format(props.end, 'hh:mm aaa')
-    } else if (isValid(props.start)) {
-        return format(props.start, 'hh:mm aaa') + ' -  ... '
-    }
-    else {
-        return ''
-    }
-}
 
 // TIMER FUNCTIONS - WIP
 /**

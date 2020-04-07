@@ -1,5 +1,6 @@
 import React from 'react'
-import {Text} from 'react-native-paper'
+// import {Text} from 'react-native-paper'
+import {Text} from 'react-native'
 
 const handleVariant = (variant) => {
     if (variant === 'h1') return 100

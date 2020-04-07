@@ -19,11 +19,10 @@ export function Title(props) {
             <Typography variant={props.variant} color="textPrimary" style={{ textTransform: 'capitalize' }}>
                 {truncate(props.children)}
             </Typography>
-
         </Grid >
     )
 }
 
 export function SubTitle(props) {
-    return <h2 style={{ textDecoration: 'none', textTransform: 'capitalize' }}>{truncate(props.children)}</h2>
+    return <Typography style={{ textDecoration: 'none', textTransform: 'capitalize' }}>{truncate(props.children)}</Typography>
 }

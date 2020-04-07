@@ -1,5 +1,5 @@
 import React from 'react'
-import { dayHeaders, sayDay, totalTime, secondsToString, TimePeriod } from '../../constants/Functions'
+import { dayHeaders, sayDay, totalTime, secondsToString } from '../../constants/Functions'
 import { isRunning, isTimer } from '../../constants/Validators'
 
 import Stateless from '../molecules/Stateless'
@@ -13,6 +13,8 @@ import Grid from '../atoms/Grid'
 import EnergyDisplay from '../molecules/EnergyDisplay'
 import MoodDisplay from '../molecules/MoodDisplay'
 import { RunningTimer } from '../organisms/RunningTimer'
+import { TimePeriod } from '../molecules/TimePeriod'
+import Typography from '../atoms/Typography'
 
 
 
@@ -26,7 +28,7 @@ import { RunningTimer } from '../organisms/RunningTimer'
  */
 export default function ProjectRecord(props) {
     return (
-        <Grid>
+        <Grid container direction='column' alignItems='center' justify='flex-start' >
             <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
             {props.project && props.project[1] ?
                 <SubHeader
@@ -54,7 +56,7 @@ export default function ProjectRecord(props) {
             {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
             {dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started))).map((day, index) => {
                 return (
-                    <Grid key={index} className={props.classes.listClass} >
+                    <Grid container direction='column' justify="flex-start" alignItems="center"  key={index} className={props.classes.listClass} >
                         <SubTitle>{sayDay(day.title)}</SubTitle>
                         {/* {console.log(day.data)} */}
                         {day.data.map(timer => {
@@ -64,15 +66,13 @@ export default function ProjectRecord(props) {
                             let started = new Date(timer[1].started)
                             return (
                                 <Link key={timer[0]} to={props.timerlink(props.project[0], timer[0])}>
-                                    <UnEvenGrid
-                                        values={[
-                                            // simpleDate(creation),
-                                            // timeString(new Date(timer[1].started)) ,'-', timeString(new Date(timer[1].ended)),
-                                            <TimePeriod start={started} end={ended} />,
-                                            <EnergyDisplay energy={timer[1].energy} />,
-                                            <MoodDisplay mood={timer[1].mood} />,
-                                            secondsToString(totalTime(started, ended)),
-                                        ]} />
+                                    <Grid container direction='row' justify="space-between" alignItems="flex-start" >
+                                        <TimePeriod start={started} end={ended} />
+                                        {/* <EnergyDisplay energy={timer[1].energy} /> */}
+                                        {/* <MoodDisplay mood={timer[1].mood} /> */}
+                                        <Typography>{secondsToString(totalTime(started, ended))}</Typography>
+                                    </Grid>
+
                                 </Link>
                             )
                         })}

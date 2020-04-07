@@ -1,8 +1,8 @@
 import React from 'react'
 import { nameValid, isTimer } from '../../constants/Validators'
-import { secondsToString, totalTime, TimePeriod} from '../../constants/Functions'
+import { secondsToString, totalTime, } from '../../constants/Functions'
 
-import EnergyDisplay  from '../molecules/EnergyDisplay'
+import EnergyDisplay from '../molecules/EnergyDisplay'
 import MoodDisplay from '../molecules/MoodDisplay'
 import Stateless from '../molecules/Stateless'
 import { SubHeader } from '../atoms/Header'
@@ -12,6 +12,7 @@ import { Button } from '../atoms/Button'
 
 import { Card, CardContent, CardActions } from '../atoms/Card';
 import Typography from '../atoms/Typography'
+import { TimePeriod } from '../molecules/TimePeriod'
 
 /**
  * 
