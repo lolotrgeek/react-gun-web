@@ -42,7 +42,7 @@ export default function ProjectHistory(props) {
                   <UnEvenGrid
                     values={[
                       <Typography>{props.displayStatusDate(edit)}</Typography>,
-                      <Button variant="contained" color="primary" onClick={() => {
+                      <Button variant="contained" color="primary" onPress={() => {
                         props.restoreButtonAction(edit)
                       }}>Restore</Button>
                     ]}

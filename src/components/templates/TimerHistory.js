@@ -13,6 +13,7 @@ import { Button } from '../atoms/Button'
 import { Card, CardContent, CardActions } from '../atoms/Card';
 import Typography from '../atoms/Typography'
 import { TimePeriod } from '../molecules/TimePeriod'
+import { View } from 'react-native'
 
 /**
  * 
@@ -30,7 +31,13 @@ import { TimePeriod } from '../molecules/TimePeriod'
  */
 export default function TimerHistory(props) {
     return (
-        <Grid className={props.classes.Content} container direction='column' justify='center' alignItems='center'>
+        <View style={{
+            flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'column',
+            ...props.classes.listRoot
+        }}>
             {props.project && props.project[1] ?
                 <SubHeader
                     color={props.project[1].color}
@@ -52,27 +59,31 @@ export default function TimerHistory(props) {
                         <CardContent>
                             <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
                             <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
-                            <Grid className={props.classes.space3} container direction='row' justify='space-evenly' alignItems='flex-start'>
-                                <Grid item xs={3}><TimePeriod start={started} end={ended} /></Grid>
-                                <Grid item xs={1}><EnergyDisplay energy={edit[1].energy} /></Grid>
-                                <Grid item xs={1}><MoodDisplay mood={edit[1].mood} /></Grid>
-                                <Grid item xs={2}>{secondsToString(totalTime(started, ended))}</Grid>
-                            </Grid>
+                            <View style={{
+                                justifyContent: 'space-evenly',
+                                alignItems: 'flex-start',
+                                flexDirection: 'row',
+                                flex: 0
+                            }}>
+                                <TimePeriod start={started} end={ended} />
+                                <EnergyDisplay energy={edit[1].energy} />
+                                <MoodDisplay mood={edit[1].mood} />
+                                <Typography>{secondsToString(totalTime(started, ended))}</Typography>
+                            </View>
                         </CardContent>
-                        <CardActions>
-                            <Grid container direction='row' justify='center' alignItems='flex-start'>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                            <CardActions>
 
                                 {props.displayRestoreButton(edit) ?
-                                    <Button variant='contained' color='primary' size="small" onClick={() => props.restoreButtonAction(edit)}> Restore </Button>
+                                    <Button variant='contained' color='primary' size="small" onPress={() => props.restoreButtonAction(edit)}> Restore </Button>
                                     : null}
 
-                            </Grid>
-
-                        </CardActions>
+                            </CardActions>
+                        </View>
                     </Card>
                 )
             })}
 
-        </Grid >
+        </View >
     )
 }

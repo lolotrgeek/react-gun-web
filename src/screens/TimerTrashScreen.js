@@ -3,7 +3,7 @@ import { trimSoul } from '../constants/Functions'
 import { gun, restoreTimer } from '../constants/Data'
 import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
-import { useAlert } from 'react-alert'
+import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TrashList from '../components/templates/TrashList'
 

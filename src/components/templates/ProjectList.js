@@ -1,13 +1,13 @@
 import React from 'react'
 import { projectValid, isRunning } from '../../constants/Validators'
 
-import { SubHeader } from '../atoms/Header'
+import { SubHeader, Header } from '../atoms/Header'
 import { RunningTimer } from '../organisms/RunningTimer'
 import { UnEvenGrid } from '../atoms/Grid'
 import { Title } from '../molecules/Title'
-import { Link } from '../atoms/Link'
 import { Button } from '../atoms/Button'
 import Grid from '../atoms/Grid'
+import {View} from 'react-native'
 
 /**
  * 
@@ -17,8 +17,14 @@ import Grid from '../atoms/Grid'
  */
 export default function ProjectList(props) {
     return (
-        <Grid className={props.classes.listRoot}>
-            <SubHeader
+        <View style={{
+            flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'column',
+            ...props.classes.listRoot
+        }}>
+            <Header
                 className={props.classes.space}
                 title='Projects'
                 buttonClick={props.headerButtonAction}
@@ -34,28 +40,26 @@ export default function ProjectList(props) {
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
                 : null}
-
-            <Grid container className={props.classes.space}>
+            <Grid container direction='column' justify="flex-start" alignItems="center" >
                 {props.projects.map(project => {
                     return (
-                        <UnEvenGrid
-                            style={props.classes.listClass}
-                            key={project[0]}
-                            values={[
-                                <Link to={props.projectlink(project[0])} >
-                                    <Title color={project[1].color} variant='h6'>
-                                        {projectValid(project) ? project[1].name : null}
-                                    </Title>
-                                </Link>,
-                                <Button variant="contained" color="primary" onClick={() => {
+                        <Grid key={project[0]} container style={props.classes.listClass} direction='row' justify="space-around" alignItems="flex-start" >
+                            <Grid item>
+                                <Title to={props.projectlink(project[0])} color={project[1].color} variant='h6'>
+                                    {projectValid(project) ? project[1].name : null}
+                                </Title>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="primary" onPress={() => {
                                     if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
                                     props.startTimer(project)
                                 }}>Start</Button>
-                            ]}
-                        />
+                            </Grid>
+                        </Grid>
                     )
                 })}
             </Grid>
-        </Grid>
+
+        </View >
     )
 }

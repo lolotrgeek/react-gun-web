@@ -12,4 +12,3 @@ import { TouchableOpacity } from 'react-native'
  *  
  */
 export const IconButton = props => <TouchableOpacity {...props} children={props.children} />
-// export const IconButton = props => <PaperIconButton {...props} onPress={props.onClick} children={props.children} />

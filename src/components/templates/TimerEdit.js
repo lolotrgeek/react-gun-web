@@ -13,7 +13,7 @@ import { PickerDate, PickerTime } from '../organisms/Pickers'
 import { EnergySlider } from '../molecules/EnergySlider'
 import Grid from '../atoms/Grid'
 import { Button } from '../atoms/Button'
-
+import { View } from 'react-native'
 
 /**
  * 
@@ -28,73 +28,85 @@ import { Button } from '../atoms/Button'
  */
 export default function TimerEdit(props) {
     return (
-        <Grid className={props.classes.listRoot}>
+        <View style={{
+            flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'column',
+            ...props.classes.listRoot
+        }}>
+            <SideMenu options={props.sideMenuOptions} />
             <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
+
             {projectValid(props.project) && isTimer(props.timer) ?
                 <SubHeader
                     title={projectValid(props.project) ? `${props.project[1].name}` : 'No Timer Here'}
                     color={projectValid(props.project) ? props.project[1].color : null} />
+
                 : <Stateless />
             }
 
             {props.timer && isTimer(props.timer) ?
-                <SideMenu options={props.sideMenuOptions} />
-                : ' '}
-            {props.timer && isTimer(props.timer) ?
-                <Grid container direction='column' justify='flex-start' alignItems='center'>
-                    <Grid item> <Title variant='h5'>{secondsToString(props.total)}</Title> </Grid>
-                    <Grid item>
-                        <PickerDate
-                            label='Date'
-                            startdate={props.started}
-                            onDateChange={props.chooseNewDate}
-                            maxDate={endOfDay(new Date())}
-                            previousDay={props.previousDay}
-                            nextDay={props.nextDay}
-                        />
-                        {/* {started.toString()} */}
-                        <PickerTime
-                            label='Start'
-                            time={props.started}
-                            onTimeChange={props.chooseNewStart}
-                            addMinutes={props.increaseStarted}
-                            subtractMinutes={props.decreaseStarted}
-                        />
-                        {/* {ended.toString()} */}
-                        <PickerTime
-                            label='End'
-                            time={props.ended}
-                            onTimeChange={props.chooseNewEnd}
-                            addMinutes={props.increaseEnded}
-                            running={isRunning(props.timer)}
-                            subtractMinutes={props.decreaseEnded}
-                        />
 
-                        {
-                            props.timer[1] ?
-                                <EnergySlider
-                                    startingEnergy={props.energy}
-                                    onEnergySet={(event, value) => props.setEnergy(value)}
-                                /> : null
-                        }
-                        <MoodPicker
-                            onGreat={() => props.setMood('great')}
-                            onGood={() => props.setMood('good')}
-                            onMeh={() => props.setMood('meh')}
-                            onBad={() => props.setMood('bad')}
-                            onAwful={() => props.setMood('awful')}
-                            selected={props.mood}
-                        />
-                    </Grid >
-                    <Grid item className={props.classes.space2}>
-                        <Button variant="contained" color="primary" onClick={() => props.saveButtonAction()}>Save</Button>
-                    </Grid>
-                </Grid >
+                <View style={{
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    flexDirection: 'column'
+                }} >
+
+                    <Title variant='h5'>{secondsToString(props.total)}</Title>
+
+                    <PickerDate
+                        label='Date'
+                        startdate={props.started}
+                        onDateChange={props.chooseNewDate}
+                        maxDate={endOfDay(new Date())}
+                        previousDay={props.previousDay}
+                        nextDay={props.nextDay}
+                    />
+                    {/* {started.toString()} */}
+                    <PickerTime
+                        label='Start'
+                        time={props.started}
+                        onTimeChange={props.chooseNewStart}
+                        addMinutes={props.increaseStarted}
+                        subtractMinutes={props.decreaseStarted}
+                    />
+                    {/* {ended.toString()} */}
+                    <PickerTime
+                        label='End'
+                        time={props.ended}
+                        onTimeChange={props.chooseNewEnd}
+                        addMinutes={props.increaseEnded}
+                        running={isRunning(props.timer)}
+                        subtractMinutes={props.decreaseEnded}
+                    />
+
+                    {
+                        props.timer[1] ?
+                            <EnergySlider
+                                setEnergy={props.setEnergy}
+                                startingEnergy={props.energy}
+                            /> : null
+                    }
+                    <MoodPicker
+                        onGreat={() => props.setMood('great')}
+                        onGood={() => props.setMood('good')}
+                        onMeh={() => props.setMood('meh')}
+                        onBad={() => props.setMood('bad')}
+                        onAwful={() => props.setMood('awful')}
+                        selected={props.mood}
+                    />
+
+                    <Button variant="contained" color="primary" onPress={() => props.saveButtonAction()}>Save</Button>
+
+                </View >
                 :
                 <Grid container direction='column' justify='center' alignItems='center'>
-                    <Button variant="contained" color="primary" onClick={() => props.noTimersAction()}> Projects </Button>
+                    <Button variant="contained" color="primary" onPress={() => props.noTimersAction()}> Projects </Button>
                 </Grid>
+
             }
-        </Grid >
+        </View>
     )
 }

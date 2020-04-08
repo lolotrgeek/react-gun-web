@@ -22,5 +22,5 @@ export const MenuItem = props => (
     <PaperMenu.Item {...props}
         title={props.title || props.children}
         icon={props.icon}
-        onPress={props.onClick}
+        onPress={props.onPress}
     />)

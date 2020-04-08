@@ -30,7 +30,7 @@ export default function Name(props) {
                 <UnEvenGrid
                   values={[
                     <Title color={project[1].color} variant='h6' >{ project[1].name }</Title>,
-                    <Button variant="contained" color="primary" onClick={() => props.restoreButtonAction(project) }>Restore</Button>
+                    <Button variant="contained" color="primary" onPress={() => props.restoreButtonAction(project) }>Restore</Button>
                   ]}
                 />
   

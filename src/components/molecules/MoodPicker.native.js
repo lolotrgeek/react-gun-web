@@ -3,6 +3,7 @@ import Grid from '../atoms/Grid'
 import Typography from '../atoms/Typography';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { IconButton } from '../atoms/IconButton'
+import { View } from 'react-native'
 
 export function MoodPicker(props) {
     let moods = [
@@ -14,32 +15,36 @@ export function MoodPicker(props) {
 
     ]
     return (
-        <Grid>
-            <Grid container direction='row' justify='space-between' alignItems='center'>
-                <Grid item>
-                    <Typography>{props.label ? props.label : 'Mood'}</Typography>
-                </Grid>
-                {moods.map(mood => (
-                    <Grid key={mood.name} item>
-                        <IconButton onPress={mood.click} >
-                            <Icon
-                                name={mood.icon}
-                                color={mood.color}
-                                size={40}
 
-                                style={{
-                                    fontWeight: props.selected === mood.name ? 'bold' : 'normal',
-                                    marginLeft: 'auto',
-                                    marginRight: 'auto',
-                                    fontSize: props.selected === mood.name ? 40 : 20
-                                }}
-                            />
-                        </IconButton>
-
-                    </Grid>
-                ))}
-
+        <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
+        }}>
+            <Grid item>
+                <Typography>{props.label ? props.label : 'Mood'}</Typography>
             </Grid>
-        </Grid>
+            {moods.map(mood => (
+                <Grid key={mood.name} item>
+                    <IconButton onPress={mood.click} >
+                        <Icon
+                            name={mood.icon}
+                            color={mood.color}
+                            size={40}
+
+                            style={{
+                                fontWeight: props.selected === mood.name ? 'bold' : 'normal',
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                fontSize: props.selected === mood.name ? 40 : 20
+                            }}
+                        />
+                    </IconButton>
+
+                </Grid>
+            ))}
+
+        </View>
+
     );
 }

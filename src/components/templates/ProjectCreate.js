@@ -7,6 +7,7 @@ import { ColorPicker as CirclePicker } from '../molecules/ColorPicker'
 
 import { Button } from '../atoms/Button'
 import { TextField } from '../atoms/TextField'
+import { View } from 'react-native'
 
 /**
  * 
@@ -15,26 +16,36 @@ import { TextField } from '../atoms/TextField'
  */
 export default function PrpojectCreate(props) {
   return (
-    <Grid container direction='column' justify='center' alignItems='center' className={props.classes.space} >
+    <View style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      ...props.classes.listRoot
+    }}>
       <SubHeader
+        style={props.classes.space}
         title={nameValid(props.name) ? props.name : 'New Project'}
-        color={props.color ? props.color : null}
+        color={props.color ? props.color : 'grey'}
       />
+
+
       <TextField
         variant="outlined"
         label="name"
-        style={{ width: 240 }}
+        style={{...props.classes.spaceAround, width: 240 }}
         value={nameValid(props.name) ? props.name : null}
         onChange={text => props.setName(text)}
       />
 
-      <Grid item className={props.classes.space}>
-        < CirclePicker selectColor={props.selectColor} />
-      </Grid>
-      <Grid item className={props.classes.space} >
-        <Button variant="contained" color="primary" onClick={() => props.submitProject()}>Submit</Button>
-      </Grid>
 
-    </Grid>
+      <CirclePicker selectColor={props.selectColor} />
+
+      <Grid style={props.classes.spaceBelow} item >
+
+        <Button variant="contained" color="primary" onPress={() => props.submitProject()}>Submit</Button>
+
+      </Grid>
+    </View>
   )
 }

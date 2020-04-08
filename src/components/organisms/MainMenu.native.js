@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 
 import Main from '../atoms/Main'
 import { ListItem, ListHeader } from '../atoms/List';
@@ -10,6 +9,7 @@ import { useStyles } from '../../themes/DefaultTheme'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { View, Button } from 'react-native'
 import { useHistory } from 'react-router-native'
+import Grid from '../atoms/Grid'
 
 
 /**
@@ -23,19 +23,13 @@ export default function MainMenu(props) {
     const history = useHistory()
     const refRBSheet = React.useRef();
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <Main>
             {props.children}
             <Button title="OPEN BOTTOM SHEET" onPress={() => refRBSheet.current.open()} />
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
-                closeOnPressMask={false}
+                closeOnPressMask={true}
                 height={340}
                 customStyles={{
                     wrapper: {
@@ -51,7 +45,7 @@ export default function MainMenu(props) {
                         <View key={link.text + index} >
                             <ListItem button
                                 title={link.text}
-                                onClick={() => history.push(link.route)}
+                                onPress={() => history.push(link.route)}
                             />
                             <Divider />
                         </View>
@@ -59,6 +53,6 @@ export default function MainMenu(props) {
                     }
                 </View>
             </RBSheet>
-        </View>
+        </Main>
     );
 }

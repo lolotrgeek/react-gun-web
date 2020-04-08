@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useStyles, theme } from '../../themes/DefaultTheme'
+import Typography from './Typography';
 
 
 /**
@@ -18,22 +19,22 @@ export default function Grid(props) {
   return <View
     style={{
       display: 'flex',
-      flex: 1,
-      flexBasis: props.container && props.spacing ? theme.spacing(props.spacing) : 'auto',
+      flex: props.container ? 1 : 0,
       flexDirection: props.container && props.direction ? props.direction : 'column',
-      alignItems: props.container && props.alignItems ? props.alignItems : 'flex-start',
+      alignItems: props.container && props.alignItems ? props.alignItems : 'center',
       justifyContent: props.container && props.justify ? props.justify : 'flex-start',
       width: props.container ? '100%' : 'auto',
       flexWrap: props.wrap ? props.wrap : 'wrap',
       margin: props.item ? theme.spacing(2) : 0,
+      overflow: 'hidden',
       ...props.style,
       ...props.className,
     }}
-    xs={props.xs}
-    sm={props.sm}
-    md={props.md}
-    lg={props.lg}
-    xl={props.xl}
+    // xs={props.xs}
+    // sm={props.sm}
+    // md={props.md}
+    // lg={props.lg}
+    // xl={props.xl}
     children={props.children}
   />
 }
@@ -44,7 +45,7 @@ export function SpacingGrid(props) {
     <Grid container className={classes.root} spacing={2}>
       {props.headers ? props.headers.map(header => (
         <Grid key={header} wrap="nowrap" item xs>
-          <h3>{header}</h3>
+          <Typography>{header}</Typography>
         </Grid>
       )) : null}
       <Grid container justify="center" spacing={2}>
@@ -62,13 +63,17 @@ export function SpacingGrid(props) {
 export function UnEvenGrid(props) {
   const classes = useStyles();
   return (
-    <Grid container direction='row' justify="space-between" alignItems="center" >
+    <View style={{
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row'
+    }} >
       {props.values ? props.values.map((value, index) => (
-        <Grid className={classes.control} key={index}>
+        <View style={classes.control} key={index}>
           {value}
-        </Grid>
+        </View>
       )) : null}
-    </Grid>
+    </View>
 
   );
 }

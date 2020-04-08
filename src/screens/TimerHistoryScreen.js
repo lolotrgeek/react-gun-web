@@ -5,7 +5,7 @@ import { elapsedTime, fullDate, trimSoul } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
-import { useAlert } from 'react-alert'
+import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TimerHistory from '../components/templates/TimerHistory'
 

@@ -6,4 +6,4 @@ import { Button as PaperButton } from 'react-native-paper';
  * Combine Router Link and Material-Ui Button into single Component
  * @param {*} props 
  */
-export const Button = props => <PaperButton onPress={props.onClick}  mode={props.variant}> {props.children}</PaperButton>;
+export const Button = props => <PaperButton onPress={props.onPress}  mode={props.variant}> {props.children}</PaperButton>;

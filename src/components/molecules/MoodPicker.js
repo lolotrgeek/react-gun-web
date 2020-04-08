@@ -3,8 +3,9 @@ import Grid from '../atoms/Grid'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGrin, faSmile, faMeh, faFrown, faDizzy } from "@fortawesome/free-solid-svg-icons";
-import {IconButton} from '../atoms/IconButton';
-import Typography  from '../atoms/Typography';
+import { IconButton } from '../atoms/IconButton';
+import Typography from '../atoms/Typography';
+import { View } from 'react-native'
 
 export function MoodPicker(props) {
     let moods = [
@@ -16,30 +17,29 @@ export function MoodPicker(props) {
 
     ]
     return (
-        <Grid>
-            <Grid container direction='row' justify='space-between' alignItems='center'>
-                <Grid item>
-                    <Typography variant='h3'>{props.label ? props.label : 'Mood'}</Typography>
-                </Grid>
-                {moods.map(mood => (
-                    <Grid key={mood.name} item>
-                        <IconButton edge='end' onClick={mood.click} >
-                            <FontAwesomeIcon
-                                icon={mood.icon}
-                                color={mood.color}
-                                style={{
-                                    fontWeight: props.selected === mood.name ? 'bold' : 'normal',
-                                    marginLeft: 'auto',
-                                    marginRight: 'auto',
-                                    fontSize: props.selected === mood.name ? 40 : 20
-                                }}
 
-                            />
-                        </IconButton>
-                    </Grid>
-                ))}
+        <Grid container direction='row' justify='space-between' alignItems='center'>
+            <Typography variant='h3'>{props.label ? props.label : 'Mood'}</Typography>
+            {moods.map(mood => (
 
-            </Grid>
+                <IconButton key={mood.name} edge='end' onClick={mood.click} >
+                    <FontAwesomeIcon
+                        icon={mood.icon}
+                        color={mood.color}
+                        style={{
+                            fontWeight: props.selected === mood.name ? 'bold' : 'normal',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontSize: props.selected === mood.name ? 40 : 20
+                        }}
+
+                    />
+                </IconButton>
+
+            ))}
+
+
         </Grid>
+
     );
 }

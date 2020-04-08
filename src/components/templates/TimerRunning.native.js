@@ -9,7 +9,7 @@ import { MoodPicker } from '../molecules/MoodPicker'
 import Grid from '../atoms/Grid'
 import { isTimer, projectValid, isRunning } from '../../constants/Validators'
 import { secondsToString } from '../../constants/Functions'
-import { View } from 'react-native'
+import {View } from 'react-native'
 
 /**
  * 
@@ -25,9 +25,13 @@ import { View } from 'react-native'
  * @param {function} props.popupReject
  */
 export default function TimerRunning(props) {
+    const [width, setWidth] = React.useState(340)
     return (
         <View style={{
             flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'column',
             ...props.classes.listRoot
         }}>
             <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
@@ -42,42 +46,40 @@ export default function TimerRunning(props) {
                 <Grid container className={props.classes.space} direction='column' justify='center' alignItems='center'>
                     <Button variant="contained" color="primary" onPress={() => props.noTimerAction()} > Project List </Button>
                 </Grid>
-                :
-                <View style={{
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...props.classes.content
-                }}>
+                : null}
+            {props.runningTimer && props.runningTimer[1] ?
+                <Grid container direction='column' justify='flex-start' alignItems='center'>
+                    <Grid item>
+                        <Title variant='h2'>{secondsToString(props.count)}</Title>
+                    </Grid>
 
-                    <Title variant='h6'>{secondsToString(props.count)}</Title>
+                    <Grid item>
+                        <MoodPicker
+                            onGreat={() => props.setMood('great')}
+                            onGood={() => props.setMood('good')}
+                            onMeh={() => props.setMood('meh')}
+                            onBad={() => props.setMood('bad')}
+                            onAwful={() => props.setMood('awful')}
+                            selected={props.mood}
+                        />
+                        <View onLayout={event => setWidth(event.nativeEvent.layout.width)}>
+                            <EnergySlider
+                                width={width}
+                                startingEnergy={props.energy}
+                                onEnergySet={(event, value) => props.setEnergy(value)}
+                            />
+                        </View>
 
+                    </Grid >
 
-                    <MoodPicker
-                        onGreat={() => props.setMood('great')}
-                        onGood={() => props.setMood('good')}
-                        onMeh={() => props.setMood('meh')}
-                        onBad={() => props.setMood('bad')}
-                        onAwful={() => props.setMood('awful')}
-                        selected={props.mood}
-                    />
-
-
-
-                    <EnergySlider
-                        startingEnergy={props.energy}
-                        onEnergySet={(event, value) => props.setEnergy(value)}
-                    />
-
-
-                    <Button variant="contained" color="primary" onClick={() => {
+                    <Button variant="contained" color="primary" onPress={() => {
                         if (isRunning(props.runningTimer)) {
                             props.timerCompleteAction()
                         };
                     }}>Done</Button>
 
-                </View>
-            }
+                </Grid >
+                : null}
         </View >
     )
 }

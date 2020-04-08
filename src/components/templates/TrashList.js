@@ -62,7 +62,7 @@ export default function TrashList(props) {
                   variant='contained'
                   color='primary'
                   size="small"
-                  onClick={() => props.restoreButton()}>
+                  onPress={() => props.restoreButton()}>
                   Restore
                 </Button>
               </Grid>

@@ -127,7 +127,7 @@ export function EnergySlider(props) {
                     valueLabelDisplay="on"
                     onChange={(event, value) => setColor(calcColor(width, value))}
                     defaultValue={props.startingEnergy}
-                    onChangeCommitted={props.onEnergySet}
+                    onChangeCommitted={(event, value) => props.setEnergy(value)}
                 />
             </Grid>
         </Grid>

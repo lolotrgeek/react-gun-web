@@ -15,7 +15,7 @@ import MoodDisplay from '../molecules/MoodDisplay'
 import { RunningTimer } from '../organisms/RunningTimer'
 import { TimePeriod } from '../molecules/TimePeriod'
 import Typography from '../atoms/Typography'
-
+import { View } from 'react-native'
 
 
 /**
@@ -28,7 +28,13 @@ import Typography from '../atoms/Typography'
  */
 export default function ProjectRecord(props) {
     return (
-        <Grid container direction='column' alignItems='center' justify='flex-start' >
+        <View style={{
+            flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'column',
+            ...props.classes.listRoot
+        }}>
             <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
             {props.project && props.project[1] ?
                 <SubHeader
@@ -53,10 +59,14 @@ export default function ProjectRecord(props) {
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
                 : null}
-            {/* <SpacingGrid headers={['Started', 'Ended', 'Energy', 'Mood']} /> */}
+
             {dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started))).map((day, index) => {
                 return (
-                    <Grid container direction='column' justify="flex-start" alignItems="center"  key={index} className={props.classes.listClass} >
+                    <View key={index} style={{
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection: 'column'
+                    }} >
                         <SubTitle>{sayDay(day.title)}</SubTitle>
                         {/* {console.log(day.data)} */}
                         {day.data.map(timer => {
@@ -65,20 +75,24 @@ export default function ProjectRecord(props) {
                             let ended = new Date(timer[1].ended)
                             let started = new Date(timer[1].started)
                             return (
+
                                 <Link key={timer[0]} to={props.timerlink(props.project[0], timer[0])}>
-                                    <Grid container direction='row' justify="space-between" alignItems="flex-start" >
-                                        <TimePeriod start={started} end={ended} />
-                                        {/* <EnergyDisplay energy={timer[1].energy} /> */}
-                                        {/* <MoodDisplay mood={timer[1].mood} /> */}
-                                        <Typography>{secondsToString(totalTime(started, ended))}</Typography>
-                                    </Grid>
+                                    <UnEvenGrid
+                                        values={[
+                                            <TimePeriod start={started} end={ended} />,
+                                            <EnergyDisplay energy={timer[1].energy} />,
+                                            <MoodDisplay mood={timer[1].mood} />,
+                                            <Typography>{secondsToString(totalTime(started, ended))}</Typography>
+                                        ]}
+                                    />
 
                                 </Link>
+
                             )
                         })}
-                    </Grid>
+                    </View >
                 )
             })}
-        </Grid >
+        </View >
     )
 }

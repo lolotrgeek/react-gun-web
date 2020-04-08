@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Grid from '../atoms/Grid'
 import { useStyles } from '../../themes/DefaultTheme'
-import {View } from 'react-native'
-import Slider  from '@react-native-community/slider'
+import { View } from 'react-native'
+import Slider from '@react-native-community/slider'
 import Typography from '../atoms/Typography';
 
 const sliderBackground = 'linear-gradient(0deg, rgba(191,191,191,0) 0%, rgba(0,125,255,0) 25%, rgba(39,255,0,0) 50%, rgba(255,252,0,0) 75%, rgba(255,154,0,1) 100%)'
@@ -84,28 +84,21 @@ export function EnergySlider(props) {
     const classes = useStyles();
     const [color, setColor] = useState('')
     const [width, setWidth] = useState(0)
+    const [value, setValue] = useState(props.startingEnergy? props.startingEnergy : 0)
     return (
-        <View onLayout={event => setWidth(event.nativeEvent.layout.width)} >
-            <Grid className={classes.space} container direction='row' justify='space-between' alignItems='center'>
-                <Grid item >
-                    <Typography>{props.label ? props.label : 'Energy'}</Typography>
-                </Grid>
-                <Grid item >
-                    <Slider
-                        style={{ width: '100%', height: 50, color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy) }}
-                        minimumValue={0}
-                        maximumValue={100}
-                        step={1}
-                        thumbTintColor={color}
-                        minimumTrackTintColor={color}
-                        maximumTrackTintColor={color}
-                        onSlidingComplete={props.onEnergySet}
-                        onValueChange={(value) => setColor(calcColor(width, value))}
-                        value={props.startingEnergy}
-                    />
-
-                </Grid>
-            </Grid>
+        <View style={{width: props.width ? props.width : 340 }} onLayout={event => setWidth(event.nativeEvent.layout.width)} >
+            <Slider
+                style={{ height: 50, color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy) }}
+                minimumValue={0}
+                maximumValue={100}
+                step={1}
+                thumbTintColor={color}
+                minimumTrackTintColor={color}
+                maximumTrackTintColor={color}
+                onSlidingComplete={value => props.setEnergy(value)}
+                value={value}
+                onValueChange={value => {setValue(value); setColor(calcColor(width, value))}}
+            />
         </View>
     )
 }

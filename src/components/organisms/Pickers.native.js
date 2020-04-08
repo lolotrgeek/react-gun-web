@@ -8,23 +8,27 @@ import { IconButton } from '../atoms/IconButton';
 // import { TimePicker, DatePicker } from '../molecules/DatePickers.native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import { View } from 'react-native'
 
 
 export function PickerDate(props) {
   const [show, setShow] = useState(false);
 
   return (
-    <Grid container direction="row" alignItems="flex-end" justify="center">
+    <View style={{
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+      flexDirection: 'row'
+    }} >
       <Grid item >
         <Text>{props.label}</Text>
       </Grid>
       <Grid item >
         <TouchableOpacity accessibilityLabel="previous day" onPress={() => props.previousDay()}>
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            size={'sm'}
+          <Icon
+            name='chevron-left'
+            size={20}
             color="grey"
           />
         </TouchableOpacity>
@@ -37,66 +41,69 @@ export function PickerDate(props) {
           <DateTimePicker
             mode='date'
             value={props.startdate}
-            onChange={(event, newDate) => {props.onDateChange(newDate); setShow(false)}}
+            onChange={(event, newDate) => { setShow(false) ; props.onDateChange(newDate);  }}
             maximumDate={props.maxDate}
           />)}
       </Grid>
       <Grid item >
         <TouchableOpacity accessibilityLabel="next day" onPress={() => props.nextDay()}>
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            size={'sm'}
+          <Icon
+            name='chevron-right'
+            size={20}
             color="grey"
           />
         </TouchableOpacity>
       </Grid>
-    </Grid>
+    </View>
   );
 }
 export function PickerTime(props) {
   const [show, setShow] = useState(false);
   console.log(props.show)
   return (
-    <Grid container direction="row" alignItems="flex-end" justify="center">
+    <View style={{
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+      flexDirection: 'row'
+    }} >
       <Grid item >
         <Text>{props.label}</Text>
       </Grid>
       <Grid item >
         <TouchableOpacity accessibilityLabel="subtract 5 minutes" onPress={props.subtractMinutes}>
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            size={'sm'}
+          <Icon
+            name='chevron-left'
+            size={20}
             color="grey"
           />
         </TouchableOpacity>
       </Grid>
       <Grid item >
         {props.running ?
-        <Text>Tracking...</Text> :
+          <Text>Tracking...</Text> :
           <TouchableOpacity onPress={() => setShow(true)} >
             <Text>{timeString(props.time)}</Text>
           </TouchableOpacity>
-          }
+        }
 
         {show && (
           <DateTimePicker
             mode='time'
             value={props.time}
-            onChange={(event, newTime) =>{ props.onTimeChange(newTime); setShow(false)}}
+            onChange={(event, newTime) => { setShow(false); props.onTimeChange(newTime);  }}
           />)}
       </Grid>
 
       <Grid item >
         <TouchableOpacity accessibilityLabel="add 5 minutes" onPress={props.addMinutes}>
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            size={'sm'}
+          <Icon
+            name='chevron-right'
+            size={20}
             color="grey"
-
           />
         </TouchableOpacity>
       </Grid>
-    </Grid>
+    </View>
 
 
   );

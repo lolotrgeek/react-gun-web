@@ -4,7 +4,7 @@ import { Link } from '../atoms/Link'
 import { IconButton } from '../atoms/IconButton';
 import { Menu, MenuItem } from '../atoms/Menu';
 import { useStyles } from '../../themes/DefaultTheme';
-import {MenuIcon} from '../atoms/Icon'
+import { MenuIcon } from '../atoms/Icon'
 import Grid from '../atoms/Grid'
 import { View } from 'react-native'
 
@@ -20,7 +20,6 @@ const ITEM_HEIGHT = 48;
 export default function SideMenu(props) {
     const [show, setShow] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
     const classes = useStyles();
 
 
@@ -34,43 +33,42 @@ export default function SideMenu(props) {
 
 
     return (
-        <View onLayout={event => setAnchorEl(event.nativeEvent.layout)} >
-            <Grid style={classes.sidemenu}>
-                {console.log(anchorEl)}
-                <IconButton onClick={handleClick} style={classes.sidemenuIcon} >
-                    <MenuIcon />
-                </IconButton>
+        <View style={classes.sidemenu} onLayout={event => setAnchorEl(event.nativeEvent.layout)} >
 
-                <Menu
-                    anchor={anchorEl}
-                    keepMounted
-                    visible={show}
-                    onDismiss={handleClose}
-                    contentStyle={{
-                        maxHeight: ITEM_HEIGHT * 4.5,
-                        width: 200,
-                    }
-                    }
-                >
-                    {Array.isArray(props.options) ? props.options.map(option => (
-                        option.link ?
-                            <Link to={option.link}>
-                                <MenuItem key={option.name} onClick={() => {
-                                    handleClose()
-                                    if (option.action) return option.action()
-                                }}>
-                                    {option.name}
-                                </MenuItem>
-                            </Link> :
-                            <MenuItem key={option.name} onClick={() => {
+            {console.log(anchorEl)}
+            <IconButton onPress={() => handleClick()} style={classes.sidemenuIcon} >
+                <MenuIcon size={20} />
+            </IconButton>
+
+            <Menu
+                anchor={anchorEl}
+                keepMounted
+                visible={show}
+                onDismiss={handleClose}
+                contentStyle={{
+                    maxHeight: ITEM_HEIGHT * 4.5,
+                    width: 200,
+                }
+                }
+            >
+                {Array.isArray(props.options) ? props.options.map(option => (
+                    option.link ?
+                        <Link to={option.link}>
+                            <MenuItem key={option.name} onPress={() => {
                                 handleClose()
                                 if (option.action) return option.action()
                             }}>
                                 {option.name}
                             </MenuItem>
-                    )): null}
-                </Menu>
-            </Grid >
+                        </Link> :
+                        <MenuItem key={option.name} onPress={() => {
+                            handleClose()
+                            if (option.action) return option.action()
+                        }}>
+                            {option.name}
+                        </MenuItem>
+                )) : null}
+            </Menu>
         </View>
     );
 }

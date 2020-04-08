@@ -1,10 +1,12 @@
 import React from 'react'
 import Grid from '../atoms/Grid'
 import Typography from '../atoms/Typography'
-import {Button} from '../atoms/Button';
+import { Button } from '../atoms/Button';
 import { Title } from '../molecules/Title'
+import { View } from 'react-native'
+import {useStyles} from '../../themes/DefaultTheme'
 
-
+const classes = useStyles()
 /**
  * 
  * @param {*} props 
@@ -14,20 +16,17 @@ import { Title } from '../molecules/Title'
  */
 export function Header(props) {
     return (
-        <Grid container direction='row' justify='flex-start' alignItems='center'>
-            <Grid item>
-                <Typography variant='h3' component='h1' color="textPrimary" style={{ textDecoration: 'none' }}>
-                    {props.title}
-                    {props.children}
-                </Typography>
-            </Grid>
-            {props.buttonText ?
-                <Grid item>
-                    <Button variant="contained" color="secondary" onClick={props.buttonClick}>{props.buttonText}</Button>
+        <View>
+            <Typography variant='h3' component='h1' style={{ textDecoration: 'none' }}>
+                {props.title}
+                {props.children}
+            </Typography>
 
-                </Grid> : null
+            {props.buttonText ?
+                <Button variant="contained" onPress={props.buttonClick}>{props.buttonText}</Button>
+                : null
             }
-        </Grid >
+        </View >
     )
 }
 
@@ -41,17 +40,17 @@ export function Header(props) {
  */
 export function SubHeader(props) {
     return (
-        <Grid container direction='column' justify='center' alignItems='center'
-            // style={{ background: `linear-gradient(0deg, #303030  0%, ${props.color}  100%)` }}
-        >
-            <Grid item>
-                    <Title color={props.color} variant='h4' >{props.title}</Title>
-            </Grid>
+        <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            ...props.style
+        }}>
+            <Title color={props.color} variant='h4' >{props.title}</Title>
             {props.buttonText ?
-                <Grid item>
-                    <Button variant="contained" color="secondary" onClick={props.buttonClick}>{props.buttonText}</Button>
-                </Grid> : null
+                <Button variant="contained" color="secondary" onPress={props.buttonClick}>{props.buttonText}</Button>
+                : null
             }
-        </Grid >
+        </View >
     )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import {Text} from 'react-native'
 
 export default function EnergyDisplay(props) {
     let energy
@@ -9,11 +10,12 @@ export default function EnergyDisplay(props) {
     if (props.energy < 50 && props.energy > 25) energy = 'blue'
     if (props.energy < 25) energy = 'grey'
     return (
-        <Icon
-            name='bolt'
-            size={20}
-            color={energy}
-            style={props.style}
-        />
+        // <Icon
+        //     name='bolt'
+        //     size={20}
+        //     color={energy}
+        //     style={props.style}
+        // />
+        <Text>{props.energy}</Text>
     )
 }

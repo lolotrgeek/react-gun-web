@@ -6,6 +6,7 @@ import { Button } from '../atoms/Button';
 import Grid from '../atoms/Grid'
 import { PopupContext } from '../../contexts/PopupContext'
 import { useStyles } from '../../themes/DefaultTheme'
+import { View } from 'react-native'
 
 /**
  * 
@@ -23,18 +24,22 @@ export default function Popup(props) {
     let handleClose = () => dispatch({ type: "close" });
     return (
         <Portal>
-            <Modal visible={state} style={classes.modal}  onDismiss={handleClose}>
-                <Grid container className={classes.popup} direction='column' justify='center' alignItems='center'>
+            <Modal visible={state} style={classes.modal} onDismiss={handleClose}>
+                <View style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    backgroundColor: 'white',
+                    ...classes.spaceFull
+                }}>
                     <Typography variant='h6' className={classes.typography}>{props.content}</Typography>
-                    <Grid>
-                        <Grid className={classes.buttonPopup} item >
-                            <Button variant="contained" color="primary" onClick={props.onAccept} > Accept </Button>
-                        </Grid>
-                        <Grid className={classes.buttonPopup} item >
-                            <Button variant="contained" color="secondary" onClick={props.onReject} > Reject </Button>
-                        </Grid>
+                    <Grid className={classes.buttonPopup} item >
+                        <Button variant="contained" color="primary" onPress={props.onAccept} > Accept </Button>
                     </Grid>
-                </Grid>
+                    <Grid className={classes.buttonPopup} item >
+                        <Button variant="contained" color="secondary" onPress={props.onReject} > Reject </Button>
+                    </Grid>
+                </View>
             </Modal>
         </Portal >
 

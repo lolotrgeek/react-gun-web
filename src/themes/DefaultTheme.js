@@ -33,13 +33,20 @@ export const useStyles =  () =>({
     spaceBelow: {
         paddingBottom: theme.spacing(2)
     },
+    spaceAround: {
+        paddingTop: theme.spacing(5),
+        paddingBottom: theme.spacing(5)
+    },
+    spaceFull : {
+        padding: theme.spacing(2)
+    },
     card: {
         marginBottom: theme.spacing(5),
         maxWidth: 360,
         minWidth: 350,
     },
     fit: {
-        width: '90%'
+dth: '90%        wi'
     },
     form: {
 
@@ -48,7 +55,6 @@ export const useStyles =  () =>({
 
     },
     content: {
-        flexGrow: 1,
         overflow: 'hidden',
         maxWidth: 500,
         minWidth: 350,
@@ -58,15 +64,14 @@ export const useStyles =  () =>({
     listRoot: {
         flexGrow: 1,
         overflow: 'hidden',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-    },
-    listClass: {
-        flexGrow: 1,
         maxWidth: 500,
         minWidth: 350,
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+    },
+    listClass: {
+        flexGrow: 1,
+        paddingTop: theme.spacing(5),
     },
 
     listContent: {
@@ -107,7 +112,9 @@ export const useStyles =  () =>({
         marginRight: theme.spacing(2)
     },
     sidemenu: {
-        // position: 'absolute',
+        position: 'absolute',
+        top: 0 ,
+        right: 0 ,
         backgroundColor: 'transparent',
         zIndex: 1500, //https://material-ui.com/customization/z-index/
     },

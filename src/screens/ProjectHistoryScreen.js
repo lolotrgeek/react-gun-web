@@ -6,7 +6,7 @@ import { gun, restoreProject } from '../constants/Data'
 import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
-import { useAlert } from 'react-alert'
+import { useAlert } from '../hooks/useAlert'
 import ProjectHistory from '../components/templates/ProjectHistory'
 
 export default function ProjectHistoryScreen({useParams, useHistory}) {

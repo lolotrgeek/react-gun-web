@@ -5,7 +5,7 @@ import { List as PaperList } from 'react-native-paper';
  * https://callstack.github.io/react-native-paper/list-item.html
  * @param {*} props 
  * @param {*} props.title 
- * @param {*} props.onClick 
+ * @param {*} props.onPress
  * @param {*} props.icon
  *  
  */
@@ -13,7 +13,7 @@ export const ListItem = props => (
     <PaperList.Item {...props}
         title={props.title}
         description={props.children}
-        onPress={props.onClick}
+        onPress={props.onPress}
         left={() => <PaperList.Icon icon={props.icon} />}
     />
 );
