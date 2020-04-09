@@ -1,69 +1,72 @@
 import { newTimer, newProject, doneTimer, generateNewTimer } from './Models'
 import { isRunning, multiDay, newEntryPerDay } from './Functions'
 import Gun from 'gun/gun'
-import { AsyncStorage } from 'react-native';
+import  AsyncStorage  from '@react-native-community/async-storage';
 console.log('using native Data...')
 class Adapter {
-    constructor(db) {
-        this.db = db;
-        // Preserve the `this` context for read/write calls.
-        this.read = this.read.bind(this);
-        this.write = this.write.bind(this);
-    }
-    read(context) {
-        const { get, gun } = context;
-        const { "#": key } = get;
-        const done = (err, data) => {
-            this.db.on("in", {
-                "@": context["#"],
-                put: Gun.graph.node(data),
-                //not needed. this solves an issue in gun https://github.com/amark/gun/issues/877
-                _: function () { },
-                err
-            });
-        };
-        AsyncStorage.getItem(key, (err, result) => {
-            if (err) {
-                // console.error(err)
-                done(err);
-            }
-            else if (result === null) {
-                // Nothing found
-                done(null);
-            }
-            else {
-                // console.log('async get:')
-                // console.log(JSON.parse(result))
-                done(null, JSON.parse(result));
-            }
-        });
-    }
-    write(context) {
-        const { put: graph, gun } = context;
-        const keys = Object.keys(graph);
-        const instructions = keys.map((key) => [
-            key,
-            JSON.stringify(graph[key])
-        ]);
-        AsyncStorage.multiMerge(instructions, (err) => {
-            this.db.on("in", {
-                "@": context["#"],
-                ok: !err || err.length === 0,
-                err
-            });
-        });
-    }
+  constructor(db) {
+    this.db = db;
+    // Preserve the `this` context for read/write calls.
+    this.read = this.read.bind(this);
+    this.write = this.write.bind(this);
+  }
+  read(context) {
+    const { get, gun } = context;
+    const { "#": key } = get;
+    const done = (err, data) => {
+      this.db.on("in", {
+        "@": context["#"],
+        put: Gun.graph.node(data),
+        //not needed. this solves an issue in gun https://github.com/amark/gun/issues/877
+        _: function () { },
+        err
+      });
+    };
+    AsyncStorage.getItem(key, (err, result) => {
+      if (err) {
+        // console.error(err)
+        done(err);
+      }
+      else if (result === null) {
+        // Nothing found
+        done(null);
+      }
+      else {
+        // console.log('async get:')
+        // console.log(JSON.parse(result))
+        done(null, JSON.parse(result));
+      }
+    });
+  }
+  write(context) {
+    const { put: graph, gun } = context;
+    const keys = Object.keys(graph);
+    const instructions = keys.map((key) => [
+      key,
+      JSON.stringify(graph[key])
+    ]);
+    
+    console.log('instructions:' , typeof instructions, instructions )
+    // https://github.com/react-native-community/async-storage/blob/LEGACY/docs/API.md#multimerge
+    AsyncStorage.multiMerge(instructions, (err) => {
+      this.db.on("in", {
+        "@": context["#"],
+        ok: !err || err.length === 0,
+        err
+      });
+    });
+  }
 }
 Gun.on("create", (db) => {
-    const adapter = new Adapter(db);
-    // Allows other plugins to respond concurrently.
-    const pluginInterop = (middleware) => function (ctx) {
-        this.to.next(ctx);
-        return middleware(ctx);
-    };
-    // Register the adapter
-    db.on("get", pluginInterop(adapter.read));
-    db.on("put", pluginInterop(adapter.write));
+  const adapter = new Adapter(db);
+  // Allows other plugins to respond concurrently.
+  const pluginInterop = (middleware) => function (ctx) {
+    this.to.next(ctx);
+    return middleware(ctx);
+  };
+  // Register the adapter
+  db.on("get", pluginInterop(adapter.read));
+  db.on("put", pluginInterop(adapter.write));
 });
 
 
@@ -72,7 +75,8 @@ const address = 'localhost'
 const peers = [`http://${address}:${port}`]
 
 export const gun = new Gun({
-    peers: peers,
+  localStorage: false,
+  peers: peers,
 })
 
 
@@ -215,9 +219,9 @@ export const finishTimer = (timer) => {
  */
 export const removeAll = async () => {
   try {
-      console.info('ASYNC STORAGE - REMOVING ALL')
-      await AsyncStorage.clear()
+    console.info('ASYNC STORAGE - REMOVING ALL')
+    await AsyncStorage.clear()
   } catch (error) {
-      console.error(error)
+    console.error(error)
   }
 }
