@@ -1,8 +1,10 @@
 import { newTimer, newProject, doneTimer, generateNewTimer } from './Models'
 import { isRunning, multiDay, newEntryPerDay } from './Functions'
 import Gun from 'gun/gun'
-import  AsyncStorage  from '@react-native-community/async-storage';
-console.log('using native Data...')
+// import  AsyncStorage  from '@react-native-community/async-storage';
+import storage from './storage.ts';
+
+console.log('using native Storage...')
 class Adapter {
   constructor(db) {
     this.db = db;
@@ -22,7 +24,7 @@ class Adapter {
         err
       });
     };
-    AsyncStorage.getItem(key, (err, result) => {
+    storage.get(key).then((err, result) => {
       if (err) {
         // console.error(err)
         done(err);
@@ -36,7 +38,7 @@ class Adapter {
         // console.log(JSON.parse(result))
         done(null, JSON.parse(result));
       }
-    });
+    }).catch(err => console.warn('AsyncStorage: ', err));
   }
   write(context) {
     const { put: graph, gun } = context;
@@ -45,16 +47,16 @@ class Adapter {
       key,
       JSON.stringify(graph[key])
     ]);
-    
-    console.log('instructions:' , typeof instructions, instructions )
-    // https://github.com/react-native-community/async-storage/blob/LEGACY/docs/API.md#multimerge
-    AsyncStorage.multiMerge(instructions, (err) => {
+
+    console.log('instructions:', typeof instructions, instructions)
+    // https://github.com/react-native-community/async-storage/blob/master/packages/core/docs/API.md#setmultiple
+    storage.setMultiple(instructions).then((err) => {
       this.db.on("in", {
         "@": context["#"],
         ok: !err || err.length === 0,
         err
       });
-    });
+    }).catch(err => console.warn('AsyncStorage: ', err));
   }
 }
 Gun.on("create", (db) => {
@@ -220,7 +222,7 @@ export const finishTimer = (timer) => {
 export const removeAll = async () => {
   try {
     console.info('ASYNC STORAGE - REMOVING ALL')
-    await AsyncStorage.clear()
+    await storage.clearStorage()
   } catch (error) {
     console.error(error)
   }
