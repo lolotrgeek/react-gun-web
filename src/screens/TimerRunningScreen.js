@@ -10,8 +10,9 @@ import { elapsedTime } from '../constants/Functions'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerRunning from '../components/templates/TimerRunning'
 
-export default function TimerRunningScreen({ useParams, useHistory }) {
+const debug = false
 
+export default function TimerRunningScreen({ useParams, useHistory }) {
   const [online, setOnline] = useState(false)
   const [runningProject, setRunningProject] = useState([])
   const [runningTimer, setRunningTimer] = useState([])
@@ -53,7 +54,7 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
   useEffect(() => {
     if (runningTimer[1] && isTimer(runningTimer)) {
       gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        console.log(projectValue)
+        debug && console.log(projectValue)
         if (projectValue && projectValue.status !== 'deleted') {
           setRunningProject([projectKey, projectValue])
         }
@@ -104,7 +105,7 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
     completeTimer[1].energy = energy
     completeTimer[1].total = totalTime(completeTimer[1].started, completeTimer[1].ended)
     if (isTimer(completeTimer)) {
-      console.log('Completing Timer: ', completeTimer )
+      debug && console.log('Completing Timer: ', completeTimer )
       stop()
       finishTimer(completeTimer)
       alert.show('Timer Updated!', {

@@ -17,6 +17,7 @@ import { TimePeriod } from '../molecules/TimePeriod'
 import Typography from '../atoms/Typography'
 import { View } from 'react-native'
 
+const debug = false
 
 /**
  * 
@@ -68,7 +69,7 @@ export default function ProjectRecord(props) {
                         flexDirection: 'column'
                     }} >
                         <SubTitle>{sayDay(day.title)}</SubTitle>
-                        {/* {console.log(day.data)} */}
+                        {/* {debug && console.log(day.data)} */}
                         {day.data.map(timer => {
                             if (!isTimer(timer)) return (null)
                             if (timer[1].status === 'running') return (null)

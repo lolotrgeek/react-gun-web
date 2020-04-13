@@ -1,7 +1,7 @@
 import React from 'react'
 import { Appbar as PaperAppbar } from 'react-native-paper';
 
-
+const debug= false
 
 const actionHandler = (props) => {
     if(props.action === 'back') return (             
@@ -20,7 +20,7 @@ export const AppBar = props => (
     <PaperAppbar.Header>
         {props.children}
         {props.action ?
-            <PaperAppbar.Action icon="menu" onPress={() => {console.log('Doing Action...'); props.action()}} />
+            <PaperAppbar.Action icon="menu" onPress={() => {debug && console.log('Doing Action...'); props.action()}} />
             : null
         }
         <PaperAppbar.Content

@@ -4,6 +4,8 @@ import { projectlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectTrash from '../components/templates/ProjectTrash'
 
+const debug = false
+
 
 export default function ProjectTrashScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
@@ -14,7 +16,7 @@ export default function ProjectTrashScreen({useParams, useHistory}) {
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
       if (projectValue.status === 'deleted') {
-        console.log(projectValue)
+        debug && console.log(projectValue)
         setProjects(projects => [...projects, [projectKey, projectValue]])
       }
     }, { change: true })
@@ -23,7 +25,7 @@ export default function ProjectTrashScreen({useParams, useHistory}) {
 
 
   // const displayStatus = edit => {
-  //   console.log(edit[1], project[1])
+  //   debug && console.log(edit[1], project[1])
   //   if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
   //   else if (!edit[1].edited && edits.length > 1) return 'Original Entry'
   //   else if (edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))

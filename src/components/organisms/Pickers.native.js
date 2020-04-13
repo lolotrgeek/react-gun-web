@@ -11,6 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { View } from 'react-native'
 
+const debug = false
 
 export function PickerDate(props) {
   const [show, setShow] = useState(false);
@@ -59,7 +60,7 @@ export function PickerDate(props) {
 }
 export function PickerTime(props) {
   const [show, setShow] = useState(false);
-  console.log(props.show)
+  debug && console.log(props.show)
   return (
     <View style={{
       justifyContent: 'center',

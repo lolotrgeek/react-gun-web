@@ -9,6 +9,8 @@ import { Button } from '../atoms/Button'
 import Grid from '../atoms/Grid'
 import { View } from 'react-native'
 import Typography from '../atoms/Typography'
+import { useStyles, theme } from '../../themes/DefaultTheme'
+
 
 /**
  * 
@@ -20,10 +22,10 @@ export default function ProjectList(props) {
     return (
         <View style={{
             flex: 1,
+            flexGrow: 1,
             justifyContent: 'flex-start',
             alignItems: 'center',
             flexDirection: 'column',
-            ...props.classes.listRoot
         }}>
             <Header
                 className={props.classes.space}
@@ -41,27 +43,40 @@ export default function ProjectList(props) {
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
                 : null}
-            <Grid container direction='column' justify="flex-start" alignItems="center" >
+            <View style={{
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                flexDirection: 'column',
+            }} >
                 {props.projects.map(project => {
                     return (
-                        <View key={project[0]}>
-                            <Grid container style={props.classes.listClass} direction='row' justify="space-around" alignItems="flex-start" >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: theme.spacing(2),
 
+                            }} key={project[0]}>
+                            <View style={{ width: 100}}>
                                 <Title to={props.projectlink(project[0])} color={project[1].color} variant='h6'>
-                                    {projectValid(project) ? project[1].name : null}
+                                    {projectValid(project) ? project[1].name : ''}
                                 </Title>
+                            </View>
 
+                            <View style={{ marginLeft: 150,}}>
                                 <Button variant="contained" color="primary" onPress={() => {
                                     if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
                                     props.startTimer(project)
                                 }}>Start</Button>
+                            </View>
 
-                            </Grid>
+
                         </View>
-
                     )
                 })}
-            </Grid>
+            </View>
 
         </View >
     )

@@ -9,6 +9,9 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectRecord from '../components/templates/ProjectRecord'
 
+const debug = false
+
+
 export default function ProjectRecordScreen({useParams, useHistory}) {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
@@ -54,7 +57,7 @@ export default function ProjectRecordScreen({useParams, useHistory}) {
         if (foundTimer[1].status === 'done') {
           let check = currentTimers.some(id => id === foundTimer[0])
           if (!check) {
-            console.log('Adding Timer', foundTimer)
+            debug && console.log('Adding Timer', foundTimer)
             setTimers(timers => [...timers, foundTimer])
           }
           currentTimers.push(foundTimer[0])
@@ -73,12 +76,12 @@ export default function ProjectRecordScreen({useParams, useHistory}) {
       const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
-        console.log('runningTimerFound', runningTimerFound)
+        debug && console.log('runningTimerFound', runningTimerFound)
         setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {
-        console.log('running Timer not Found')
+        debug && console.log('running Timer not Found')
         stop()
         setRunningTimer({})
       }
@@ -90,7 +93,7 @@ export default function ProjectRecordScreen({useParams, useHistory}) {
   useEffect(() => {
     if (runningTimer[1] && isTimer(runningTimer)) {
       gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        console.log(projectValue)
+        debug && console.log(projectValue)
         if (projectValue && projectValue.status !== 'deleted') {
           setRunningProject([projectKey, projectValue])
         }

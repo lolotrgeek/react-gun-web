@@ -15,6 +15,11 @@ import Typography from '../atoms/Typography'
 import { TimePeriod } from '../molecules/TimePeriod'
 import { View } from 'react-native'
 
+import { useStyles, theme } from '../../themes/DefaultTheme'
+
+const debug = false
+
+
 /**
  * 
  * @param {*} props
@@ -30,12 +35,13 @@ import { View } from 'react-native'
  * @param {function} props.popupReject
  */
 export default function TimerHistory(props) {
+    const classes = useStyles()
     return (
         <View style={{
             flex: 1,
+            flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            flexDirection: 'column',
             ...props.classes.listRoot
         }}>
             {props.project && props.project[1] ?
@@ -49,8 +55,9 @@ export default function TimerHistory(props) {
                 {props.timer[1] && nameValid(props.timer[1].name) && isTimer(props.timer) ? props.timer[1].name : 'Timer History '}
             </Typography>
             <View style={{ flex: 1, }}>
+
                 {props.edits.map((edit) => {
-                    console.log(edit[1])
+                    debug && console.log('EDIT', edit[1])
                     let started = new Date(edit[1].started)
                     let ended = new Date(edit[1].ended)
                     return (
@@ -59,25 +66,35 @@ export default function TimerHistory(props) {
                             ...props.classes.space,
                             ...props.classes.card
                         }}>
-                            <Card key={edit[2]}  >
+                            <Card key={edit[2]} >
                                 <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
-                                <CardContent>
-                                    <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
+                                <CardContent >
+                                    <Grid item>
+                                        <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
+                                    </Grid>
                                     <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
+
                                     <View style={{
                                         justifyContent: 'space-evenly',
                                         alignItems: 'flex-start',
                                         flexDirection: 'row',
+                                        marginTop: theme.spacing(2),
+                                        marginBottom: theme.spacing(2),
                                     }}>
                                         <TimePeriod start={started} end={ended} />
                                         <EnergyDisplay energy={edit[1].energy} />
                                         <MoodDisplay mood={edit[1].mood} />
                                         <Typography>{secondsToString(totalTime(started, ended))}</Typography>
                                     </View>
-                                </CardContent>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                    <CardActions>
 
+                                </CardContent>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginBottom: theme.spacing(2),
+                                }}>
+                                    <CardActions>
                                         {props.displayRestoreButton(edit) ?
                                             <Button variant='contained' color='primary' size="small" onPress={() => props.restoreButtonAction(edit)}> Restore </Button>
                                             : null}

@@ -8,7 +8,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectEdit from '../components/templates/ProjectEdit'
 
-export default function ProjectEditScreen({useParams, useHistory}) {
+export default function ProjectEditScreen({ useParams, useHistory }) {
   const { projectId, } = useParams()
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])
@@ -20,6 +20,9 @@ export default function ProjectEditScreen({useParams, useHistory}) {
   let { state, dispatch } = useContext(PopupContext)
 
   const classes = useStyles();
+  const debug = false
+
+
 
   useEffect(() => {
     if (alerted && alerted.length > 0) {
@@ -33,7 +36,7 @@ export default function ProjectEditScreen({useParams, useHistory}) {
   useEffect(() => {
     if (projectId) {
       gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
-        console.log(projectValue)
+        debug && console.log(projectValue)
         setProject([projectId, trimSoul(projectValue)])
       }, { change: true })
     }
@@ -49,8 +52,8 @@ export default function ProjectEditScreen({useParams, useHistory}) {
   }, [project])
 
   const handleSelectedColor = (color, event) => {
-    console.log(color)
-    console.log(event)
+    debug && console.log(color)
+    debug && console.log(event)
     setColor(color.hex)
   }
 
@@ -72,7 +75,7 @@ export default function ProjectEditScreen({useParams, useHistory}) {
       return false
     }
     else if (projectId && projectValid(project)) {
-      // console.log('updating', project)
+      // debug && console.log('updating', project)
       updateProject(project, { name: name, color: color })
       setAlert([
         'Success',

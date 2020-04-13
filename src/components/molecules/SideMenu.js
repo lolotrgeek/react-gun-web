@@ -8,7 +8,9 @@ import { MenuIcon } from '../atoms/Icon'
 import Grid from '../atoms/Grid'
 import { View } from 'react-native'
 
+const debug = false
 const ITEM_HEIGHT = 48;
+
 
 /**
  * 
@@ -35,7 +37,7 @@ export default function SideMenu(props) {
     return (
         <View style={classes.sidemenu} onLayout={event => {setAnchorEl(event.nativeEvent.layout)}} >
 
-            {console.log(anchorEl)}
+            {debug && console.log(anchorEl)}
             <IconButton onPress={() => handleClick()} style={classes.sidemenuIcon} >
                 <MenuIcon size={20} />
             </IconButton>

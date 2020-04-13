@@ -7,6 +7,8 @@ import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TrashList from '../components/templates/TrashList'
 
+const debug = false
+
 export default function TimerTrashScreen({useParams, useHistory}) {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
@@ -17,7 +19,6 @@ export default function TimerTrashScreen({useParams, useHistory}) {
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
   const classes = useStyles();
-
 
   useEffect(() => {
     if (alerted && alerted.length > 0) {
@@ -30,7 +31,7 @@ export default function TimerTrashScreen({useParams, useHistory}) {
 
   useEffect(() => {
     gun.get('projects').get(projectId).on((projectValue, projectKey) => {
-      console.log(projectValue)
+      debug && console.log(projectValue)
       setProject([projectKey, trimSoul(projectValue)])
     }
       , { change: true })
@@ -45,7 +46,7 @@ export default function TimerTrashScreen({useParams, useHistory}) {
         if (foundTimer[1].status === 'deleted') {
           let check = currentTimers.some(id => id === foundTimer[0])
           if (!check) {
-            console.log('Adding Timer', foundTimer)
+            debug && console.log('Adding Timer', foundTimer)
             setTimers(timers => [...timers, foundTimer])
           }
           currentTimers.push(foundTimer[0])

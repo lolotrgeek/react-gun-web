@@ -9,6 +9,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerEdit from '../components/templates/TimerEdit'
 
+const debug = false
 
 export default function TimerEditScreen({useParams, useHistory}) {
   const { projectId, timerId } = useParams()
@@ -37,7 +38,7 @@ export default function TimerEditScreen({useParams, useHistory}) {
   }, [alerted])
 
   useEffect(() => {
-    console.log('Getting: ', projectId, timerId)
+    debug && console.log('Getting: ', projectId, timerId)
     gun.get('timers').get(projectId, ack => {
       if (ack.err || !ack.put) setAlert(['Error', 'No Project Exists'])
     }).get(timerId, ack => {
@@ -63,7 +64,7 @@ export default function TimerEditScreen({useParams, useHistory}) {
 
   useEffect(() => {
     gun.get('projects').get(projectId).on((projectValue, projectKey) => {
-      console.log(projectValue)
+      debug && console.log(projectValue)
       setProject([projectKey, projectValue])
     }
       , { change: true })

@@ -1,6 +1,9 @@
 import { isValid, isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO, format } from 'date-fns'
 import moment from 'moment'
 
+const debug = false
+
+
 // TODO: REFACTOR SO FUNCTIONS DO NOT NEED ANY DATA STRUCTURE
 // DATA FUNCTIONS
 /**
@@ -53,6 +56,7 @@ export const simpleDate = date => format(date, "MMM d yyyy")
 export const simpleDateOld = date => date.getDate() + " " + getMonth(date) + " " + date.getFullYear()
 
 export const fullDate = date => format(date, "EEE MMM d yyyy  hh:mm:ss aaa")
+export const fullDay = date => format(date, "EEE MMM d yyyy")
 /**
  * 
  */
@@ -158,16 +162,16 @@ export const findRunning = timers => {
         }
     })
     if (foundRunning && foundRunning.length === 1) {
-        // console.log('foundRunning : ', foundRunning[0])
+        // debug && console.log('foundRunning : ', foundRunning[0])
         return foundRunning[0]
     }
     else if (foundRunning.length > 1) {
-        // console.log('foundRunning - multiple running :', foundRunning)
+        // debug && console.log('foundRunning - multiple running :', foundRunning)
         foundRunning.map(found => found)
         return []
     }
     else {
-        // console.log('foundRunning - no valid : ', foundRunning)
+        // debug && console.log('foundRunning - no valid : ', foundRunning)
         return []
     }
 }
@@ -193,40 +197,40 @@ export const newEntryPerDay = (started, ended) => {
     if (typeof started === 'string') started = new Date(started)
     if (typeof ended === 'string') ended = new Date(ended)
     if (!ended) ended = new Date()
-    // console.log(started, ended)
+    // debug && console.log(started, ended)
     const secondsinday = 86400
     let totalSeconds = differenceInSeconds(ended, started)
-    // console.log('total seconds', totalSeconds)
+    // debug && console.log('total seconds', totalSeconds)
     // get whole days
     if (totalSeconds > secondsinday) {
         const output = []
         let daysfromseconds = totalSeconds / secondsinday
         let start = started
         while (daysfromseconds > 1) {
-            // console.log(daysfromseconds)
+            // debug && console.log(daysfromseconds)
             let end = endOfDay(start)
             let day = { start: start.toString(), end: end.toString() }
             output.push(day)
-            // console.log(day)
+            // debug && console.log(day)
             start = addSeconds(end, 1)
             totalSeconds = totalSeconds - secondsinday
             daysfromseconds = totalSeconds / secondsinday
             if (daysfromseconds < 1) {
-                // console.log(daysfromseconds)
+                // debug && console.log(daysfromseconds)
                 let end = endOfDay(start)
                 let day = { start: start.toString(), end: end.toString() }
                 output.push(day)
-                // console.log(day)
+                // debug && console.log(day)
                 // let last = { start: startOfToday().toString(), end: 'running' }
                 let last = { start: startOfToday().toString(), end: ended.toString() }
                 output.push(last)
-                // console.log(last)
+                // debug && console.log(last)
                 break
             }
         }
         return output
     } else {
-        // console.log('Entry Less than a day')
+        // debug && console.log('Entry Less than a day')
         return []
     }
 
@@ -258,28 +262,28 @@ export const dayHeaders = timerlist => {
     const timerdays = timerlist.map(timer => {
         return { day: simpleDate(new Date(timer[1].started)), timer: timer }
     })
-    // //// console.log(pagename + '- DAYHEADERS - TIMERDAYS : ', timerdays)
+    // //// debug && console.log(pagename + '- DAYHEADERS - TIMERDAYS : ', timerdays)
     timerdays.forEach(timerday => {
         // first value if output is empty is always unique
         if (output.length === 0) {
-            // // console.log('FIRST OUTPUT ENTRY :', timerday)
+            // // debug && console.log('FIRST OUTPUT ENTRY :', timerday)
             output.push({ title: timerday.day, data: [timerday.timer] })
         }
         else {
             // find and compare timerdays to outputs
             const match = output.find(inOutput => inOutput.title === timerday.day)
             if (match) {
-                //// console.log(pagename + '- MATCHING ENTRY :', match.title)
+                //// debug && console.log(pagename + '- MATCHING ENTRY :', match.title)
                 // add timer to list of timers for matching day
                 match.data = [...match.data, timerday.timer]
             }
             else {
-                //// console.log(pagename + '- NEW OUTPUT ENTRY :', timerday)
+                //// debug && console.log(pagename + '- NEW OUTPUT ENTRY :', timerday)
                 output.push({ title: timerday.day, data: [timerday.timer] })
             }
         }
     })
-    // // console.log('- DAYHEADERS - OUTPUT', output)
+    // // debug && console.log('- DAYHEADERS - OUTPUT', output)
     if (output.length > 0) { return (output) }
     else { return ([]) }
 }
@@ -296,35 +300,35 @@ export const sumProjectTimers = dayheaders => {
         day.data.map(timer => {
             // ... group timer entries by project
             if (projects.length === 0) {
-                // console.log('first timer: ', )
-                // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
+                // debug && console.log('first timer: ', )
+                // // debug && console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
                 let total = totalTime(timer[1].started, timer[1].ended)
                 projects.push({ project: timer[1].project, totals: [total], total: total, status: timer[1].status, timers: [timer[0]] })
             }
             // for each project get all timer entries and sum the totals
             const match = projects.find(inProjects => inProjects.project === timer[1].project)
-            // // console.log('projects : ', projects)
+            // // debug && console.log('projects : ', projects)
             if (match) {
                 if (projects[0].timers[0] === timer[0]) {
-                    // console.log('existing match')
+                    // debug && console.log('existing match')
                 } else {
-                    // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
+                    // // debug && console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
                     let total = totalTime(timer[1].started, timer[1].ended)
                     match.totals = [...match.totals, total]
-                    // console.log('new match')
+                    // debug && console.log('new match')
                     match.total = match.totals.reduce((acc, val) => acc + val) // sum the totals
                 }
             }
             else {
-                // console.log('last timer: ', timer[0])
-                // // console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
+                // debug && console.log('last timer: ', timer[0])
+                // // debug && console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
                 let total = totalTime(timer[1].started, timer[1].ended)
                 projects.push({ project: timer[1].project, totals: [total], total: total, status: timer[1].status })
             }
-            // console.log(projects)
+            // debug && console.log(projects)
             return projects
         })
-        // // console.log({title: day.title , data : projects})
+        // // debug && console.log({title: day.title , data : projects})
         return { title: day.title, data: projects }
     })
 

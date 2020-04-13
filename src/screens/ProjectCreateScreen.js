@@ -6,6 +6,9 @@ import { projectsListLink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectCreate from '../components/templates/ProjectCreate'
 
+const debug = false
+
+
 export default function ProjectCreateScreen({useParams, useHistory}) {
   const [alerted, setAlert] = useState([])
   const [name, setName] = useState('')
@@ -26,7 +29,7 @@ export default function ProjectCreateScreen({useParams, useHistory}) {
 
 
   const handleSelectedColor = (color) => {
-    console.log(color)
+    debug && console.log(color)
     setColor(color)
   }
 

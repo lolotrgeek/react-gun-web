@@ -7,11 +7,11 @@ const drawerWidth = 240;
 export const theme = {
     spacing: scale => scale * 8,
     breakpoint: {
-        xs: '0px',
-        sm: '600px',
-        md: '960px',
-        lg: '1280px',
-        xl: '1920px'
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1280,
+        xl: 1920
     }
 
 }
@@ -65,7 +65,7 @@ export const useStyles =  () =>({
     listRoot: {
         flexGrow: 1,
         overflow: 'hidden',
-        maxWidth: 1024,
+        maxWidth: 500,
         minWidth: 350,
         marginLeft: 'auto',
         marginRight: 'auto',

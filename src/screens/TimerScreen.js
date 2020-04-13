@@ -5,6 +5,8 @@ import { timerlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerList from '../components/templates/TimerList'
 
+const debug = false
+
 export default function TimerScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
@@ -19,7 +21,7 @@ export default function TimerScreen({useParams, useHistory}) {
           if (foundTimer[1].status === 'done') {
             let check = currentTimers.some(id => id === foundTimer[0])
             if (!check) {
-              console.log('Adding Timer', foundTimer)
+              debug && console.log('Adding Timer', foundTimer)
               setTimers(timers => [...timers, foundTimer])
             }
             currentTimers.push(foundTimer[0])

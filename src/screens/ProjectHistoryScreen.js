@@ -20,6 +20,9 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
 
+  const debug = false
+
+
   useEffect(() => {
     if (alerted && alerted.length > 0) {
       alert.show(alerted[1], {
@@ -30,7 +33,7 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
   }, [alerted])
   useEffect(() => {
     gun.get('history').get('projects').get(projectId).map().on((projectValue, projectGunKey) => {
-      console.log('History ', projectGunKey, projectValue)
+      debug && console.log('History ', projectGunKey, projectValue)
       setEdits(edits => [...edits, [projectId, trimSoul(projectValue), projectGunKey]])
     }, { change: true })
     return () => gun.get('history').off()
@@ -52,7 +55,7 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
   }
 
   const displayStatus = edit => {
-    // console.log(edit[1], project[1])
+    // debug && console.log(edit[1], project[1])
     if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
     else if (edit[1].deleted && typeof edit[1].deleted === 'string') return 'Deleted Entry'
     else if (!edit[1].edited && edits.length > 1) return 'Original Entry'

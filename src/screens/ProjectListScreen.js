@@ -7,6 +7,9 @@ import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } fro
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectList from '../components/templates/ProjectList'
 
+const debug = false
+
+
 export default function ProjectListScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
@@ -19,7 +22,7 @@ export default function ProjectListScreen({useParams, useHistory}) {
 
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
-      console.log(projectValue)
+      debug && console.log(projectValue)
       if (projectValue && projectValue.status !== 'deleted') {
         setProjects(projects => [...projects, [projectKey, projectValue]])
       }
@@ -33,12 +36,12 @@ export default function ProjectListScreen({useParams, useHistory}) {
       const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
-        console.log('runningTimerFound', runningTimerFound)
+        debug && console.log('runningTimerFound', runningTimerFound)
         setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {
-        console.log('running Timer not Found')
+        debug && console.log('running Timer not Found')
         stop()
         setRunningTimer({})
       }
@@ -50,7 +53,7 @@ export default function ProjectListScreen({useParams, useHistory}) {
   useEffect(() => {
     if (runningTimer[1] && isTimer(runningTimer)) {
       gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        console.log(projectValue)
+        debug && console.log(projectValue)
         if (projectValue && projectValue.status !== 'deleted') {
           setRunningProject([projectKey, projectValue])
         }

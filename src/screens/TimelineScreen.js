@@ -7,6 +7,9 @@ import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } fr
 import { useStyles } from '../themes/DefaultTheme'
 import Timeline from '../components/templates/Timeline'
 
+const debug = false
+
+
 export default function TimelineScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
@@ -19,7 +22,7 @@ export default function TimelineScreen({useParams, useHistory}) {
 
   useEffect(() => {
     gun.get('projects').map().on((projectValue, projectKey) => {
-      console.log(projectValue)
+      debug && console.log(projectValue)
       if (projectValue && projectValue.status !== 'deleted') {
         setProjects(projects => [...projects, [projectKey, projectValue]])
       }
@@ -32,12 +35,12 @@ export default function TimelineScreen({useParams, useHistory}) {
       const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
-        console.log('runningTimerFound', runningTimerFound)
+        debug && console.log('runningTimerFound', runningTimerFound)
         setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {
-        console.log('running Timer not Found')
+        debug && console.log('running Timer not Found')
         stop()
         setRunningTimer({})
       }
@@ -49,7 +52,7 @@ export default function TimelineScreen({useParams, useHistory}) {
   useEffect(() => {
     if (runningTimer[1] && isTimer(runningTimer)) {
       gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        console.log(projectValue)
+        debug && console.log(projectValue)
         if (projectValue && projectValue.status !== 'deleted') {
           setRunningProject([projectKey, projectValue])
         }
@@ -67,7 +70,7 @@ export default function TimelineScreen({useParams, useHistory}) {
           if (foundTimer[1].status === 'done') {
             let check = currentTimers.some(id => id === foundTimer[0])
             if (!check) {
-              console.log('Adding Timer', foundTimer)
+              debug && console.log('Adding Timer', foundTimer)
               setTimers(timers => [...timers, foundTimer])
             }
             currentTimers.push(foundTimer[0])

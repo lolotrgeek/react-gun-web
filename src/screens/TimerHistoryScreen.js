@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { gun, restoreTimer } from '../constants/Data'
 import { isRunning,} from '../constants/Validators'
-import { elapsedTime, fullDate, trimSoul } from '../constants/Functions'
+import { elapsedTime, fullDay, trimSoul } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
 import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TimerHistory from '../components/templates/TimerHistory'
+
+const debug = false
 
 export default function TimerHistoryScreen({useParams, useHistory}) {
   const { projectId, timerId } = useParams()
@@ -37,12 +39,12 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
       const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
       if (isRunning(runningTimerFound)) {
         setRunningTimer(runningTimerFound)
-        console.log('runningTimerFound', runningTimerFound)
+        debug && console.log('runningTimerFound', runningTimerFound)
         setCount(elapsedTime(runningTimerFound[1].started))
         start()
       }
       else if (!runningTimerGun) {
-        console.log('running Timer not Found')
+        debug && console.log('running Timer not Found')
         stop()
         setRunningTimer({})
       }
@@ -53,7 +55,7 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
 
   useEffect(() => {
     gun.get('projects').get(projectId).on((projectValue, projectKey) => {
-      console.log(projectValue)
+      debug && console.log(projectValue)
       setProject([projectKey, projectValue])
     }
       , { change: true })
@@ -61,7 +63,7 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
   }, [timer])
 
   useEffect(() => {
-    console.log('Getting: ', projectId, timerId)
+    debug && console.log('Getting: ', projectId, timerId)
     gun.get('timers').get(projectId, ack => {
       if (ack.err || !ack.put) setAlert(['Error', 'No Project Exists'])
     }).get(timerId, ack => {
@@ -96,9 +98,9 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
 
   }
   const displayStatusDate = edit => {
-    if (edit[1].edited || edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
-    if (edit[1].status === 'running') return fullDate(new Date(edit[1].created))
-    if (edit[1].status === 'done') return fullDate(new Date(edit[1].ended))
+    if (edit[1].edited || edit[1].edited.length > 0) return fullDay(new Date(edit[1].edited))
+    if (edit[1].status === 'running') return fullDay(new Date(edit[1].created))
+    if (edit[1].status === 'done') return fullDay(new Date(edit[1].ended))
 
   }
   const displayStatus = edit => {
