@@ -3,7 +3,8 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns'; 
 import { secondsToString } from '../../constants/Functions'
 
-import Grid from '../atoms/Grid'
+// import Grid from '../atoms/Grid'
+import Grid from '@material-ui/core/Grid'
 
 import { IconButton } from '../atoms/IconButton';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';

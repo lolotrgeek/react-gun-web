@@ -44,7 +44,6 @@ export const useStyles =  () =>({
         padding: theme.spacing(2)
     },
     card: {
-        marginBottom: theme.spacing(5),
         maxWidth: 360,
         minWidth: 350,
     },

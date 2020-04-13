@@ -48,41 +48,47 @@ export default function TimerHistory(props) {
             <Typography className={props.classes.spaceBelow} variant='h4'>
                 {props.timer[1] && nameValid(props.timer[1].name) && isTimer(props.timer) ? props.timer[1].name : 'Timer History '}
             </Typography>
+            <View style={{ flex: 1, }}>
+                {props.edits.map((edit) => {
+                    console.log(edit[1])
+                    let started = new Date(edit[1].started)
+                    let ended = new Date(edit[1].ended)
+                    return (
+                        <View style={{
+                            flex: 1,
+                            ...props.classes.space,
+                            ...props.classes.card
+                        }}>
+                            <Card key={edit[2]}  >
+                                <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
+                                <CardContent>
+                                    <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
+                                    <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
+                                    <View style={{
+                                        justifyContent: 'space-evenly',
+                                        alignItems: 'flex-start',
+                                        flexDirection: 'row',
+                                    }}>
+                                        <TimePeriod start={started} end={ended} />
+                                        <EnergyDisplay energy={edit[1].energy} />
+                                        <MoodDisplay mood={edit[1].mood} />
+                                        <Typography>{secondsToString(totalTime(started, ended))}</Typography>
+                                    </View>
+                                </CardContent>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                    <CardActions>
 
-            {props.edits.map((edit) => {
-                console.log(edit[1])
-                let started = new Date(edit[1].started)
-                let ended = new Date(edit[1].ended)
-                return (
-                    <Card key={edit[2]} className={props.classes.card}>
-                        <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
-                        <CardContent>
-                            <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
-                            <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
-                            <View style={{
-                                justifyContent: 'space-evenly',
-                                alignItems: 'flex-start',
-                                flexDirection: 'row',
-                                flex: 0
-                            }}>
-                                <TimePeriod start={started} end={ended} />
-                                <EnergyDisplay energy={edit[1].energy} />
-                                <MoodDisplay mood={edit[1].mood} />
-                                <Typography>{secondsToString(totalTime(started, ended))}</Typography>
-                            </View>
-                        </CardContent>
-                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                            <CardActions>
+                                        {props.displayRestoreButton(edit) ?
+                                            <Button variant='contained' color='primary' size="small" onPress={() => props.restoreButtonAction(edit)}> Restore </Button>
+                                            : null}
 
-                                {props.displayRestoreButton(edit) ?
-                                    <Button variant='contained' color='primary' size="small" onPress={() => props.restoreButtonAction(edit)}> Restore </Button>
-                                    : null}
-
-                            </CardActions>
+                                    </CardActions>
+                                </View>
+                            </Card>
                         </View>
-                    </Card>
-                )
-            })}
+                    )
+                })}
+            </View>
 
         </View >
     )

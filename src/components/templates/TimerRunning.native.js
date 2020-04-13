@@ -9,7 +9,7 @@ import { MoodPicker } from '../molecules/MoodPicker'
 import Grid from '../atoms/Grid'
 import { isTimer, projectValid, isRunning } from '../../constants/Validators'
 import { secondsToString } from '../../constants/Functions'
-import {View } from 'react-native'
+import { View } from 'react-native'
 
 /**
  * 

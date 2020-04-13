@@ -98,7 +98,7 @@ export default function TimerEdit(props) {
                         selected={props.mood}
                     />
 
-                    <Button variant="contained" color="primary" onPress={() => props.saveButtonAction()}>Save</Button>
+                    <Button style={props.classes.spaceAbove} variant="contained" color="primary" onPress={() => props.saveButtonAction()}>Save</Button>
 
                 </View >
                 :
