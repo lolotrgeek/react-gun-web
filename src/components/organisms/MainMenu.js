@@ -15,10 +15,10 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import MenuIcon from '@material-ui/icons/Menu';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // Source: https://material-ui.com/components/drawers/#persistent-drawer
 
@@ -121,13 +121,16 @@ export default function MainMenu(props) {
             >
                 <Toolbar>
                     <IconButton
-                        color="inherit"
+                        // color="inherit"
+                        color="black"
                         icon='menu'
                         accessibilityLabel="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
                         className={clsx(classes.menuButton, open && classes.hide)}
-                    />
+                    >
+                        <MenuIcon />
+                    </IconButton>
                     <Typography variant="h6" noWrap className={classes.title}>
                         {props.title}
                     </Typography>

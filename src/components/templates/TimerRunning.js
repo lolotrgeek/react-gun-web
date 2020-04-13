@@ -30,7 +30,6 @@ export default function TimerRunning(props) {
             flex: 1,
             ...props.classes.listRoot
         }}>
-            <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
             {projectValid(props.runningProject) && isTimer(props.runningTimer) ?
                 <SubHeader
                     title={projectValid(props.runningProject) ? `${props.runningProject[1].name}` : 'Timer'}
@@ -50,7 +49,7 @@ export default function TimerRunning(props) {
                     ...props.classes.content
                 }}>
 
-                    <Title variant='h6'>{secondsToString(props.count)}</Title>
+                    <Title variant='h2'>{secondsToString(props.count)}</Title>
 
 
                     <MoodPicker
@@ -62,15 +61,12 @@ export default function TimerRunning(props) {
                         selected={props.mood}
                     />
 
-
-
                     <EnergySlider
                         startingEnergy={props.energy}
                         setEnergy={props.setEnergy}
                     />
 
-
-                    <Button variant="contained" color="primary" onPress={() => {
+                    <Button className={props.classes.spaceAbove} variant="contained" color="primary" onPress={() => {
                         if (isRunning(props.runningTimer)) {
                             props.timerCompleteAction()
                         };

@@ -21,27 +21,23 @@ export function MoodPicker(props) {
             alignItems: 'center',
             flexDirection: 'row',
         }}>
-            <Grid item>
-                <Typography>{props.label ? props.label : 'Mood'}</Typography>
-            </Grid>
+
+            <Typography>{props.label ? props.label : ''}</Typography>
             {moods.map(mood => (
-                <Grid key={mood.name} item>
-                    <IconButton onPress={mood.click} >
-                        <Icon
-                            name={mood.icon}
-                            color={mood.color}
-                            size={40}
+                <IconButton key={mood.name} style={{ margin: 20 }} onPress={mood.click} >
+                    <Icon
+                        name={mood.icon}
+                        color={mood.color}
+                        size={40}
+                        style={{
+                            fontWeight: props.selected === mood.name ? 'bold' : 'normal',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontSize: props.selected === mood.name ? 40 : 20
+                        }}
+                    />
+                </IconButton>
 
-                            style={{
-                                fontWeight: props.selected === mood.name ? 'bold' : 'normal',
-                                marginLeft: 'auto',
-                                marginRight: 'auto',
-                                fontSize: props.selected === mood.name ? 40 : 20
-                            }}
-                        />
-                    </IconButton>
-
-                </Grid>
             ))}
 
         </View>

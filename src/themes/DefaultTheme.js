@@ -21,6 +21,9 @@ export const useStyles =  () =>({
         flexGrow: 1,
         marginBottom: 1
     },
+    spaceAbove: {
+        marginTop: theme.spacing(5)
+    },
     space: {
         paddingTop: theme.spacing(5)
     },
@@ -46,10 +49,9 @@ export const useStyles =  () =>({
         minWidth: 350,
     },
     fit: {
-dth: '90%        wi'
+       width: '90%'
     },
     form: {
-
         margin: theme.spacing(1),
         width: 200,
 
@@ -64,7 +66,7 @@ dth: '90%        wi'
     listRoot: {
         flexGrow: 1,
         overflow: 'hidden',
-        maxWidth: 500,
+        maxWidth: 1024,
         minWidth: 350,
         marginLeft: 'auto',
         marginRight: 'auto',

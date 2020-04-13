@@ -34,7 +34,6 @@ export default function TimerRunning(props) {
             flexDirection: 'column',
             ...props.classes.listRoot
         }}>
-            <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
             {projectValid(props.runningProject) && isTimer(props.runningTimer) ?
                 <SubHeader
                     title={projectValid(props.runningProject) ? `${props.runningProject[1].name}` : 'Timer'}

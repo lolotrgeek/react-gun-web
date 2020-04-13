@@ -119,7 +119,7 @@ export function EnergySlider(props) {
     return (
 
         <Grid className={classes.space} style={{ width: '100%'}} direction='row' justify='space-between' alignItems='center'>
-            <Typography variant='h6'>{props.label ? props.label : 'Energy'}</Typography>
+            <Typography variant='h6'>{props.label ? props.label : ''}</Typography>
             <PrettoSlider
                 ref={ref}
                 style={{ color: color && color.length > 0 ? color : calcColor(width, props.startingEnergy) }}

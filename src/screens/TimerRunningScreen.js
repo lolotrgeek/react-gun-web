@@ -10,7 +10,7 @@ import { elapsedTime } from '../constants/Functions'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerRunning from '../components/templates/TimerRunning'
 
-export default function TimerRunningScreen({useParams, useHistory}) {
+export default function TimerRunningScreen({ useParams, useHistory }) {
 
   const [online, setOnline] = useState(false)
   const [runningProject, setRunningProject] = useState([])
@@ -104,13 +104,20 @@ export default function TimerRunningScreen({useParams, useHistory}) {
     completeTimer[1].energy = energy
     completeTimer[1].total = totalTime(completeTimer[1].started, completeTimer[1].ended)
     if (isTimer(completeTimer)) {
+      console.log('Completing Timer: ', completeTimer )
       stop()
       finishTimer(completeTimer)
-      setAlert(['Success', 'Timer Updated!',])
+      alert.show('Timer Updated!', {
+        type: 'Success'
+      })
+      // setAlert(['Success', 'Timer Updated!',])
       history.push((projectlink(completeTimer[1].project)))
     }
     else {
-      setAlert(['Error', 'Timer Invalid!',])
+      alert.show('Timer Invalid!', {
+        type: 'Error'
+      })
+      // setAlert(['Error', 'Timer Invalid!',])
     }
   }
 
@@ -124,7 +131,7 @@ export default function TimerRunningScreen({useParams, useHistory}) {
   }
 
   return (
-    <TimerRunning 
+    <TimerRunning
       classes={classes}
       runningTimer={runningTimer}
       runningProject={runningProject}
@@ -137,6 +144,6 @@ export default function TimerRunningScreen({useParams, useHistory}) {
       energy={energy}
       setEnergy={setEnergy}
       timerCompleteAction={timerComplete}
-      />
+    />
   )
 }

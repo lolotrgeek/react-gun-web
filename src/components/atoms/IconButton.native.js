@@ -1,6 +1,6 @@
 import React from 'react'
-import { IconButton as MaterialButton} from '@material-ui/core';
-// import { IconButton as PaperIconButton } from 'react-native-paper';
+// import { Button as MaterialButton} from '@material-ui/core';
+import { IconButton as PaperIconButton } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native'
 
 /**
@@ -11,4 +11,4 @@ import { TouchableOpacity } from 'react-native'
  * @param {*} props.style
  *  
  */
-export const IconButton = props => <MaterialButton onClick={props.onPress} {...props} children={props.children} />
+export const IconButton = props => <TouchableOpacity {...props} children={props.children} />
