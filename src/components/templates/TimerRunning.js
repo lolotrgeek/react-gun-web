@@ -66,11 +66,11 @@ export default function TimerRunning(props) {
 
                     <EnergySlider
                         startingEnergy={props.energy}
-                        onEnergySet={(event, value) => props.setEnergy(value)}
+                        setEnergy={props.setEnergy}
                     />
 
 
-                    <Button variant="contained" color="primary" onClick={() => {
+                    <Button variant="contained" color="primary" onPress={() => {
                         if (isRunning(props.runningTimer)) {
                             props.timerCompleteAction()
                         };

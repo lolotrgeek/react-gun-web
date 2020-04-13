@@ -18,7 +18,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // Source: https://material-ui.com/components/drawers/#persistent-drawer
 
@@ -27,8 +27,14 @@ const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+        height: '100vh',
+        minHeight: '100vh',
     },
     appBar: {
+        position: 'fixed',
+        left:0,
+        top: 0,
+        width:'50%',
         background: 'transparent',
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
@@ -63,7 +69,7 @@ const useStyles = makeStyles(theme => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
-    title : {
+    title: {
         flexGrow: 1,
     },
     breadcrumbs: {
@@ -74,7 +80,6 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-
     },
 }));
 
@@ -90,6 +95,7 @@ export default function MainMenu(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [options, setOptions] = React.useState([])
 
     const handleDrawerOpen = () => setOpen(true);
 
@@ -103,6 +109,7 @@ export default function MainMenu(props) {
     }
 
     return (
+
         <div className={classes.root}>
             <CssBaseline />
             <AppBar
@@ -124,10 +131,9 @@ export default function MainMenu(props) {
                     <Typography variant="h6" noWrap className={classes.title}>
                         {props.title}
                     </Typography>
-                    {props.options ? <SideMenu options={props.options} /> : null}
+                    {/* <SideMenu options={options} /> */}
 
                 </Toolbar>
-
             </AppBar>
             <Drawer
                 className={classes.drawer}
@@ -150,7 +156,7 @@ export default function MainMenu(props) {
                     {props.links.map((link, index) => (
                         <Link key={index} color='inherit' style={{ textDecoration: 'none' }} to={link.route}>
                             <ListItem button key={link.text}>
-                            {props.icon ? <ListItemIcon> {props.icon}</ListItemIcon>: null }
+                                {props.icon ? <ListItemIcon> {props.icon}</ListItemIcon> : null}
                                 <ListItemText primary={link.text} />
                             </ListItem>
                         </Link>

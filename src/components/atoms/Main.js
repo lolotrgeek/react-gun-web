@@ -14,7 +14,6 @@ const Main = props => <SafeAreaView
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        width: '100%',
         ...props.style,
         ...props.className,
     }}

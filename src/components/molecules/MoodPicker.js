@@ -19,7 +19,7 @@ export function MoodPicker(props) {
     return (
 
         <Grid container direction='row' justify='space-between' alignItems='center'>
-            <Typography variant='h3'>{props.label ? props.label : 'Mood'}</Typography>
+            <Typography variant='h6'>{props.label ? props.label : 'Mood'}</Typography>
             {moods.map(mood => (
 
                 <IconButton key={mood.name} edge='end' onClick={mood.click} >

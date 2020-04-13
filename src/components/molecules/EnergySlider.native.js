@@ -95,9 +95,9 @@ export function EnergySlider(props) {
                 thumbTintColor={color}
                 minimumTrackTintColor={color}
                 maximumTrackTintColor={color}
-                onSlidingComplete={value => props.setEnergy(value)}
+                onSlidingComplete={change => props.setEnergy(change)}
                 value={value}
-                onValueChange={value => {setValue(value); setColor(calcColor(width, value))}}
+                onValueChange={change => {setValue(change); setColor(calcColor(width, value))}}
             />
         </View>
     )

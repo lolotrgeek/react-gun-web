@@ -66,7 +66,7 @@ export default function TimerRunning(props) {
                             <EnergySlider
                                 width={width}
                                 startingEnergy={props.energy}
-                                onEnergySet={(event, value) => props.setEnergy(value)}
+                                setEnergy={props.setEnergy}
                             />
                         </View>
 

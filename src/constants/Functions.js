@@ -33,7 +33,8 @@ export const secondsToString = seconds => {
     let day = moment("2015-01-01")
     let start = day.startOf('day')
     let second = start.seconds(seconds)
-    return moment.isMoment(second) ? second.format('H:mm:ss') : null};
+    return moment.isMoment(second) ? second.format('H:mm:ss') : null
+};
 
 /**
  * return full month name from date.
@@ -48,7 +49,7 @@ export const getMonth = date => {
  * return date as a simplifed date string `dd month yyy`
  * @param {*} date 
  */
-export const simpleDate = date =>format(date, "MMM d yyyy")
+export const simpleDate = date => format(date, "MMM d yyyy")
 export const simpleDateOld = date => date.getDate() + " " + getMonth(date) + " " + date.getFullYear()
 
 export const fullDate = date => format(date, "EEE MMM d yyyy  hh:mm:ss aaa")
@@ -279,8 +280,8 @@ export const dayHeaders = timerlist => {
         }
     })
     // // console.log('- DAYHEADERS - OUTPUT', output)
-    if (output.length > 0) { return(output) }
-    else { return([]) }
+    if (output.length > 0) { return (output) }
+    else { return ([]) }
 }
 
 /**

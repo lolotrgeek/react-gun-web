@@ -1,61 +1,93 @@
 import { newTimer, newProject, doneTimer, generateNewTimer } from './Models'
 import { isRunning, multiDay, newEntryPerDay } from './Functions'
 import Gun from 'gun/gun'
-import GunSQLite from 'gun-react-native-sqlite';
-import SQLite from 'react-native-sqlite-storage'
+import  AsyncStorage  from '@react-native-community/async-storage';
 
-console.log('using Native Storage...')
+console.log('using native Storage...')
+class Adapter {
+    constructor(db) {
+        this.db = db;
+        // Preserve the `this` context for read/write calls.
+        this.read = this.read.bind(this);
+        this.write = this.write.bind(this);
+    }
+    read(context) {
+        const { get, gun } = context;
+        const { "#": key } = get;
+        const done = (err, data) => {
+            this.db.on("in", {
+                "@": context["#"],
+                put: Gun.graph.node(data),
+                //not needed. this solves an issue in gun https://github.com/amark/gun/issues/877
+                _: function () { },
+                err
+            });
+        };
+        AsyncStorage.getItem(key, (err, result) => {
+            if (err) {
+                done(err);
+            }
+            else if (result === null) {
+                // Nothing found
+                done(null);
+            }
+            else {
+                done(null, JSON.parse(result));
+            }
+        });
+    }
+    write(context) {
+        const { gun } = context;
+        const graph = context._.put
+        const keys = Object.keys(graph);
+        const instructions = keys.map((key) => [
+            key,
+            JSON.stringify(graph[key])
+        ]);
+        AsyncStorage.multiMerge(instructions, (err) => {
+            this.db.on("in", {
+                "@": context["#"],
+                ok: !err || err.length === 0,
+                err
+            });
+        });
+    }
+}
+
+Gun.on("create", (db) => {
+    const adapter = new Adapter(db);
+    // Allows other plugins to respond concurrently.
+    const pluginInterop = (middleware) => function (ctx) {
+        this.to.next(ctx);
+        return middleware(ctx);
+    };
+    // Register the adapter
+    db.on("get", pluginInterop(adapter.read));
+    db.on("put", pluginInterop(adapter.write));
+});
+
 
 const port = '8765'
 const address = 'localhost'
 const peers = [`http://${address}:${port}`]
 
-const adapter = GunSQLite.bootstrap(Gun);
-
 export const gun = new Gun({
-  // Defaults
+  localStorage: false,
   peers: peers,
-  sqlite: {
-    database_name: "GunDB.db",
-    database_location: "default", // for concerns about location on iOS, see [here](https://github.com/andpor/react-native-sqlite-storage#opening-a-database)
-    onOpen: () => { },
-    onErr: err => { },
-    onReady: err => console.log('Ready') // don't attempt to read/write from Gun until this has been called unless you like to live dangerously
-  }
 })
-
-// Clean Out DB
-export const cleanDB = () => {
-  adapter.clean(Date.now() - (1000 * 60 * 60 * 24), err => {
-    if (!err) {
-      console.log("All cleaned up!");
-    }
-  });
-}
-// Look at DB directly
-export const dumpDB = () => {
-  let db = SQLite.openDatabase({ name: "GunDB.db", location: "default" })
-  db.transaction(tx => {
-    console.log('SELECTING ENTIRE TABLE')
-    tx.executeSql("SELECT * FROM GunTable", [],
-      (tx, results) => console.table(results.rows.raw()),
-      (tx, err) => console.warn(err))
-  });
-}
-
-// Kill DB
-export const deleteGunTable = () => {
-  let db = SQLite.openDatabase({ name: "GunDB.db", location: "default" })
-  db.transaction(tx => {
-    console.log('DROPPING DB')
-    tx.executeSql('DROP TABLE GunTable', [],
-      (tx, results) => console.warn('DROPPED: ', results),
-      (tx, err) => console.warn(err))
-  })
-}
 
 
 // TODO IMPORT FUNCTIONS FROM ./Data.js
+
+export const getAllEntries = async () => {
+  //console.info('ASYNC STORAGE - getting all entries... ')
+  const keys = await AsyncStorage.getAllKeys()
+  console.info('ASYNC STORAGE - KEYS :', keys)
+  const stores = await AsyncStorage.multiGet(keys)
+  console.log('Entries: ' + stores)
+  return stores
+};
+(async () => await getAllEntries())();
 
 export const createProject = (name, color) => {
   const project = newProject(name, color)
@@ -186,4 +218,17 @@ export const finishTimer = (timer) => {
       endTimer(done)
     }
   } else { return timer }
+}
+
+/**
+ *  Delete entire async Storage
+ * @param {function} state
+ */
+export const removeAll = async () => {
+  try {
+    console.info('ASYNC STORAGE - REMOVING ALL')
+    await AsyncStorage.clear()
+  } catch (error) {
+    console.error(error)
+  }
 }

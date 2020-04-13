@@ -1,10 +1,11 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, YellowBox } from 'react-native';
 import { removeAll } from './src/constants/Data.native'
 import { DarkTheme, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import App from './src/App';
 
 console.disableYellowBox = true;
+YellowBox.ignoreWarnings(['Require cycle:', 'Animated:']);
 
 // https://callstack.github.io/react-native-paper/getting-started.html#customization
 // https://callstack.github.io/react-native-paper/theming.html

@@ -7,7 +7,8 @@ import { UnEvenGrid } from '../atoms/Grid'
 import { Title } from '../molecules/Title'
 import { Button } from '../atoms/Button'
 import Grid from '../atoms/Grid'
-import {View} from 'react-native'
+import { View } from 'react-native'
+import Typography from '../atoms/Typography'
 
 /**
  * 
@@ -43,19 +44,21 @@ export default function ProjectList(props) {
             <Grid container direction='column' justify="flex-start" alignItems="center" >
                 {props.projects.map(project => {
                     return (
-                        <Grid key={project[0]} container style={props.classes.listClass} direction='row' justify="space-around" alignItems="flex-start" >
-                            <Grid item>
+                        <View key={project[0]}>
+                            <Grid container style={props.classes.listClass} direction='row' justify="space-around" alignItems="flex-start" >
+
                                 <Title to={props.projectlink(project[0])} color={project[1].color} variant='h6'>
                                     {projectValid(project) ? project[1].name : null}
                                 </Title>
-                            </Grid>
-                            <Grid item>
+
                                 <Button variant="contained" color="primary" onPress={() => {
                                     if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
                                     props.startTimer(project)
                                 }}>Start</Button>
+
                             </Grid>
-                        </Grid>
+                        </View>
+
                     )
                 })}
             </Grid>
