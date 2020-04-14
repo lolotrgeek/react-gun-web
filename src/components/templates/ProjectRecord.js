@@ -15,7 +15,7 @@ import MoodDisplay from '../molecules/MoodDisplay'
 import { RunningTimer } from '../organisms/RunningTimer'
 import { TimePeriod } from '../molecules/TimePeriod'
 import Typography from '../atoms/Typography'
-import { View } from 'react-native'
+import { View, SectionList } from 'react-native'
 
 const debug = false
 
@@ -60,40 +60,33 @@ export default function ProjectRecord(props) {
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
                 : null}
-
-            {dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started))).map((day, index) => {
-                return (
-                    <View key={index} style={{
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        flexDirection: 'column'
-                    }} >
-                        <SubTitle>{sayDay(day.title)}</SubTitle>
-                        {debug && console.log(day.data)}
-                        {day.data.map(timer => {
-                            if (!isTimer(timer)) return (null)
-                            if (timer[1].status === 'running') return (null)
-                            let ended = new Date(timer[1].ended)
-                            let started = new Date(timer[1].started)
-                            return (
-
-                                <Link key={timer[0]} to={props.timerlink(props.project[0], timer[0])}>
-                                    <UnEvenGrid
-                                        values={[
-                                            <TimePeriod start={started} end={ended} />,
-                                            <EnergyDisplay energy={timer[1].energy} />,
-                                            <MoodDisplay mood={timer[1].mood} />,
-                                            <Typography>{secondsToString(totalTime(started, ended))}</Typography>
-                                        ]}
-                                    />
-
-                                </Link>
-
-                            )
-                        })}
-                    </View >
-                )
-            })}
+            <SectionList style={{ width: '100%' }}
+                sections={dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started)))}
+                keyExtractor={(item, index) => item + index}
+                renderSectionHeader={({ section: { title } }) => {
+                    return (<SubTitle >{sayDay(title)}</SubTitle>)
+                }}
+                renderItem={({ item }) => {
+                    debug && console.log(item)
+                    let timer = item
+                    if (!isTimer(timer)) return (null)
+                    if (timer[1].status === 'running') return (null)
+                    let ended = new Date(timer[1].ended)
+                    let started = new Date(timer[1].started)
+                    return (
+                        < Link key={timer[0]} to={props.timerlink(props.project[0], timer[0])} >
+                            <UnEvenGrid
+                                values={[
+                                    <TimePeriod start={started} end={ended} />,
+                                    <EnergyDisplay energy={timer[1].energy} />,
+                                    <MoodDisplay mood={timer[1].mood} />,
+                                    <Typography>{secondsToString(totalTime(started, ended))}</Typography>
+                                ]}
+                            />
+                        </Link>
+                    )
+                }}
+            />
         </View >
     )
 }

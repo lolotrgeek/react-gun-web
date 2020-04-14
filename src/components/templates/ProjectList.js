@@ -7,7 +7,7 @@ import { UnEvenGrid } from '../atoms/Grid'
 import { Title } from '../molecules/Title'
 import { Button } from '../atoms/Button'
 import Grid from '../atoms/Grid'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import Typography from '../atoms/Typography'
 import { useStyles, theme } from '../../themes/DefaultTheme'
 
@@ -43,12 +43,7 @@ export default function ProjectList(props) {
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
                 : null}
-            <View style={{
-                flex: 1,
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                flexDirection: 'column',
-            }} >
+            <ScrollView>
                 {props.projects.map(project => {
                     return (
                         <View
@@ -76,7 +71,7 @@ export default function ProjectList(props) {
                         </View>
                     )
                 })}
-            </View>
+            </ScrollView>
 
         </View >
     )

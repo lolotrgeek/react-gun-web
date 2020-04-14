@@ -10,7 +10,7 @@ import { Title, SubTitle } from '../molecules/Title'
 import { Link } from '../atoms/Link'
 import { UnEvenGrid } from '../atoms/Grid'
 import { RunningTimer } from '../organisms/RunningTimer'
-import { View } from 'react-native'
+import { View, SectionList } from 'react-native'
 import { useStyles, theme } from '../../themes/DefaultTheme'
 
 /**
@@ -64,47 +64,42 @@ export default function Timeline(props) {
                     alignItems: 'center',
                     flexDirection: 'column',
                 }} >
-                {sumProjectTimers(dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started)))).map((day, index) => {
-                    return (
-                        <View style={{
-                            flex: 1,
-                            flexBasis: 1,
-                            marginTop: theme.spacing(2),
-                        }} key={index}>
-                            <SubTitle>{sayDay(day.title)}</SubTitle>
-                            {day.data.map(item => props.projects.map(project => {
-                                if (item.status === 'running') return (null)
-                                if (project[0] === item.project) {
-                                    return (
-                                        <View style={{
-                                            flex:0,
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }} >
-                                            <View style={{ marginRight: 100 }}>
-                                                <Title to={props.projectlink(item.project)} variant='h6' color={project[1].color} >{projectValid(project) ? project[1].name : ''}</Title>
-                                            </View>
-                                            <View>
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onPress={() => {
-                                                        if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
-                                                        props.startTimer(item.project)
-                                                    }}>
-                                                    {secondsToString(item.total)}
-                                                </Button>
-                                            </View>
-                                        </View >
-                                    )
-                                }
-                                else return (null)
-                            })
-                            )}
-                        </View>
-                    )
-                })}
+                <SectionList style={{ width: '100%' }}
+                    sections={sumProjectTimers(dayHeaders(props.timers.sort((a, b) => new Date(b[1].started) - new Date(a[1].started))))}
+                    keyExtractor={(item, index) => item + index}
+                    renderSectionHeader={({ section: { title } }) => {
+                        return (<SubTitle>{sayDay(title)}</SubTitle>)
+                    }}
+                    renderItem={({ item }) => props.projects.map(project => {
+                        if (item.status === 'running') return (null)
+                        if (project[0] === item.project) {
+                            return (
+                                <View style={{
+                                    flex: 0,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }} >
+                                    <View style={{ marginRight: 100 }}>
+                                        <Title to={props.projectlink(item.project)} variant='h6' color={project[1].color} >{projectValid(project) ? project[1].name : ''}</Title>
+                                    </View>
+                                    <View>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onPress={() => {
+                                                if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
+                                                props.startTimer(item.project)
+                                            }}>
+                                            {secondsToString(item.total)}
+                                        </Button>
+                                    </View>
+                                </View >
+                            )
+                        }
+                        else return (null)
+                    })}
+                    />
             </View>
         </View >
     )

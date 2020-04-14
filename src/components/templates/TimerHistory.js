@@ -13,7 +13,7 @@ import { Button } from '../atoms/Button'
 import { Card, CardContent, CardActions } from '../atoms/Card';
 import Typography from '../atoms/Typography'
 import { TimePeriod } from '../molecules/TimePeriod'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 
 import { useStyles, theme } from '../../themes/DefaultTheme'
 
@@ -54,11 +54,7 @@ export default function TimerHistory(props) {
             <Typography className={props.classes.spaceBelow} variant='h4'>
                 {props.timer[1] && nameValid(props.timer[1].name) && isTimer(props.timer) ? props.timer[1].name : 'Timer History '}
             </Typography>
-            <View style={{
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-            }}>
+            <ScrollView>
                 {props.edits.map((edit) => {
                     debug && console.log('EDIT', edit[1])
                     let started = new Date(edit[1].started)
@@ -109,7 +105,7 @@ export default function TimerHistory(props) {
                         </View>
                     )
                 })}
-            </View>
+            </ScrollView>
 
         </View >
     )

@@ -4,8 +4,8 @@ import { Title } from '../molecules/Title'
 import { UnEvenGrid } from '../atoms/Grid'
 import Grid from '../atoms/Grid'
 
-import {Button} from '../atoms/Button'
-
+import { Button } from '../atoms/Button'
+import { View, ScrollView } from 'react-native'
 
 /**
  * 
@@ -15,29 +15,35 @@ import {Button} from '../atoms/Button'
  * @param {function} props.restoreButtonAction 
  * 
  */
-export default function Name(props) {
-    return (
-        <Grid>
-        <SubHeader
-          className={props.classes.space}
-          title='Project Trash'
-        />
-  
-        <Grid className={props.classes.space}>
-          {props.projects.map(project => {
-            return (
-              <Grid key={project[0]} className={props.classes.listClass}>
-                <UnEvenGrid
-                  values={[
-                    <Title color={project[1].color} variant='h6' >{ project[1].name }</Title>,
-                    <Button variant="contained" color="primary" onPress={() => props.restoreButtonAction(project) }>Restore</Button>
-                  ]}
-                />
-  
-              </Grid>
-            )
-          })}
-        </Grid>
-      </Grid >
-    )
+export default function ProjectTrash(props) {
+  return (
+    <View style={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      ...props.classes.listRoot
+    }}>
+      <SubHeader
+        className={props.classes.space}
+        title='Project Trash'
+      />
+
+      <ScrollView className={props.classes.space}>
+        {props.projects.map(project => {
+          return (
+            <View key={project[0]} className={props.classes.listClass}>
+              <UnEvenGrid
+                values={[
+                  <Title color={project[1].color} variant='h6' >{project[1].name}</Title>,
+                  <Button variant="contained" color="primary" onPress={() => props.restoreButtonAction(project)}>Restore</Button>
+                ]}
+              />
+
+            </View>
+          )
+        })}
+      </ScrollView>
+    </View >
+  )
 }

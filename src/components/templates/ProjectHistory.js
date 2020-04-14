@@ -11,7 +11,7 @@ import { Card, CardContent, CardActions, CardTitle } from '../atoms/Card';
 
 import Typography from '../atoms/Typography'
 import { Button } from '../atoms/Button'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { useStyles, theme } from '../../themes/DefaultTheme'
 
 
@@ -40,7 +40,7 @@ export default function ProjectHistory(props) {
           buttonText='Edit'
         /> : <Stateless />}
 
-      <View style={{ flex: 1, }}>
+      <ScrollView >
         {props.edits.map(edit => {
           return (
             <View key={edit[2]} style={{
@@ -73,7 +73,7 @@ export default function ProjectHistory(props) {
             </View>
           )
         })}
-      </View>
+      </ScrollView>
     </View >
   )
 }
