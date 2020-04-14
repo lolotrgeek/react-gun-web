@@ -21,7 +21,7 @@ export function PickerDate(props) {
           <h3>{props.label}</h3>
         </Grid>
         <Grid item >
-          <IconButton accessibilityLabel="previous day" onClick={props.previousDay}>
+          <IconButton aria-label="previous day" onClick={props.previousDay}>
             <FontAwesomeIcon
               icon={faChevronLeft}
               size={'sm'}
@@ -42,7 +42,7 @@ export function PickerDate(props) {
           />
         </Grid>
         <Grid item >
-          <IconButton accessibilityLabel="next day" onClick={props.nextDay}>
+          <IconButton aria-label="next day" onClick={props.nextDay}>
             <FontAwesomeIcon
               icon={faChevronRight}
               size={'sm'}
@@ -63,7 +63,7 @@ export function PickerTime(props) {
             <h3>{props.label}</h3>
           </Grid>
           <Grid item >
-            <IconButton accessibilityLabel="subtract 5 minutes" onClick={props.subtractMinutes}>
+            <IconButton aria-label="subtract 5 minutes" onClick={props.subtractMinutes}>
               <FontAwesomeIcon
                 icon={faChevronLeft}
                 size={'sm'}
@@ -97,7 +97,7 @@ export function PickerTime(props) {
           </Grid>
 
           <Grid item >
-            <IconButton accessibilityLabel="add 5 minutes" onClick={props.addMinutes}>
+            <IconButton aria-label="add 5 minutes" onClick={props.addMinutes}>
               <FontAwesomeIcon
                 icon={faChevronRight}
                 size={'sm'}
@@ -121,7 +121,7 @@ export function PickerSeconds(props) {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container direction="row" alignItems="flex-end" justify="center">
           <Grid item >
-            <IconButton accessibilityLabel="subtract 5 minutes" onClick={props.subtractMinutes}>
+            <IconButton aria-label="subtract 5 minutes" onClick={props.subtractMinutes}>
               <FontAwesomeIcon
                 icon={faChevronLeft}
                 size={'sm'}
@@ -134,7 +134,7 @@ export function PickerSeconds(props) {
           </Grid>
 
           <Grid item >
-            <IconButton accessibilityLabel="add 5 minutes" onClick={props.addMinutes}>
+            <IconButton aria-label="add 5 minutes" onClick={props.addMinutes}>
               <FontAwesomeIcon
                 icon={faChevronRight}
                 size={'sm'}

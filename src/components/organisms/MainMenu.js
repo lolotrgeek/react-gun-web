@@ -124,7 +124,7 @@ export default function MainMenu(props) {
                         style={{ color: 'black' }}
                         color="inherit"
                         icon='menu'
-                        accessibilityLabel="open drawer"
+                        aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
                         className={clsx(classes.menuButton, open && classes.hide)}
