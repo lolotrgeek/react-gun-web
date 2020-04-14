@@ -34,10 +34,14 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
+//TODO - nice to have: update mood and energy slider realtime
+
   useEffect(() => {
     gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
       if (!runningTimerGun) {
-        setAlert(['Error', 'No Timer Exists'])
+        stop()
+        if(runningProject.length === 0) setAlert(['Error', 'No Timer Exists'])
+        else setAlert(['Success', 'Timer Complete!'])
       }
       else {
         const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
@@ -61,7 +65,7 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
       }, { change: true })
       return () => gun.get('projects').off()
     }
-  }, [runningTimer])
+  }, [online, runningTimer])
 
   useEffect(() => runningTimer[1] ? setEnergy(runningTimer[1].energy) : runningTimer[1], [runningTimer])
 
@@ -110,7 +114,7 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
       debug && console.log('Completing Timer: ', completeTimer )
       stop()
       finishTimer(completeTimer)
-      alert.show('Timer Updated!', {
+      alert.show('Timer Complete!', {
         type: 'Success'
       })
       // setAlert(['Success', 'Timer Updated!',])

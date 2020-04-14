@@ -17,6 +17,7 @@ export function RunningTimer(props) {
     return (
         <View style={{...classes.space}} onLayout={event => setWidth(event.nativeEvent.layout.width)} >
             <Card style={{
+                flex:1,
                 width: width,
                 backgroundColor: props.color, 
                 ...classes.spaceFull

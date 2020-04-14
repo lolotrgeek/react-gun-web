@@ -10,7 +10,7 @@ export const gun = new Gun({
   peers: peers,
 })
 
-const debug = false
+const debug = true
 
 
 /**
