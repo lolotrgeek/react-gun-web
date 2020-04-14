@@ -18,7 +18,7 @@ export function RunningTimer(props) {
         <View style={{...classes.space}} onLayout={event => setWidth(event.nativeEvent.layout.width)} >
             <Card style={{
                 width: width,
-                background: props.color, 
+                backgroundColor: props.color, 
                 ...classes.spaceFull
             }} >
                 <Link to={props.link ? props.link : timerRunninglink()}>

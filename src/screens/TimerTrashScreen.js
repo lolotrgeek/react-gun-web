@@ -14,6 +14,7 @@ export default function TimerTrashScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])
   const [timers, setTimers] = useState([])
+  const [current, setCurrent] = useState([])
   const [project, setProject] = useState([])
   const alert = useAlert()
   let history = useHistory()
@@ -39,17 +40,19 @@ export default function TimerTrashScreen({useParams, useHistory}) {
   }, [online])
 
   useEffect(() => {
-    let currentTimers = []
+    // let currentTimers = []
     gun.get('timers').get(projectId).map().on((timerValue, timerKey) => {
       if (timerValue) {
         const foundTimer = [timerKey, trimSoul(timerValue)]
         if (foundTimer[1].status === 'deleted') {
-          let check = currentTimers.some(id => id === foundTimer[0])
+          let check = current.some(id => id === foundTimer[0])
+          // let check = currentTimers.some(id => id === foundTimer[0])
           if (!check) {
             debug && console.log('Adding Timer', foundTimer)
             setTimers(timers => [...timers, foundTimer])
           }
-          currentTimers.push(foundTimer[0])
+          setCurrent(current => [...current, foundTimer[0]])
+          // currentTimers.push(foundTimer[0])
         }
         else if (foundTimer[1].status === 'running') {
           gun.get('running').get('timer').put(JSON.stringify(foundTimer))

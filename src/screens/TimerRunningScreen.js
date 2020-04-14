@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { gun, updateTimer, deleteTimer, createTimer, finishTimer } from '../constants/Data'
+import { gun, deleteTimer, finishTimer } from '../constants/Data'
 import { timeRules, totalTime, trimSoul } from '../constants/Functions'
 import { isTimer } from '../constants/Validators'
 import { useAlert } from '../hooks/useAlert'
@@ -98,12 +98,14 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
   }
 
   const timerComplete = () => {
-    if (!timeRulesEnforcer(runningTimer[1].started, new Date().toString())) return false
+    let ended = new Date()
+    let started = new Date(runningTimer[1].started)
+    if (!timeRulesEnforcer(started, ended)) return false
     let completeTimer = runningTimer
-    completeTimer[1].ended = new Date().toString()
+    completeTimer[1].ended = ended.toString()
     completeTimer[1].mood = mood
     completeTimer[1].energy = energy
-    completeTimer[1].total = totalTime(completeTimer[1].started, completeTimer[1].ended)
+    completeTimer[1].total = totalTime(started, ended)
     if (isTimer(completeTimer)) {
       debug && console.log('Completing Timer: ', completeTimer )
       stop()

@@ -42,6 +42,7 @@ export default function ProjectEdit(props) {
       <CirclePicker selectColor={props.selectColor} />
       <Grid item className={props.classes.space}>
         <Button variant="contained" color="primary" onPress={() => props.submitProject()}>Submit</Button>
+        <Button variant="contained" color="primary" onPress={() => props.cancelEdit()}>Cancel</Button>
       </Grid>
     </View>
   )

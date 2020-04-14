@@ -10,21 +10,24 @@ const debug = false
 export default function TimerScreen({useParams, useHistory}) {
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
+  const [current, setCurrent] = useState([])
   const classes = useStyles()
 
   useEffect(() => {
-    let currentTimers = []
+    // let currentTimers = []
     gun.get('timers').map().on((timerGunId, projectKey) => {
       gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
         if (timerValue) {
           const foundTimer = [timerKey, trimSoul(timerValue)]
           if (foundTimer[1].status === 'done') {
-            let check = currentTimers.some(id => id === foundTimer[0])
+            let check = current.some(id => id === foundTimer[0])
+            // let check = currentTimers.some(id => id === foundTimer[0])
             if (!check) {
               debug && console.log('Adding Timer', foundTimer)
               setTimers(timers => [...timers, foundTimer])
             }
-            currentTimers.push(foundTimer[0])
+            setCurrent(current => [...current, foundTimer[0]])
+            // currentTimers.push(foundTimer[0])
           }
           else if (foundTimer[1].status === 'running') {
             gun.get('running').get('timer').put(JSON.stringify(foundTimer))

@@ -83,7 +83,6 @@ export function PickerTime(props) {
               :
               <TimePicker
                 margin="normal"
-                id="time-picker"
                 views={['hours', 'minutes', 'seconds']}
                 opento='hours'
                 value={props.time}

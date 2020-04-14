@@ -9,15 +9,15 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectRecord from '../components/templates/ProjectRecord'
 
-const debug = false
+const debug = true
 
 
-export default function ProjectRecordScreen({useParams, useHistory}) {
+export default function ProjectRecordScreen({ useParams, useHistory }) {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
   const [timers, setTimers] = useState([])
-  const [deleted, setDeleted] = useState(false)
+  const [current, setCurrent] = useState([])
   const [alerted, setAlert] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
   const [runningProject, setRunningProject] = useState('')
@@ -50,17 +50,19 @@ export default function ProjectRecordScreen({useParams, useHistory}) {
   }, [online]);
 
   useEffect(() => {
-    let currentTimers = []
+    // let currentTimers = []
     gun.get('timers').get(projectId).map().on((timerValue, timerKey) => {
       if (timerValue) {
         const foundTimer = [timerKey, trimSoul(timerValue)]
         if (foundTimer[1].status === 'done') {
-          let check = currentTimers.some(id => id === foundTimer[0])
+          // let check = currentTimers.some(id => id === foundTimer[0])
+          let check = current.some(id => id === foundTimer[0])
           if (!check) {
             debug && console.log('Adding Timer', foundTimer)
             setTimers(timers => [...timers, foundTimer])
           }
-          currentTimers.push(foundTimer[0])
+          setCurrent(current => [...current, foundTimer[0]])
+          // currentTimers.push(foundTimer[0])
         }
         else if (foundTimer[1].status === 'running') {
           gun.get('running').get('timer').put(JSON.stringify(foundTimer))
@@ -118,7 +120,7 @@ export default function ProjectRecordScreen({useParams, useHistory}) {
   }
 
   return (
-    <ProjectRecord 
+    <ProjectRecord
       classes={classes}
       project={project}
       timers={timers}
@@ -132,11 +134,11 @@ export default function ProjectRecordScreen({useParams, useHistory}) {
       popupAccept={closePopup}
       popupReject={removeProject}
       sideMenuOptions={[
-          { name: 'edit', action: () => history.push(projectEditlink(projectId)) },
-          { name: 'history', action: () => history.push(projectHistorylink(projectId)) },
-          { name: 'delete', action: () => openPopup() },
-          { name: 'trash', action: () => history.push(timerTrashlink(projectId)) }
-        ]}
-      />
+        { name: 'edit', action: () => history.push(projectEditlink(projectId)) },
+        { name: 'history', action: () => history.push(projectHistorylink(projectId)) },
+        { name: 'delete', action: () => openPopup() },
+        { name: 'trash', action: () => history.push(timerTrashlink(projectId)) }
+      ]}
+    />
   )
 }

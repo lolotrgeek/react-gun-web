@@ -20,8 +20,7 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
 
-  const debug = false
-
+  const debug = true
 
   useEffect(() => {
     if (alerted && alerted.length > 0) {
@@ -37,7 +36,7 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
       setEdits(edits => [...edits, [projectId, trimSoul(projectValue), projectGunKey]])
     }, { change: true })
     return () => gun.get('history').off()
-  }, [online]);
+  }, [online, debug, projectId]);
 
   useEffect(() => {
     gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {

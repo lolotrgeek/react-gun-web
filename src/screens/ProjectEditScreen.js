@@ -22,8 +22,6 @@ export default function ProjectEditScreen({ useParams, useHistory }) {
   const classes = useStyles();
   const debug = false
 
-
-
   useEffect(() => {
     if (alerted && alerted.length > 0) {
       alert.show(alerted[1], {
@@ -51,10 +49,8 @@ export default function ProjectEditScreen({ useParams, useHistory }) {
     return () => project
   }, [project])
 
-  const handleSelectedColor = (color, event) => {
-    debug && console.log(color)
-    debug && console.log(event)
-    setColor(color.hex)
+  const handleSelectedColor = (color) => {
+    setColor(color)
   }
 
   const handleSubmitProject = () => {
@@ -112,6 +108,7 @@ export default function ProjectEditScreen({ useParams, useHistory }) {
       popupAccept={removeProject}
       popupReject={closePopup}
       submitProject={handleSubmitProject}
+      cancelEdit={() => history.goBack()}
     />
   )
 }
