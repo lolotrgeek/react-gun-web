@@ -7,7 +7,7 @@ import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } fr
 import { useStyles } from '../themes/DefaultTheme'
 import Timeline from '../components/templates/Timeline'
 
-const debug = false
+const debug = true
 
 
 export default function TimelineScreen({useParams, useHistory}) {

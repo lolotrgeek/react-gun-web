@@ -74,7 +74,7 @@ export default function ProjectRecord(props) {
                     let ended = new Date(timer[1].ended)
                     let started = new Date(timer[1].started)
                     return (
-                        < Link key={timer[0]} to={props.timerlink(props.project[0], timer[0])} >
+                        <Link key={timer[0]} to={props.timerlink(props.project[0], timer[0])} >
                             <UnEvenGrid
                                 values={[
                                     <TimePeriod start={started} end={ended} />,

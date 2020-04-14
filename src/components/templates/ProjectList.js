@@ -47,20 +47,21 @@ export default function ProjectList(props) {
                 {props.projects.map(project => {
                     return (
                         <View
+                            key={project[0]}
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 marginTop: theme.spacing(2),
 
-                            }} key={project[0]}>
-                            <View style={{ width: 100}}>
+                            }} >
+                            <View style={{ width: 100 }}>
                                 <Title to={props.projectlink(project[0])} color={project[1].color} variant='h6'>
                                     {projectValid(project) ? project[1].name : ''}
                                 </Title>
                             </View>
 
-                            <View style={{ marginLeft: 150,}}>
+                            <View style={{ marginLeft: 150, }}>
                                 <Button variant="contained" color="primary" onPress={() => {
                                     if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
                                     props.startTimer(project)

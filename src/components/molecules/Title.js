@@ -4,10 +4,11 @@ import { TitleIcon } from '../atoms/Icon'
 import Typography from '../atoms/Typography'
 import Grid from '../atoms/Grid'
 import { Link } from '../atoms/Link'
-import {View } from 'react-native'
+import { View } from 'react-native'
 
 
 const truncate = (input) => input.length > 15 ? `${input.substring(0, 15)}...` : input
+
 /**
  * 
  * @param {*} props 
@@ -20,14 +21,20 @@ export function Title(props) {
         <View style={{
             justifyContent: 'center',
             alignItems: 'center',
-            flexDirection:'row',
+            flexDirection: 'row',
         }}>
             {colorValid(props.color) ? <TitleIcon name='circle' size={20} color={props.color} /> : null}
-            <Link to={props.to} >
+            {props.to ?
+                <Link to={props.to} >
+                    <Typography variant={props.variant} color="textPrimary" style={{ textTransform: 'capitalize' }}>
+                        {truncate(props.children)}
+                    </Typography>
+                </Link>
+                :
                 <Typography variant={props.variant} color="textPrimary" style={{ textTransform: 'capitalize' }}>
                     {truncate(props.children)}
                 </Typography>
-            </Link>
+            }
         </View >
     )
 }

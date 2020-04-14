@@ -32,9 +32,9 @@ const useStyles = makeStyles(theme => ({
     },
     appBar: {
         position: 'fixed',
-        left:0,
+        left: 0,
         top: 0,
-        width:'50%',
+        width: '50%',
         background: 'transparent',
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
@@ -121,8 +121,8 @@ export default function MainMenu(props) {
             >
                 <Toolbar>
                     <IconButton
-                        // color="inherit"
-                        color="black"
+                        style={{ color: 'black' }}
+                        color="inherit"
                         icon='menu'
                         accessibilityLabel="open drawer"
                         onClick={handleDrawerOpen}
