@@ -1,4 +1,4 @@
-import Gun from 'gun/browser'
+import Gun from 'gun'
 import { newTimer, newProject, doneTimer, generateNewTimer } from './Models'
 import { isRunning, multiDay, newEntryPerDay } from './Functions'
 

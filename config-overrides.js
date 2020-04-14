@@ -1,5 +1,5 @@
 const path = require('path');
-const { override, addBabelPlugins, addBabelPresets, babelInclude, disableEsLint } = require('customize-cra');
+const { override, addBabelPlugins, addBabelPresets, babelInclude, disableEsLint, addWebpackModuleRule } = require('customize-cra');
 const fs = require("fs");
 
 // Toolbar fix for react-native-vector-icons
@@ -9,6 +9,13 @@ const fs = require("fs");
   const code = fs.readFileSync(filePath).toString();
   fs.writeFileSync(filePath, code.replace(`import { ToolbarAndroid } from './react-native';`, `import ToolbarAndroid from '@react-native-community/toolbar-android';`));
 })();
+
+
+// Fix for dependency error, https://github.com/amark/gun/issues/743#issuecomment-491440313
+// module.exports = function override(config, env) {
+//   config.module = {noParse: /gun\.js$/, ...config.module }  
+//   return config
+// }
 
 module.exports = override(
   disableEsLint(),
@@ -28,7 +35,8 @@ module.exports = override(
     path.resolve(__dirname, 'node_modules/react-native-ratings'),
     path.resolve(__dirname, 'src'),
   ])
-);
+)
+
 
 // module.exports = function override(config, env) {
 //   config.module.rules.push({
