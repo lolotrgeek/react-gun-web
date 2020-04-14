@@ -69,7 +69,7 @@ export default function ProjectRecord(props) {
                         flexDirection: 'column'
                     }} >
                         <SubTitle>{sayDay(day.title)}</SubTitle>
-                        {/* {debug && console.log(day.data)} */}
+                        {debug && console.log(day.data)}
                         {day.data.map(timer => {
                             if (!isTimer(timer)) return (null)
                             if (timer[1].status === 'running') return (null)

@@ -33,6 +33,7 @@
     "react-dom": "^16.13.1",
     "react-global-hook": "^1.4.0",
     "react-native": "^0.62.0",
+    "react-native-easy-grid": "^0.2.2",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-paper": "^3.6.0",

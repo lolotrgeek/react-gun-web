@@ -4,7 +4,7 @@ import Typography from '../atoms/Typography'
 import { Button } from '../atoms/Button';
 import { Title } from '../molecules/Title'
 import { View } from 'react-native'
-import {useStyles} from '../../themes/DefaultTheme'
+import { useStyles, theme } from '../../themes/DefaultTheme'
 
 const classes = useStyles()
 /**
@@ -16,16 +16,22 @@ const classes = useStyles()
  */
 export function Header(props) {
     return (
-        <View>
+        <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            ...props.style
+        }} >
             <Typography variant='h3' component='h1' style={{ textDecoration: 'none' }}>
                 {props.title}
                 {props.children}
             </Typography>
-
-            {props.buttonText ?
-                <Button variant="contained" onPress={props.buttonClick}>{props.buttonText}</Button>
-                : null
-            }
+            <View style={{ flex: 0, marginTop: theme.spacing(2) }}>
+                {props.buttonText ?
+                    <Button variant="contained" onPress={props.buttonClick}>{props.buttonText}</Button>
+                    : null
+                }
+            </View>
         </View >
     )
 }
@@ -46,11 +52,15 @@ export function SubHeader(props) {
             flexDirection: 'column',
             ...props.style
         }}>
-            <Title color={props.color} variant='h4' >{props.title}</Title>
-            {props.buttonText ?
-                <Button variant="contained" color="secondary" onPress={props.buttonClick}>{props.buttonText}</Button>
-                : null
-            }
+            <View style={{ flex: 0 }}>
+                <Title color={props.color} variant='h4' >{props.title}</Title>
+            </View>
+            <View style={{ marginTop: theme.spacing(2) }}>
+                {props.buttonText ?
+                    <Button variant="contained" color="secondary" onPress={props.buttonClick}>{props.buttonText}</Button>
+                    : null}
+            </View>
+
         </View >
     )
 }

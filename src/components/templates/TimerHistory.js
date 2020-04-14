@@ -17,7 +17,7 @@ import { View } from 'react-native'
 
 import { useStyles, theme } from '../../themes/DefaultTheme'
 
-const debug = false
+const debug = true
 
 
 /**
@@ -42,7 +42,7 @@ export default function TimerHistory(props) {
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            ...props.classes.listRoot
+            ...classes.listRoot
         }}>
             {props.project && props.project[1] ?
                 <SubHeader
@@ -54,44 +54,48 @@ export default function TimerHistory(props) {
             <Typography className={props.classes.spaceBelow} variant='h4'>
                 {props.timer[1] && nameValid(props.timer[1].name) && isTimer(props.timer) ? props.timer[1].name : 'Timer History '}
             </Typography>
-            <View style={{ flex: 1, }}>
-
+            <View style={{
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+            }}>
                 {props.edits.map((edit) => {
                     debug && console.log('EDIT', edit[1])
                     let started = new Date(edit[1].started)
                     let ended = new Date(edit[1].ended)
                     return (
-                        <View style={{
+                        <View key={edit[2]} style={{
                             flex: 1,
+                            flexDirection: 'column',
+                            justifyContent: 'flex-start',
+                            alignItems: 'stretch',
                             ...props.classes.space,
                             ...props.classes.card
                         }}>
-                            <Card key={edit[2]} >
-                                <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
+                            <Popup content='Confirm Restore?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
+                            <Card >
                                 <CardContent >
-                                    <Grid item>
-                                        <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
-                                    </Grid>
-                                    <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
-
                                     <View style={{
-                                        justifyContent: 'space-evenly',
-                                        alignItems: 'flex-start',
-                                        flexDirection: 'row',
-                                        marginTop: theme.spacing(2),
-                                        marginBottom: theme.spacing(2),
+                                        flex: 0,
                                     }}>
-                                        <TimePeriod start={started} end={ended} />
-                                        <EnergyDisplay energy={edit[1].energy} />
-                                        <MoodDisplay mood={edit[1].mood} />
-                                        <Typography>{secondsToString(totalTime(started, ended))}</Typography>
-                                    </View>
+                                        <Typography variant='h6'>{props.displayStatusDate(edit)}</Typography>
 
+                                        <Typography variant='subtitle1'>{props.displayStatus(edit)}</Typography>
+                                        <View style={{
+                                            justifyContent: 'space-evenly',
+                                            alignItems: 'flex-start',
+                                            flexDirection: 'row',
+                                            marginTop: theme.spacing(2),
+                                            marginBottom: theme.spacing(2),
+                                        }}>
+                                            <TimePeriod start={started} end={ended} />
+                                            <EnergyDisplay energy={edit[1].energy} />
+                                            <MoodDisplay mood={edit[1].mood} />
+                                            <Typography>{secondsToString(totalTime(started, ended))}</Typography>
+                                        </View>
+                                    </View>
                                 </CardContent>
                                 <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
                                     marginBottom: theme.spacing(2),
                                 }}>
                                     <CardActions>

@@ -22,4 +22,4 @@ export const CardContent = props => <PaperCard.Content {...props} children={prop
  * https://callstack.github.io/react-native-paper/card-title.html
  * @param {*} props 
  */
-export const CardTitle = props => <PaperCard.Title {...props} children={props.children} />
+export const CardTitle = props => <PaperCard.Title {...props} title={props.children} />
