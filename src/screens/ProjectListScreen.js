@@ -6,6 +6,7 @@ import { gun, finishTimer, createTimer } from '../constants/Data'
 import { projectEditlink, projectCreatelink, projectlink, timerRunninglink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectList from '../components/templates/ProjectList'
+import { getProjects, getRunningTimer, getRunningProject } from '../constants/Effects'
 
 const debug = false
 
@@ -20,47 +21,10 @@ export default function ProjectListScreen({useParams, useHistory}) {
   let history = useHistory()
 
 
-  useEffect(() => {
-    gun.get('projects').map().on((projectValue, projectKey) => {
-      debug && console.log(projectValue)
-      if (projectValue && projectValue.status !== 'deleted') {
-        setProjects(projects => [...projects, [projectKey, projectValue]])
-      }
-    }
-      , { change: true })
-    return () => gun.get('projects').off()
-  }, [online])
+  useEffect(() => getProjects({ setProjects }), [online])
+  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online, setCount, start, stop])
+  useEffect(() => getRunningProject({ setRunningProject, runningTimer }), [runningTimer])
 
-  useEffect(() => {
-    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
-      const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
-      if (isRunning(runningTimerFound)) {
-        setRunningTimer(runningTimerFound)
-        debug && console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].started))
-        start()
-      }
-      else if (!runningTimerGun) {
-        debug && console.log('running Timer not Found')
-        stop()
-        setRunningTimer({})
-      }
-    }, { change: true })
-
-    return () => gun.get('running').off()
-  }, [online, setCount, start, stop]);
-
-  useEffect(() => {
-    if (runningTimer[1] && isTimer(runningTimer)) {
-      gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        debug && console.log(projectValue)
-        if (projectValue && projectValue.status !== 'deleted') {
-          setRunningProject([projectKey, projectValue])
-        }
-      }, { change: true })
-      return () => gun.get('projects').off()
-    }
-  }, [runningTimer])
 
   const startTimer = (project) => {
     createTimer(project[0])

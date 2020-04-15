@@ -8,6 +8,7 @@ import { projectlink, projectsListLink, timerHistorylink } from '../routes/route
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerEdit from '../components/templates/TimerEdit'
+import { getTimerForEdit, getProject } from '../constants/Effects'
 
 const debug = false
 
@@ -37,39 +38,23 @@ export default function TimerEditScreen({useParams, useHistory}) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => {
-    debug && console.log('Getting: ', projectId, timerId)
-    gun.get('timers').get(projectId, ack => {
-      if (ack.err || !ack.put) setAlert(['Error', 'No Project Exists'])
-    }).get(timerId, ack => {
-      if (ack.err || !ack.put) setAlert(['Error', 'No Timer Exists'])
-    }).on((timerValue, timerGunId) => {
-      if (!timerValue) {
-        setAlert(['Error', 'No Timer Exists'])
-        history.push((projectlink(projectId)))
-      }
-      else {
-        let foundTimer = [timerId, trimSoul(timerValue)]
-        setStarted(new Date(foundTimer[1].started))
-        setEnded(new Date(foundTimer[1].ended))
-        setMood(foundTimer[1].mood)
-        setEnergy(foundTimer[1].energy)
-        setTotal(foundTimer[1].total === 0 ? totalTime(started, ended) : foundTimer[1].total)
-        setTimer(foundTimer)
-      }
+  useEffect(() => getTimerForEdit({
+    setAlert,
+    setStarted,
+    setEnded,
+    setEnergy,
+    setMood,
+    setTotal,
+    setTimer,
+    projectlink,
+    projectId,
+    timerId,
+    history,
+    started,
+    ended
+  }), [online]);
 
-    }, { change: true })
-    return () => gun.get('timers').off()
-  }, [online]);
-
-  useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectKey) => {
-      debug && console.log(projectValue)
-      setProject([projectKey, projectValue])
-    }
-      , { change: true })
-    return () => gun.get('projects').off()
-  }, [timer])
+  useEffect(() => getProject({projectId, setProject}), [timer])
   useEffect(() => timer[1] ? setEnergy(timer[1].energy) : timer[1], [timer])
   useEffect(() => setTotal(totalTime(started, ended)), [started, ended])
 

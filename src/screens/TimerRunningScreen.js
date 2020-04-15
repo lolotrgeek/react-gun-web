@@ -9,6 +9,7 @@ import useCounter from '../hooks/useCounter'
 import { elapsedTime } from '../constants/Functions'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerRunning from '../components/templates/TimerRunning'
+import { getProjects, getRunningTimer, getRunningProject, getTimers, getTimerRunning } from '../constants/Effects'
 
 const debug = false
 
@@ -27,54 +28,22 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
 
   useEffect(() => {
     if (alerted && alerted.length > 0) {
-      alert.show(alerted[1], {
-        type: alerted[0]
-      })
-    }
+      alert.show(alerted[1], {type: alerted[0]})}
     return () => alerted
   }, [alerted])
 
+  useEffect(() => getRunningProject({runningTimer, setRunningProject}), [online, runningTimer])
+  useEffect(() => getTimerRunning({setMood, setEnergy, setCount, start, stop, setRunningTimer, runningProject, setAlert}), [online]);
+
   //TODO - nice to have: update mood and energy slider realtime
+  // useEffect(() => {
+  //   if (runningTimer.length > 0) {
+  //     let updateRunningTimer = runningTimer
+  //     updateRunningTimer[1].mood = mood
+  //     gun.get('running').get('timer').put(updateRunningTimer)
+  //   }
 
-  useEffect(() => {
-    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
-      if (!runningTimerGun) {
-        stop()
-        if (runningProject.length === 0) setAlert(['Error', 'No Timer Exists'])
-        else setAlert(['Success', 'Timer Complete!'])
-      }
-      else {
-        const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
-        setMood(runningTimerFound[1].mood)
-        setEnergy(runningTimerFound[1].energy)
-        setRunningTimer(runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].started))
-        start()
-      }
-    }, { change: true })
-    return () => gun.get('running').off()
-  }, [online]);
-
-  useEffect(() => {
-    if (runningTimer[1] && isTimer(runningTimer)) {
-      gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        debug && console.log(projectValue)
-        if (projectValue && projectValue.status !== 'deleted') {
-          setRunningProject([projectKey, projectValue])
-        }
-      }, { change: true })
-      return () => gun.get('projects').off()
-    }
-  }, [online, runningTimer])
-
-  useEffect(() => {
-    if (runningTimer.length > 0) {
-      let updateRunningTimer = runningTimer
-      updateRunningTimer[1].mood = mood
-      gun.get('running').get('timer').put(updateRunningTimer)
-    }
-
-  }, [mood])
+  // }, [mood])
 
   useEffect(() => runningTimer[1] ? setEnergy(runningTimer[1].energy) : runningTimer[1], [runningTimer])
 

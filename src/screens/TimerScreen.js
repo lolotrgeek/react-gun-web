@@ -4,6 +4,7 @@ import { gun } from '../constants/Data'
 import { timerlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerList from '../components/templates/TimerList'
+import { getTimers } from '../constants/Effects'
 
 const debug = false
 
@@ -13,31 +14,7 @@ export default function TimerScreen({useParams, useHistory}) {
   const [current, setCurrent] = useState([])
   const classes = useStyles()
 
-  useEffect(() => {
-    // let currentTimers = []
-    gun.get('timers').map().on((timerGunId, projectKey) => {
-      gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
-        if (timerValue) {
-          const foundTimer = [timerKey, trimSoul(timerValue)]
-          if (foundTimer[1].status === 'done') {
-            let check = current.some(id => id === foundTimer[0])
-            // let check = currentTimers.some(id => id === foundTimer[0])
-            if (!check) {
-              debug && console.log('Adding Timer', foundTimer)
-              setTimers(timers => [...timers, foundTimer])
-            }
-            setCurrent(current => [...current, foundTimer[0]])
-            // currentTimers.push(foundTimer[0])
-          }
-          else if (foundTimer[1].status === 'running') {
-            gun.get('running').get('timer').put(JSON.stringify(foundTimer))
-          }
-        }
-      })
-    }, { change: true })
-    return () => gun.get('timers').off()
-  }, [online]);
-
+  useEffect(() => getTimers({setCurrent, current, setTimers }), [online]);
 
   return (
     <TimerList

@@ -8,6 +8,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TimerHistory from '../components/templates/TimerHistory'
+import { getRunningTimer, getProject, getProjectHistoryTimers } from '../constants/Effects'
 
 const debug = false
 
@@ -34,51 +35,10 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
     return () => alerted
   }, [alerted])
   
-  useEffect(() => {
-    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
-      const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
-      if (isRunning(runningTimerFound)) {
-        setRunningTimer(runningTimerFound)
-        debug && console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].started))
-        start()
-      }
-      else if (!runningTimerGun) {
-        debug && console.log('running Timer not Found')
-        stop()
-        setRunningTimer({})
-      }
-    }, { change: true })
+  useEffect(() => getRunningTimer({setCount, start, stop, setRunningTimer}), [online]);
+  useEffect(() => getProject({projectId, setProject}), [timer])
 
-    return () => gun.get('running').off()
-  }, [online]);
-
-  useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectKey) => {
-      debug && console.log(projectValue)
-      setProject([projectKey, projectValue])
-    }
-      , { change: true })
-    return () => gun.get('projects').off()
-  }, [timer])
-
-  useEffect(() => {
-    debug && console.log('Getting: ', projectId, timerId)
-    gun.get('timers').get(projectId, ack => {
-      if (ack.err || !ack.put) setAlert(['Error', 'No Project Exists'])
-    }).get(timerId, ack => {
-      if (ack.err || !ack.put) setAlert(['Error', 'No Timer Exists'])
-    }).on((timerValue, timerGunId) => {
-      if (!timerValue) {
-        setAlert(['Error', 'No Timer Exists'])
-        history.push((projectlink(projectId)))
-      }
-      let foundTimer = [timerId, trimSoul(timerValue)]
-      setTimer(foundTimer)
-
-    }, { change: true })
-    return () => gun.get('timers').off()
-  }, [online]);
+  useEffect(() => getProjectHistoryTimers({timerId, projectId, setAlert, projectlink, history, setTimer}), [online]);
 
 
   useEffect(() => {

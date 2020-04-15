@@ -8,6 +8,7 @@ import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from '../hooks/useAlert'
 import ProjectHistory from '../components/templates/ProjectHistory'
+import { getProject, getProjectHistory } from '../constants/Effects'
 
 export default function ProjectHistoryScreen({useParams, useHistory}) {
   const { projectId } = useParams()
@@ -30,20 +31,9 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
     }
     return () => alerted
   }, [alerted])
-  useEffect(() => {
-    gun.get('history').get('projects').get(projectId).map().on((projectValue, projectGunKey) => {
-      debug && console.log('History ', projectGunKey, projectValue)
-      setEdits(edits => [...edits, [projectId, trimSoul(projectValue), projectGunKey]])
-    }, { change: true })
-    return () => gun.get('history').off()
-  }, [online, debug, projectId]);
 
-  useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
-      setProject([projectId, trimSoul(projectValue)])
-    }, { change: true })
-    return () => gun.get('projects').off()
-  }, [online]);
+  useEffect(() => getProjectHistory({setEdits, projectId}), [online, projectId]);
+  useEffect(() => getProject({projectId, setProject}), [online]);
 
   const displayStatusDate = edit => {
     if (edit[1]) {

@@ -4,13 +4,13 @@ import Gun from 'gun/gun'
 import GunSQLite from '@lolotrgeek/gun-react-native-sqlite';
 import SQLite from 'react-native-sqlite-storage'
 
-const debug = false
+const debug = true
 
 debug && console.log('using Native Storage...')
 
 const port = '8765'
-const address = 'localhost'
-const peers = [`http://${address}:${port}`]
+const address = '192.168.1.109'
+const peers = [`http://${address}:${port}/gun`]
 
 const adapter = GunSQLite.bootstrap(Gun);
 
@@ -120,6 +120,7 @@ export const createTimer = (projectId) => {
   gun.get('running').get('timer').put(JSON.stringify(timer))
   gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
   gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
+  return true
 }
 
 export const runTimer = (timer) => {

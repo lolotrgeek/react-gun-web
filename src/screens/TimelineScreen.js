@@ -6,11 +6,9 @@ import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import Timeline from '../components/templates/Timeline'
+import { getProjects, getRunningTimer, getRunningProject, getTimers } from '../constants/Effects'
 
-const debug = true
-
-
-export default function TimelineScreen({useParams, useHistory}) {
+export default function TimelineScreen({ useParams, useHistory }) {
   const [online, setOnline] = useState(false)
   const [projects, setProjects] = useState([])
   const [timers, setTimers] = useState([])
@@ -21,79 +19,20 @@ export default function TimelineScreen({useParams, useHistory}) {
   const classes = useStyles()
   const history = useHistory()
 
-  useEffect(() => {
-    gun.get('projects').map().on((projectValue, projectKey) => {
-      debug && console.log(projectValue)
-      if (projectValue && projectValue.status !== 'deleted') {
-        setProjects(projects => [...projects, [projectKey, projectValue]])
-      }
-    }, { change: true })
-    return () => gun.get('projects').off()
-  }, [online])
+  useEffect(() => getProjects({ setProjects }), [online])
 
-  useEffect(() => {
-    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
-      const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
-      if (isRunning(runningTimerFound)) {
-        setRunningTimer(runningTimerFound)
-        debug && console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].started))
-        start()
-      }
-      else if (!runningTimerGun) {
-        debug && console.log('running Timer not Found')
-        stop()
-        setRunningTimer({})
-      }
-    }, { change: true })
+  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online, setCount, start, stop])
 
-    return () => gun.get('running').off()
-  }, [online, setCount, start, stop])
+  useEffect(() => getRunningProject({ setRunningProject, runningTimer }), [runningTimer])
 
-  useEffect(() => {
-    if (runningTimer[1] && isTimer(runningTimer)) {
-      gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        debug && console.log(projectValue)
-        if (projectValue && projectValue.status !== 'deleted') {
-          setRunningProject([projectKey, projectValue])
-        }
-      }, { change: true })
-      return () => gun.get('projects').off()
-    }
-  }, [runningTimer])
+  useEffect(() => getTimers({ setCurrent, current, setTimers }), [online]);
 
-  useEffect(() => {
-    // let currentTimers = []
-    gun.get('timers').map().on((timerGunId, projectKey) => {
-      gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
-        if (timerValue) {
-          const foundTimer = [timerKey, trimSoul(timerValue)]
-          if (foundTimer[1].status === 'done') {
-            // let check = currentTimers.some(id => id === foundTimer[0])
-            let check = current.some(id => id === foundTimer[0])
-            if (!check) {
-              debug && console.log('Adding Timer', foundTimer)
-              setTimers(timers => [...timers, foundTimer])
-            }
-            setCurrent(current => [...current, foundTimer[0]])
-            // currentTimers.push(foundTimer[0])
-          }
-          else if (foundTimer[1].status === 'running') {
-            gun.get('running').get('timer').put(JSON.stringify(foundTimer))
-          }
-        }
-      })
-    }, { change: true })
-    return () => gun.get('timers').off()
-  }, [online]);
-
-  const startTimer = (project) => {
-    createTimer(project[0])
-    history.push(timerRunninglink())
+  const startTimer = (projectId) => {
+    return createTimer(projectId) ? history.push(timerRunninglink()) : projectId
   }
 
   return (
-    <Timeline 
+    <Timeline
       classes={classes}
       projects={projects}
       timers={timers}
@@ -107,6 +46,6 @@ export default function TimelineScreen({useParams, useHistory}) {
       createTimer={createTimer}
       startTimer={startTimer}
       countButtonAction={() => history.push(timerRunninglink())}
-      />
+    />
   )
 }

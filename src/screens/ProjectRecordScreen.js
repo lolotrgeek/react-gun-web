@@ -8,6 +8,7 @@ import { useAlert } from '../hooks/useAlert'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectRecord from '../components/templates/ProjectRecord'
+import { getProject, getTimersProject, getRunningTimer, getRunningProject } from '../constants/Effects'
 
 const debug = true
 
@@ -42,67 +43,10 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
     setTimers(filteredTimers)
   }, [runningTimer])
 
-  useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
-      setProject([projectId, trimSoul(projectValue)])
-    }, { change: true })
-    return () => gun.get('projects').off()
-  }, [online]);
-
-  useEffect(() => {
-    // let currentTimers = []
-    gun.get('timers').get(projectId).map().on((timerValue, timerKey) => {
-      if (timerValue) {
-        const foundTimer = [timerKey, trimSoul(timerValue)]
-        if (foundTimer[1].status === 'done') {
-          // let check = currentTimers.some(id => id === foundTimer[0])
-          let check = current.some(id => id === foundTimer[0])
-          if (!check) {
-            debug && console.log('Adding Timer', foundTimer)
-            setTimers(timers => [...timers, foundTimer])
-          }
-          setCurrent(current => [...current, foundTimer[0]])
-          // currentTimers.push(foundTimer[0])
-        }
-        else if (foundTimer[1].status === 'running') {
-          gun.get('running').get('timer').put(JSON.stringify(foundTimer))
-        }
-      }
-    }, { change: true })
-
-    return () => gun.get('timers').off()
-  }, [online]);
-
-  useEffect(() => {
-    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
-      const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
-      if (isRunning(runningTimerFound)) {
-        setRunningTimer(runningTimerFound)
-        debug && console.log('runningTimerFound', runningTimerFound)
-        setCount(elapsedTime(runningTimerFound[1].started))
-        start()
-      }
-      else if (!runningTimerGun) {
-        debug && console.log('running Timer not Found')
-        stop()
-        setRunningTimer({})
-      }
-    }, { change: true })
-
-    return () => gun.get('running').off()
-  }, [online]);
-
-  useEffect(() => {
-    if (runningTimer[1] && isTimer(runningTimer)) {
-      gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
-        debug && console.log(projectValue)
-        if (projectValue && projectValue.status !== 'deleted') {
-          setRunningProject([projectKey, projectValue])
-        }
-      }, { change: true })
-      return () => gun.get('projects').off()
-    }
-  }, [runningTimer])
+  useEffect(() => getProject({projectId, setProject}), [online]);
+  useEffect(() => getTimersProject({ projectId, setCurrent, current, setTimers}), [online]);
+  useEffect(() => getRunningTimer({setCount, start, stop, setRunningTimer}), [online]);
+  useEffect(() => getRunningProject({runningTimer, setRunningProject}), [runningTimer])
 
   const removeProject = () => {
     deleteProject(project)

@@ -3,6 +3,7 @@ import { gun, restoreProject } from '../constants/Data'
 import { projectlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectTrash from '../components/templates/ProjectTrash'
+import {getDeletedProjects} from '../constants/Effects'
 
 const debug = false
 
@@ -13,16 +14,7 @@ export default function ProjectTrashScreen({useParams, useHistory}) {
   const classes = useStyles();
   let history = useHistory()
 
-  useEffect(() => {
-    gun.get('projects').map().on((projectValue, projectKey) => {
-      if (projectValue.status === 'deleted') {
-        debug && console.log(projectValue)
-        setProjects(projects => [...projects, [projectKey, projectValue]])
-      }
-    }, { change: true })
-    return () => gun.get('projects').off()
-  }, [online]);
-
+  useEffect(() => getDeletedProjects({setProjects}), [online]);
 
   // const displayStatus = edit => {
   //   debug && console.log(edit[1], project[1])

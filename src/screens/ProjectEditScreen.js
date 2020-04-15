@@ -7,6 +7,7 @@ import { projectsListLink, projectlink } from '../routes/routes'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectEdit from '../components/templates/ProjectEdit'
+import {getProject} from '../constants/Effects'
 
 export default function ProjectEditScreen({ useParams, useHistory }) {
   const { projectId, } = useParams()
@@ -31,15 +32,7 @@ export default function ProjectEditScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => {
-    if (projectId) {
-      gun.get('projects').get(projectId).on((projectValue, projectGunKey) => {
-        debug && console.log(projectValue)
-        setProject([projectId, trimSoul(projectValue)])
-      }, { change: true })
-    }
-    return () => gun.get('projects').off()
-  }, [online])
+  useEffect(() => getProject({projectId, setProject}), [online])
 
   useEffect(() => {
     if (projectId && project[1]) {
