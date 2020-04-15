@@ -1353,10 +1353,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@lolotrgeek/gun-react-native-sqlite@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@lolotrgeek/gun-react-native-sqlite/-/gun-react-native-sqlite-0.0.2.tgz#1af491f10cfc865cfb091b6b8b977024aad1b7c9"
-  integrity sha512-7zL9CvHFcQgEuYQps1xA23yprWqRBNaJPjpvYtFrYw+dwKm3yiVyqJD7Dfy7ikg3Nz/dYwNzMzlwG5dEB/0fSA==
+"@lolotrgeek/gun-react-native-sqlite@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@lolotrgeek/gun-react-native-sqlite/-/gun-react-native-sqlite-0.0.4.tgz#52edb22efc6d1e0ed139bb050ee289fb3a0426d9"
+  integrity sha512-CWv//IXLOjz5Z+egM4an2I8YsvSQZDO9h5jDffotBqNyP8LplVrNt29xLDUEWBAFmWTlOMKHO2ASqj98ohBO2A==
   dependencies:
     react-native-sqlite-storage "^3.3.3"
 

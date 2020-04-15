@@ -6,7 +6,7 @@ import { Menu, MenuItem } from '../atoms/Menu';
 import { useStyles } from '../../themes/DefaultTheme';
 import { MenuIcon } from '../atoms/Icon'
 import Grid from '../atoms/Grid'
-import { View } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 const debug = false
 
 const ITEM_HEIGHT = 48;
@@ -25,7 +25,9 @@ export default function SideMenu(props) {
 
 
     const handleClick = event => {
+        console.log(event.nativeEvent)
         setShow(true);
+        setAnchorEl({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY })
     };
 
     const handleClose = () => {
@@ -34,12 +36,11 @@ export default function SideMenu(props) {
 
 
     return (
-        <View style={classes.sidemenu} onLayout={event => {setAnchorEl(event.nativeEvent.layout)}} >
-
+        <View style={classes.sidemenu} >
             {debug && console.log(anchorEl)}
-            <IconButton onPress={() => handleClick()} style={classes.sidemenuIcon} >
+            <TouchableOpacity onPress={(event) => handleClick(event)} style={classes.sidemenuIcon} >
                 <MenuIcon size={20} />
-            </IconButton>
+            </TouchableOpacity>
 
             <Menu
                 anchor={anchorEl}
