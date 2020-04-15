@@ -34,6 +34,7 @@ export const cleanDB = () => {
     }
   });
 }
+
 // Look at DB directly
 export const dumpDB = () => {
   let db = SQLite.openDatabase({ name: "GunDB.db", location: "default" })
@@ -62,7 +63,7 @@ export const deleteGunTable = () => {
 export const createProject = (name, color) => {
   const project = newProject(name, color)
   if(!project) return false
-  debug && console.log('Creating', project)
+  debug && console.log('Creating Project', project)
   gun.get('history').get('projects').get(project[0]).set(project[1])
   gun.get('projects').get(project[0]).put(project[1])
 }
@@ -72,7 +73,7 @@ export const updateProject = (project, updates) => {
   Object.assign(projectEdit[1], updates)
   if (projectEdit[1].deleted) { projectEdit[1].deleted = null }
   projectEdit[1].edited = new Date().toString()
-  debug && console.log('Updating', projectEdit)
+  debug && console.log('Updating Project', projectEdit)
   gun.get('history').get('projects').get(project[0]).set(projectEdit[1])
   gun.get('projects').get(projectEdit[0]).put(projectEdit[1])
 }
@@ -96,13 +97,13 @@ export const restoreProject = (project) => {
     restoredProject[1].status = 'active'
     // gun.get('history').get('projects').get(restoredProject[0]).set(restoredProject[1])
   }
-  debug && console.log('Restoring', restoredProject)
+  debug && console.log('Restoring Project', restoredProject)
   gun.get('projects').get(restoredProject[0]).put(restoredProject[1])
 }
 
 
 export const deleteProject = (project) => {
-  debug && console.log('Deleting', project)
+  debug && console.log('Deleting Project', project)
   let projectDelete = project
   projectDelete[1].deleted = new Date().toString()
   gun.get('history').get('projects').get(projectDelete[0]).set(projectDelete[1])
@@ -115,9 +116,11 @@ export const deleteProject = (project) => {
  */
 export const createTimer = (projectId) => {
   if(typeof projectId !== 'string' || projectId.length < 9) return false
-  debug && console.log('Creating', projectId)
+  debug && console.log('Creating Timer', projectId)
   const timer = generateNewTimer(projectId)
-  gun.get('running').get('timer').put(JSON.stringify(timer))
+  const runner = timer[1]
+  runner.id = timer[0]
+  gun.get('running').put(runner)
   gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
   gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
   return true
@@ -131,7 +134,7 @@ export const updateTimer = (timer) => {
   let editedTimer = timer
   if (editedTimer[1].deleted) { editedTimer[1].deleted = null }
   editedTimer[1].edited = new Date().toString()
-  debug && console.log('Updating', editedTimer)
+  debug && console.log('Updating Timer', editedTimer)
   gun.get('history').get('timers').get(editedTimer[1].project).get(editedTimer[0]).set(editedTimer[1])
   gun.get('timers').get(editedTimer[1].project).get(editedTimer[0]).put(editedTimer[1])
 }
@@ -143,7 +146,7 @@ export const restoreTimer = (timer) => {
     restoredTimer[1].status = 'done'
     gun.get('history').get('timers').get(restoredTimer[1].project).get(restoredTimer[0]).set(restoredTimer[1])
   }
-  debug && console.log('Restoring', restoredTimer)
+  debug && console.log('Restoring Timer', restoredTimer)
   gun.get('timers').get(restoredTimer[1].project).get(restoredTimer[0]).put(restoredTimer[1])
 }
 
@@ -154,7 +157,7 @@ export const endTimer = (timer) => {
 }
 
 export const deleteTimer = (timer) => {
-  debug && console.log('Deleting', timer)
+  debug && console.log('Deleting Timer', timer)
   const timerDelete = timer
   timerDelete[1].deleted = new Date().toString()
   timerDelete[1].status = 'deleted'
@@ -168,7 +171,7 @@ export const deleteTimer = (timer) => {
  */
 export const addTimer = (projectId, value) => {
   const timer = newTimer(value)
-  debug && console.log('Storing', timer)
+  debug && console.log('Storing Timer', timer)
   gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
   gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
 }
@@ -177,7 +180,7 @@ export const finishTimer = (timer) => {
   if (isRunning(timer)) {
     debug && console.log('Finishing', timer)
     let done = doneTimer(timer)
-    gun.get('running').get('timer').put(null)
+    gun.get('running').put({id: 'none'}) // Danger zone until endTimer is called
     if (multiDay(done[1].started, done[1].ended)) {
       const dayEntries = newEntryPerDay(done[1].started, done[1].ended)
       dayEntries.map((dayEntry, i) => {

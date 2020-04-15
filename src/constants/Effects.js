@@ -13,18 +13,23 @@ const debug = true
  * @param {function} props.setRunningTimer 
  */
 export const getRunningTimer = (props) => {
-    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
-        const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
-        if (isRunning(runningTimerFound)) {
-            props.setRunningTimer(runningTimerFound)
-            debug && console.log('runningTimerFound', runningTimerFound)
-            props.setCount(elapsedTime(runningTimerFound[1].started))
-            props.start()
-        }
-        else if (!runningTimerGun) {
+    gun.get('running').on((runningTimer, runningTimerKey) => {
+        if (!runningTimer || runningTimer.id === 'none') {
             debug && console.log('running Timer not Found')
             props.stop()
-            props.setRunningTimer({})
+            props.setRunningTimer(null)
+            // if (props.runningProject && props.runningProject.length === 0) props.setAlert(['Error', 'No Timer Exists'])
+            // else props.setAlert(['Success', 'Timer Complete!'])
+        }
+        else {
+            let runningTimerFound = [runningTimer.id, trimSoul(runningTimer)]
+            debug && console.log('RunningTimer: ', runningTimerFound)
+            if (isRunning(runningTimerFound)) {
+                props.setRunningTimer(runningTimerFound)
+                debug && console.log('runningTimerFound', runningTimerFound)
+                props.setCount(elapsedTime(runningTimerFound[1].started))
+                props.start()
+            }
         }
     }, { change: true })
 
@@ -44,19 +49,24 @@ export const getRunningTimer = (props) => {
  * @param {function} props.setAlert 
  */
 export const getTimerRunning = (props) => {
-    gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
-        if (!runningTimerGun) {
+    gun.get('running').on((runningTimer, runningTimerKey) => {
+        if (!runningTimer || runningTimer.id === 'none') {
+            debug && console.log('running Timer not Found')
             props.stop()
-            if (props.runningProject.length === 0) props.setAlert(['Error', 'No Timer Exists'])
-            else props.setAlert(['Success', 'Timer Complete!'])
+            props.setRunningTimer(null)
+            // if (props.runningProject && props.runningProject.length === 0) props.setAlert(['Error', 'No Timer Exists'])
+            // else props.setAlert(['Success', 'Timer Complete!'])
         }
         else {
-            const runningTimerFound = trimSoul(JSON.parse(runningTimerGun))
-            props.setMood(runningTimerFound[1].mood)
-            props.setEnergy(runningTimerFound[1].energy)
-            props.setRunningTimer(runningTimerFound)
-            props.setCount(elapsedTime(runningTimerFound[1].started))
-            props.start()
+            let runningTimerFound = [runningTimer.id, trimSoul(runningTimer)]
+            debug && console.log('Running Timer: ', runningTimerFound)
+            if (isRunning(runningTimerFound)) {
+                props.setMood(runningTimerFound[1].mood)
+                props.setEnergy(runningTimerFound[1].energy)
+                props.setRunningTimer(runningTimerFound)
+                props.setCount(elapsedTime(runningTimerFound[1].started))
+                props.start()
+            }
         }
     }, { change: true })
     return () => gun.get('running').off()
@@ -101,7 +111,7 @@ export const getProjects = (props) => {
  * @param {Function} props.setRunningProject
  */
 export const getRunningProject = (props) => {
-    if (props.runningTimer[1] && isTimer(props.runningTimer)) {
+    if (props.runningTimer && isTimer(props.runningTimer) && props.runningTimer[1] ) {
         gun.get('projects').get(props.runningTimer[1].project).on((projectValue, projectKey) => {
             const projectFound = trimSoul(projectValue)
             debug && console.log('Project Found', projectFound)
@@ -111,6 +121,10 @@ export const getRunningProject = (props) => {
         }, { change: true })
         return () => gun.get('projects').off()
     }
+}
+
+const putRunningTimer = (timer) => {
+    gun.get('running').get(timer[0]).put(timer[1])
 }
 
 /**
@@ -130,14 +144,14 @@ export const getTimers = (props) => {
                     // let check = currentTimers.some(id => id === foundTimer[0])
                     let check = props.current.some(id => id === foundTimer[0])
                     if (!check) {
-                        debug && console.log('Adding Timer', foundTimer)
+                        debug && console.log('Listing Timer', foundTimer)
                         props.setTimers(timers => [...timers, foundTimer])
                     }
                     props.setCurrent(current => [...current, foundTimer[0]])
                     // currentTimers.push(foundTimer[0])
                 }
                 else if (foundTimer[1].status === 'running') {
-                    gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+                    putRunningTimer(foundTimer)
                 }
             }
         })
@@ -163,14 +177,14 @@ export const getTimersProject = (props) => {
                 // let check = currentTimers.some(id => id === foundTimer[0])
                 let check = props.current.some(id => id === foundTimer[0])
                 if (!check) {
-                    debug && console.log('Adding Timer', foundTimer)
+                    debug && console.log('Listing Timer', foundTimer)
                     props.setTimers(timers => [...timers, foundTimer])
                 }
                 props.setCurrent(current => [...current, foundTimer[0]])
                 // currentTimers.push(foundTimer[0])
             }
             else if (foundTimer[1].status === 'running') {
-                gun.get('running').get('timer').put(JSON.stringify(foundTimer))
+                putRunningTimer(foundTimer)
             }
         }
     }, { change: true })
@@ -277,4 +291,36 @@ export const getProjectHistoryTimers = (props) => {
     }, { change: true })
     return () => gun.get('timers').off()
 
+}
+
+/**
+ * 
+ * @param {*} props 
+ * @param {*} props.current 
+ * @param {*} props.setCurrent 
+ * @param {*} props.setTimers 
+ * @param {*} props.projectId 
+ */
+export const getDeletedTimers = (props) => {
+    // let currentTimers = []
+    gun.get('timers').get(props.projectId).map().on((timerValue, timerKey) => {
+        if (timerValue) {
+            const foundTimer = [timerKey, trimSoul(timerValue)]
+            if (foundTimer[1].status === 'deleted') {
+                let check = props.current.some(id => id === foundTimer[0])
+                // let check = currentTimers.some(id => id === foundTimer[0])
+                if (!check) {
+                    debug && console.log('Listing Timer', foundTimer)
+                    props.setTimers(timers => [...timers, foundTimer])
+                }
+                props.setCurrent(current => [...current, foundTimer[0]])
+                // currentTimers.push(foundTimer[0])
+            }
+            else if (foundTimer[1].status === 'running') {
+                putRunningTimer(foundTimer)
+            }
+        }
+    }, { change: true })
+
+    return () => gun.get('timers').off()
 }

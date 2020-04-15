@@ -6,6 +6,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TrashList from '../components/templates/TrashList'
+import { getDeletedTimers, getProject } from '../constants/Effects'
 
 const debug = false
 
@@ -30,38 +31,8 @@ export default function TimerTrashScreen({useParams, useHistory}) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => {
-    gun.get('projects').get(projectId).on((projectValue, projectKey) => {
-      debug && console.log(projectValue)
-      setProject([projectKey, trimSoul(projectValue)])
-    }
-      , { change: true })
-    return () => gun.get('projects').off()
-  }, [online])
-
-  useEffect(() => {
-    // let currentTimers = []
-    gun.get('timers').get(projectId).map().on((timerValue, timerKey) => {
-      if (timerValue) {
-        const foundTimer = [timerKey, trimSoul(timerValue)]
-        if (foundTimer[1].status === 'deleted') {
-          let check = current.some(id => id === foundTimer[0])
-          // let check = currentTimers.some(id => id === foundTimer[0])
-          if (!check) {
-            debug && console.log('Adding Timer', foundTimer)
-            setTimers(timers => [...timers, foundTimer])
-          }
-          setCurrent(current => [...current, foundTimer[0]])
-          // currentTimers.push(foundTimer[0])
-        }
-        else if (foundTimer[1].status === 'running') {
-          gun.get('running').get('timer').put(JSON.stringify(foundTimer))
-        }
-      }
-    }, { change: true })
-
-    return () => gun.get('timers').off()
-  }, [online]);
+  useEffect(() => getProject({projectId, setProject}), [online])
+  useEffect(() => getDeletedTimers({current, setCurrent, setTimers, projectId}), [online]);
 
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });

@@ -32,8 +32,8 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => getRunningProject({runningTimer, setRunningProject}), [online, runningTimer])
   useEffect(() => getTimerRunning({setMood, setEnergy, setCount, start, stop, setRunningTimer, runningProject, setAlert}), [online]);
+  useEffect(() => getRunningProject({runningTimer, setRunningProject}), [online, runningTimer])
 
   //TODO - nice to have: update mood and energy slider realtime
   // useEffect(() => {
@@ -45,7 +45,7 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
 
   // }, [mood])
 
-  useEffect(() => runningTimer[1] ? setEnergy(runningTimer[1].energy) : runningTimer[1], [runningTimer])
+  useEffect(() => runningTimer && runningTimer[1] ? setEnergy(runningTimer[1].energy) : () => null, [runningTimer])
 
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });

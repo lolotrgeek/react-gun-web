@@ -34,14 +34,15 @@ export default function TimerRunning(props) {
             flexDirection: 'column',
             ...props.classes.listRoot
         }}>
-            {projectValid(props.runningProject) && isTimer(props.runningTimer) ?
+            {props.runningTimer && projectValid(props.runningProject) && isTimer(props.runningTimer) ?
                 <SubHeader
                     title={projectValid(props.runningProject) ? `${props.runningProject[1].name}` : 'Timer'}
                     color={projectValid(props.runningProject) ? props.runningProject[1].color : null}
                 />
-                : <Stateless />
+                :
+                <Stateless />
             }
-            {!props.runningTimer[1] ?
+            {props.runningTimer && !props.runningTimer[1] ?
                 <Grid container className={props.classes.space} direction='column' justify='center' alignItems='center'>
                     <Button variant="contained" color="primary" onPress={() => props.noTimerAction()} > Project List </Button>
                 </Grid>
