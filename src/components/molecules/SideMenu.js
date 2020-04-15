@@ -27,6 +27,7 @@ export default function SideMenu(props) {
 
     const handleClick = event => {
         setShow(true);
+        setAnchorEl(event.currentTarget.getBoundingClientRect())
     };
 
     const handleClose = () => {
@@ -35,10 +36,10 @@ export default function SideMenu(props) {
 
 
     return (
-        <View style={classes.sidemenu} onLayout={event => {setAnchorEl(event.nativeEvent.layout)}} >
+        <View style={classes.sidemenu} >
 
             {debug && console.log(anchorEl)}
-            <IconButton onPress={() => handleClick()} style={classes.sidemenuIcon} >
+            <IconButton onClick={event => handleClick(event)} style={classes.sidemenuIcon} >
                 <MenuIcon size={20} />
             </IconButton>
 

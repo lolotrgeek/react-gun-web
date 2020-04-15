@@ -11,4 +11,4 @@ import { TouchableOpacity } from 'react-native'
  * @param {*} props.style
  *  
  */
-export const IconButton = props => <MaterialButton onClick={props.onPress} {...props} children={props.children} />
+export const IconButton = props => <MaterialButton {...props} children={props.children} />
