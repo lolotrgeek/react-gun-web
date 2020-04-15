@@ -34,13 +34,13 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
-//TODO - nice to have: update mood and energy slider realtime
+  //TODO - nice to have: update mood and energy slider realtime
 
   useEffect(() => {
     gun.get('running').get('timer').on((runningTimerGun, runningTimerKeyGun) => {
       if (!runningTimerGun) {
         stop()
-        if(runningProject.length === 0) setAlert(['Error', 'No Timer Exists'])
+        if (runningProject.length === 0) setAlert(['Error', 'No Timer Exists'])
         else setAlert(['Success', 'Timer Complete!'])
       }
       else {
@@ -66,6 +66,15 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
       return () => gun.get('projects').off()
     }
   }, [online, runningTimer])
+
+  useEffect(() => {
+    if (runningTimer.length > 0) {
+      let updateRunningTimer = runningTimer
+      updateRunningTimer[1].mood = mood
+      gun.get('running').get('timer').put(updateRunningTimer)
+    }
+
+  }, [mood])
 
   useEffect(() => runningTimer[1] ? setEnergy(runningTimer[1].energy) : runningTimer[1], [runningTimer])
 
@@ -111,7 +120,7 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
     completeTimer[1].energy = energy
     completeTimer[1].total = totalTime(started, ended)
     if (isTimer(completeTimer)) {
-      debug && console.log('Completing Timer: ', completeTimer )
+      debug && console.log('Completing Timer: ', completeTimer)
       stop()
       finishTimer(completeTimer)
       alert.show('Timer Complete!', {
@@ -119,12 +128,14 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
       })
       // setAlert(['Success', 'Timer Updated!',])
       history.push((projectlink(completeTimer[1].project)))
+      return true
     }
     else {
       alert.show('Timer Invalid!', {
         type: 'Error'
       })
       // setAlert(['Error', 'Timer Invalid!',])
+      return false
     }
   }
 
