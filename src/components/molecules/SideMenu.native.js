@@ -7,6 +7,8 @@ import { useStyles } from '../../themes/DefaultTheme';
 import { MenuIcon } from '../atoms/Icon'
 import Grid from '../atoms/Grid'
 import { View, TouchableOpacity } from 'react-native'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+
 const debug = false
 
 const ITEM_HEIGHT = 48;
@@ -39,7 +41,7 @@ export default function SideMenu(props) {
         <View style={classes.sidemenu} >
             {debug && console.log(anchorEl)}
             <TouchableOpacity onPress={(event) => handleClick(event)} style={classes.sidemenuIcon} >
-                <MenuIcon size={20} />
+                <MenuIcon size={30} color='black' />
             </TouchableOpacity>
 
             <Menu

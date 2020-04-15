@@ -55,7 +55,7 @@ export const deleteGunTable = () => {
       (tx, err) => debug && console.warn(err))
   })
 }
-
+// deleteGunTable()
 
 // TODO IMPORT FUNCTIONS FROM ./Data.js
 
@@ -114,6 +114,8 @@ export const deleteProject = (project) => {
  * @param {*} projectId 
  */
 export const createTimer = (projectId) => {
+  if(typeof projectId !== 'string' || projectId.length < 9) return false
+  debug && console.log('Creating', projectId)
   const timer = generateNewTimer(projectId)
   gun.get('running').get('timer').put(JSON.stringify(timer))
   gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
@@ -172,6 +174,7 @@ export const addTimer = (projectId, value) => {
 
 export const finishTimer = (timer) => {
   if (isRunning(timer)) {
+    debug && console.log('Finishing', timer)
     let done = doneTimer(timer)
     gun.get('running').get('timer').put(null)
     if (multiDay(done[1].started, done[1].ended)) {

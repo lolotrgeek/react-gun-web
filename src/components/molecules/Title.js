@@ -5,6 +5,7 @@ import Typography from '../atoms/Typography'
 import Grid from '../atoms/Grid'
 import { Link } from '../atoms/Link'
 import { View } from 'react-native'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 
 const truncate = (input) => input.length > 15 ? `${input.substring(0, 15)}...` : input
@@ -23,7 +24,8 @@ export function Title(props) {
             alignItems: 'center',
             flexDirection: 'row',
         }}>
-            {colorValid(props.color) ? <TitleIcon name='circle' size={20} color={props.color} /> : null}
+            {/* {colorValid(props.color) ? <TitleIcon name='circle' size={20} color={props.color} /> : null} */}
+            {colorValid(props.color) ? <FontAwesome5 name='circle' size={20} color={props.color} solid /> : null}
             {props.to ?
                 <Link to={props.to} >
                     <Typography variant={props.variant} color="textPrimary" style={{ textTransform: 'capitalize' }}>
