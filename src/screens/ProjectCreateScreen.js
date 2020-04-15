@@ -51,7 +51,6 @@ export default function ProjectCreateScreen({useParams, useHistory}) {
       return false
     }
     else {
-
       createProject(name, color)
       setAlert([
         'Success',

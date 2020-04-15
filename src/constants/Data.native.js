@@ -1,7 +1,7 @@
 import { newTimer, newProject, doneTimer, generateNewTimer } from './Models'
 import { isRunning, multiDay, newEntryPerDay } from './Functions'
 import Gun from 'gun/gun'
-import GunSQLite from 'gun-react-native-sqlite';
+import GunSQLite from '@lolotrgeek/gun-react-native-sqlite';
 import SQLite from 'react-native-sqlite-storage'
 
 const debug = false
@@ -61,6 +61,7 @@ export const deleteGunTable = () => {
 
 export const createProject = (name, color) => {
   const project = newProject(name, color)
+  if(!project) return false
   debug && console.log('Creating', project)
   gun.get('history').get('projects').get(project[0]).set(project[1])
   gun.get('projects').get(project[0]).put(project[1])

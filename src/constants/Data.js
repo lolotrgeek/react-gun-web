@@ -26,6 +26,7 @@ export const trimSoul = data => {
 
 export const createProject = (name, color) => {
   const project = newProject(name, color)
+  if(!project) return false
   debug && console.log('Creating', project)
   gun.get('history').get('projects').get(project[0]).set(project[1])
   gun.get('projects').get(project[0]).put(project[1])
