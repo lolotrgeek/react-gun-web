@@ -16,16 +16,17 @@ export const newTimerValue = (projectId) => {
     }
 }
 
-export const newTimer = value => {
+export const cloneTimer = value => {
     const hashids = new Hashids()
     let key = hashids.encode(Date.now().toString())
     return [key, value]
 }
 
-export const generateNewTimer = projectId => {
+export const newTimer = projectId => {
     const hashids = new Hashids()
     let key = hashids.encode(Date.now().toString())
     let new_value = newTimerValue(projectId)
+    new_value.id = key
     return [key, new_value]
 }
 

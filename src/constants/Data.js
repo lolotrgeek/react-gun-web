@@ -1,4 +1,4 @@
-import { newTimer, newProject, doneTimer, generateNewTimer } from './Models'
+import { cloneTimer, newProject, doneTimer, newTimer } from './Models'
 import { isRunning, multiDay, newEntryPerDay } from './Functions'
 import {gun} from './Store'
 
@@ -69,12 +69,11 @@ export const createProject = (name, color) => {
    * @param {*} projectId 
    */
   export const createTimer = (projectId) => {
-    if(typeof projectId !== 'string' || projectId.length < 9) return false
+    if(!projectId || typeof projectId !== 'string' || projectId.length < 9) return false
     debug && console.log('Creating Timer', projectId)
-    const timer = generateNewTimer(projectId)
-    const runner = timer[1]
-    runner.id = timer[0]
-    gun.get('running').put(runner)
+    const timer = newTimer(projectId)
+    debug && console.log('Created Timer', timer)
+    gun.get('running').put(timer[1])
     gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
     gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
     return true
@@ -124,7 +123,7 @@ export const createProject = (name, color) => {
    * @param {Object} value a timer object
    */
   export const addTimer = (projectId, value) => {
-    const timer = newTimer(value)
+    const timer = cloneTimer(value)
     debug && console.log('Storing Timer', timer)
     gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
     gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
