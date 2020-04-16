@@ -37,7 +37,7 @@ export default function TimerRunning(props) {
             {props.runningTimer && projectValid(props.runningProject) && isTimer(props.runningTimer) ?
                 <SubHeader
                     title={projectValid(props.runningProject) ? `${props.runningProject[1].name}` : 'Timer'}
-                    color={projectValid(props.runningProject) ? props.runningProject[1].color : null}
+                    color={projectValid(props.runningProject) ? props.runningProject[1].color : ''}
                 />
                 :
                 <Stateless />

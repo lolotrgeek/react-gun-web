@@ -20,7 +20,7 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
   const [timers, setTimers] = useState([])
   const [current, setCurrent] = useState([])
   const [alerted, setAlert] = useState([])
-  const [runningTimer, setRunningTimer] = useState('')
+  const [runningTimer, setRunningTimer] = useState(false)
   const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
@@ -39,14 +39,16 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
   }, [alerted])
 
   useEffect(() => {
-    let filteredTimers = timers.filter(timer => timer[0] !== runningTimer[0])
-    setTimers(filteredTimers)
+    if (runningTimer) {
+      let filteredTimers = timers.filter(timer => timer[0] !== runningTimer[0])
+      setTimers(filteredTimers)
+    }
   }, [runningTimer])
 
-  useEffect(() => getProject({projectId, setProject}), [online]);
-  useEffect(() => getTimersProject({ projectId, setCurrent, current, setTimers}), [online]);
-  useEffect(() => getRunningTimer({setCount, start, stop, setRunningTimer}), [online]);
-  useEffect(() => getRunningProject({runningTimer, setRunningProject}), [runningTimer])
+  useEffect(() => getProject({ projectId, setProject }), [online]);
+  useEffect(() => getTimersProject({ projectId, setCurrent, current, setTimers }), [online]);
+  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online]);
+  useEffect(() => getRunningProject({ runningTimer, setRunningProject }), [runningTimer])
 
   const removeProject = () => {
     deleteProject(project)

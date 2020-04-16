@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { gun, restoreTimer } from '../constants/Data'
+import { restoreTimer } from '../constants/Data'
 import { isRunning,} from '../constants/Validators'
 import { elapsedTime, fullDay, trimSoul } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
@@ -8,7 +8,7 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TimerHistory from '../components/templates/TimerHistory'
-import { getRunningTimer, getProject, getProjectHistoryTimers } from '../constants/Effects'
+import { getRunningTimer, getProject, getProjectHistoryTimers, getTimerHistory } from '../constants/Effects'
 
 const debug = false
 
@@ -37,16 +37,8 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
   
   useEffect(() => getRunningTimer({setCount, start, stop, setRunningTimer}), [online]);
   useEffect(() => getProject({projectId, setProject}), [timer])
-
   useEffect(() => getProjectHistoryTimers({timerId, projectId, setAlert, projectlink, history, setTimer}), [online]);
-
-
-  useEffect(() => {
-    gun.get('history').get('timers').get(projectId).get(timerId).map().on((timerValue, timerGunId) => {
-      setEdits(timers => [...timers, [timerId, trimSoul(timerValue), timerGunId]])
-    }, { change: true })
-    return () => gun.get('timers').off()
-  }, [online]);
+  useEffect(() => getTimerHistory({setEdits, projectId, timerId}), [online]);
 
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });

@@ -30,18 +30,19 @@ export default function TimerRunning(props) {
             flex: 1,
             ...props.classes.listRoot
         }}>
-            {projectValid(props.runningProject) ?
+            {props.runningTimer && projectValid(props.runningProject) && isTimer(props.runningTimer) ?
                 <SubHeader
                     title={projectValid(props.runningProject) ? `${props.runningProject[1].name}` : 'Timer'}
                     color={projectValid(props.runningProject) ? props.runningProject[1].color : ''}
                 />
                 : <Stateless />
             }
-            {!props.runningTimer[1] || !props.runningProject ?
+            {props.runningTimer && !props.runningTimer[1] ?
                 <Grid container className={props.classes.space} direction='column' justify='center' alignItems='center'>
                     <Button variant="contained" color="primary" onPress={() => props.noTimerAction()} > Project List </Button>
                 </Grid>
-                :
+                : null}
+            {props.runningTimer && props.runningTimer[1] ?
                 <View style={{
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -73,7 +74,7 @@ export default function TimerRunning(props) {
                     }}>Done</Button>
 
                 </View>
-            }
+                : null}
         </View >
     )
 }

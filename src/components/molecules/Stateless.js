@@ -11,7 +11,7 @@ export default function Stateless(props) {
     const history = useHistory()
     return (
         <SubHeader
-            title={'Nothing Here'}
+            title='Nothing Here'
             buttonText= {props.buttonText ? props.buttonText : 'Go Home'}
             buttonClick={() => history.push('/')}
         />

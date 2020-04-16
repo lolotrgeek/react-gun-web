@@ -1,6 +1,6 @@
-import { createTimer, finishTimer, gun } from '../constants/Data'
-import { elapsedTime, trimSoul, totalTime } from '../constants/Functions'
-import { isRunning, isTimer } from '../constants/Validators'
+import { gun } from './Store'
+import { elapsedTime, trimSoul, totalTime } from './Functions'
+import { isRunning, isTimer } from './Validators'
 
 const debug = true
 
@@ -323,4 +323,18 @@ export const getDeletedTimers = (props) => {
     }, { change: true })
 
     return () => gun.get('timers').off()
+}
+
+/**
+ * 
+ * @param {*} props
+ * @param {*} props.projectId
+ * @param {*} props.timerId
+ * @param {*} props.setEdits
+ */
+export const getTimerHistory = (props) => {
+    gun.get('history').get('timers').get(props.projectId).get(props.timerId).map().on((timerValue, timerGunId) => {
+        props.setEdits(timers => [...timers, [props.timerId, trimSoul(timerValue), timerGunId]])
+      }, { change: true })
+      return () => gun.get('timers').off()
 }

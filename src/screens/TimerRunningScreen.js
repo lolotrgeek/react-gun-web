@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { gun, deleteTimer, finishTimer } from '../constants/Data'
+import { deleteTimer, finishTimer } from '../constants/Data'
 import { timeRules, totalTime, trimSoul } from '../constants/Functions'
 import { isTimer } from '../constants/Validators'
 import { useAlert } from '../hooks/useAlert'
