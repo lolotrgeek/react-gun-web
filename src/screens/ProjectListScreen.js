@@ -20,11 +20,9 @@ export default function ProjectListScreen({useParams, useHistory}) {
   const classes = useStyles();
   let history = useHistory()
 
-
   useEffect(() => getProjects({ setProjects }), [online])
   useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online, setCount, start, stop])
   useEffect(() => getRunningProject({ setRunningProject, runningTimer }), [runningTimer])
-
 
   const startTimer = (project) => {
     createTimer(project[0])

@@ -54,8 +54,8 @@ export default function ProjectRecord(props) {
             {isRunning(props.runningTimer) ?
                 <RunningTimer
                     className={props.classes.space}
-                    name={props.runningProject[1] ? props.runningProject[1].name : null}
-                    color={props.runningProject[1] ? props.runningProject[1].color : null}
+                    name={props.runningProject[1] ? props.runningProject[1].name : ''}
+                    color={props.runningProject[1] ? props.runningProject[1].color : ''}
                     count={props.count}
                     stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
                 />
@@ -70,7 +70,7 @@ export default function ProjectRecord(props) {
                     debug && console.log(item)
                     let timer = item
                     if (!isTimer(timer)) return (null)
-                    if (timer[1].status === 'running') return (null)
+                    // if (timer[1].status === 'running') return (null)
                     let ended = new Date(timer[1].ended)
                     let started = new Date(timer[1].started)
                     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppRegistry, YellowBox } from 'react-native';
-import { removeAll } from './src/constants/Data.native'
+
 import { DarkTheme, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import App from './src/App';
 
@@ -20,7 +20,7 @@ const theme = {
   // }
 }
 console.log('Running on Android')
-// removeAll()
+
 const Root = () => (
   <PaperProvider theme={theme}>
     <App />

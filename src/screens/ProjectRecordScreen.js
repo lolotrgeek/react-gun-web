@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { elapsedTime, trimSoul } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
-import { gun, finishTimer, createTimer, deleteProject } from '../constants/Data'
-import { isRunning, isTimer } from '../constants/Validators'
+import { finishTimer, createTimer, deleteProject } from '../constants/Data'
 import { projectsListLink, projectEditlink, projectHistorylink, timerlink, timerRunninglink, timerTrashlink } from '../routes/routes'
 import { useAlert } from '../hooks/useAlert'
 import { PopupContext } from '../contexts/PopupContext'
@@ -20,7 +18,7 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
   const [timers, setTimers] = useState([])
   const [current, setCurrent] = useState([])
   const [alerted, setAlert] = useState([])
-  const [runningTimer, setRunningTimer] = useState(false)
+  const [runningTimer, setRunningTimer] = useState('')
   const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
@@ -38,16 +36,16 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => {
-    if (runningTimer) {
-      let filteredTimers = timers.filter(timer => timer[0] !== runningTimer[0])
-      setTimers(filteredTimers)
-    }
-  }, [runningTimer])
+  // useEffect(() => {
+  //   if (runningTimer) {
+  //     let filteredTimers = timers.filter(timer => timer[0] !== runningTimer[0])
+  //     setTimers(filteredTimers)
+  //   }
+  // }, [runningTimer])
 
   useEffect(() => getProject({ projectId, setProject }), [online]);
-  useEffect(() => getTimersProject({ projectId, setCurrent, current, setTimers }), [online]);
-  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online]);
+  useEffect(() => getTimersProject({ projectId, setCurrent, current, setTimers }), [online])
+  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online])
   useEffect(() => getRunningProject({ runningTimer, setRunningProject }), [runningTimer])
 
   const removeProject = () => {
@@ -77,8 +75,8 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
       timerlink={timerlink}
       startTimer={startTimer}
       finishTimer={finishTimer}
-      popupAccept={closePopup}
-      popupReject={removeProject}
+      popupAccept={removeProject}
+      popupReject={closePopup}
       sideMenuOptions={[
         { name: 'edit', action: () => history.push(projectEditlink(projectId)) },
         { name: 'history', action: () => history.push(projectHistorylink(projectId)) },

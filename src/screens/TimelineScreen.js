@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { createTimer, finishTimer, gun } from '../constants/Data'
-import { elapsedTime, trimSoul } from '../constants/Functions'
-import { isRunning, isTimer } from '../constants/Validators'
+import { createTimer, finishTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
@@ -20,11 +18,8 @@ export default function TimelineScreen({ useParams, useHistory }) {
   const history = useHistory()
 
   useEffect(() => getProjects({ setProjects }), [online])
-
-  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online, setCount, start, stop])
-
+  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online])
   useEffect(() => getRunningProject({ setRunningProject, runningTimer }), [runningTimer])
-
   useEffect(() => getTimers({ setCurrent, current, setTimers }), [online]);
 
   const startTimer = (projectId) => {
