@@ -44,7 +44,7 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
   // }, [runningTimer])
 
   useEffect(() => getProject({ projectId, setProject }), [online]);
-  useEffect(() => getTimersProject({ projectId, setCurrent, current, setTimers }), [online])
+  useEffect(() => getTimersProject({ projectId, current, setCurrent, setTimers }), [online])
   useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online])
   useEffect(() => getRunningProject({ runningTimer, setRunningProject }), [runningTimer])
 

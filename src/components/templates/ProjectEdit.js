@@ -36,8 +36,8 @@ export default function ProjectEdit(props) {
         variant="outlined"
         label="name"
         style={{...props.classes.spaceAround, width: 240 }}
-        value={nameValid(props.name) ? props.name : null}
-        onChange={event => props.setName(event.target.value)}
+        value={nameValid(props.name) ? props.name : ''}
+        onChange={event => event.target ? props.setName(event.target.value) : ''}
       />
       <CirclePicker selectColor={props.selectColor} />
       <Grid item className={props.classes.space}>

@@ -10,6 +10,7 @@ import Grid from '../atoms/Grid'
 import { isTimer, projectValid, isRunning } from '../../constants/Validators'
 import { secondsToString } from '../../constants/Functions'
 import { View } from 'react-native'
+import  Typography  from '../atoms/Typography'
 
 /**
  * 
@@ -50,7 +51,7 @@ export default function TimerRunning(props) {
             {props.runningTimer && props.runningTimer[1] ?
                 <Grid container direction='column' justify='flex-start' alignItems='center'>
                     <Grid item>
-                        <Title variant='h2'>{secondsToString(props.count)}</Title>
+                        <Typography variant='h2'>{secondsToString(props.count)}</Typography>
                     </Grid>
 
                     <Grid item>

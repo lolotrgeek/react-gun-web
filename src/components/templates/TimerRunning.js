@@ -10,6 +10,7 @@ import Grid from '../atoms/Grid'
 import { isTimer, projectValid, isRunning } from '../../constants/Validators'
 import { secondsToString } from '../../constants/Functions'
 import { View } from 'react-native'
+import  Typography  from '../atoms/Typography'
 
 /**
  * 
@@ -50,7 +51,7 @@ export default function TimerRunning(props) {
                     ...props.classes.content
                 }}>
 
-                    <Title variant='h2'>{secondsToString(props.count)}</Title>
+                    <Typography variant='h2'>{secondsToString(props.count)}</Typography>
 
 
                     <MoodPicker

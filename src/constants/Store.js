@@ -1,4 +1,4 @@
-import Gun from 'gun'
+import Gun from 'gun/gun'
 const debug = true
 
 debug && console.log('using localStorage...')

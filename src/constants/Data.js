@@ -3,6 +3,7 @@ import { isRunning, multiDay, newEntryPerDay } from './Functions'
 import {gun} from './Store'
 
 const debug = true
+const parent = gun.get('app')
 
 /**
  * removes soul from given data
@@ -65,7 +66,8 @@ export const createProject = (name, color) => {
     gun.get('projects').get(project[0]).put(projectDelete[1])
   }
   /**
-   * Gemerates a new timer using the standard timer model
+   * Generates a new timer using the standard timer model
+   * TODO: consider doing a pre-create sync to eliminate unsynced deleted projects
    * @param {*} projectId 
    */
   export const createTimer = (projectId) => {
@@ -75,7 +77,7 @@ export const createProject = (name, color) => {
     debug && console.log('Created Timer', timer)
     gun.get('running').put(timer[1])
     gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
-    gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
+    // gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
     return true
   }
   
@@ -133,7 +135,8 @@ export const createProject = (name, color) => {
     if (isRunning(timer)) {
       debug && console.log('Finishing', timer)
       let done = doneTimer(timer)
-      gun.get('running').put({id: 'none'}) // Danger zone until endTimer is called
+      gun.get('running').put({id: 'none'}) 
+      // Danger zone until endTimer is called
       if (multiDay(done[1].started, done[1].ended)) {
         const dayEntries = newEntryPerDay(done[1].started, done[1].ended)
         dayEntries.map((dayEntry, i) => {
