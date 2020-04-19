@@ -108,7 +108,19 @@ export const createProject = (name, color) => {
   export const endTimer = (timer) => {
     debug && console.log('Ending', timer)
     gun.get('history').get('timers').get(timer[1].project).get(timer[0]).set(timer[1])
-    gun.get('timers').get(timer[1].project).get(timer[0]).put(timer[1])
+    gun.get('timers').get(timer[1].project).get(timer[0]).put(JSON.stringify(timer[1]))
+  }
+
+  export const endTimerDestructured = (timer) => {
+    debug && console.log('Ending', timer)
+    gun.get('history').get('timers').get(timer[1].project).get(timer[0]).set(timer[1])
+    const keys = Object.keys(timer[1])
+    debug && console.log('destructure',keys)
+    keys.map(key => {
+      debug && console.log('Storing', key, timer[1][key])
+      gun.get('timers').get(timer[1].project).get(timer[0]).get(key).put(timer[1][key])
+      return key
+    })
   }
   
   export const deleteTimer = (timer) => {
