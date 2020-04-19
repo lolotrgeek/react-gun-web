@@ -211,38 +211,8 @@ const putRunningTimer = (timer) => {
  * @param {*} props.current
  * @param {*} props.setTimers
  */
-// export const getTimers = (props) => {
-//     gun.get('timers').on((timerGunId, projectKey) => {
-//         gun.get('timers').get(projectKey).map().on((timerValue, timerKey) => {
-//             if (timerValue) {
-//                 const foundTimer = [timerKey, trimSoul(timerValue)]
-//                 props.setTimers(timers => {
-//                     let newTimers = timers.map((timer, index) => {
-//                         if (timer[0] === foundTimer[0]) {
-//                             if (foundTimer[1].status === 'done') {
-//                                 debug && console.log('Updating Existing Timer', foundTimer)
-//                                 timer[1] = foundTimer[1]
-//                             } else {
-//                                 debug && console.log('Updating Removed Timer', foundTimer)
-//                                 newTimers.splice(index)
-//                             }
-//                         }
-//                         else if (foundTimer[1].status === 'done') {
-//                             debug && console.log('Listing New Timer', foundTimer)
-//                             newTimers.push(timer[1])
-//                         }
-//                     })
-//                     return newTimers
-//                 })
-
-//             }
-//         })
-//     }, { change: true })
-
-//     return () => gun.get('timers').off()
-// }
-
 export const getTimers = (props) => {
+    let currentTimers = []
     debug && console.log('Getting Timers... ')
     gun.get('timers').map().on((timerGunId, projectId) => {
         debug && console.log('TimerId ', projectId)
@@ -253,20 +223,29 @@ export const getTimers = (props) => {
             }
             const foundTimer = [timerKey, trimSoul(timerValue)]
             debug && console.log('Found Timer', foundTimer)
-
             if (foundTimer[1].status === 'done') {
-                let check = props.current.some(id => id === foundTimer[0])
-                // let check = currentTimers.some(id => id === foundTimer[0])
+                // let check = current.some(id => id === foundTimer[0])
+                debug && console.log(currentTimers)
+                let check = currentTimers.some(id => id === foundTimer[0])
                 if (!check) {
                     debug && console.log('Listing Timer', foundTimer)
                     props.setTimers(timers => [...timers, foundTimer])
+                    currentTimers.push(foundTimer[0])
                 }
-                else { 
+                else if (foundTimer[1].edited.length > 0) {
                     debug && console.log('Updating Existing Timer', foundTimer)
-                    props.setTimers(timers => timers.map((timer, index) => timer[0] === foundTimer[0] ? timer[1] = foundTimer[1] : timer))
+                    props.setTimers(timers => timers.map((timer, index) => {
+                        if (timer[0] === foundTimer[0]) {
+                            debug && console.log('Updating Timer', timer)
+                            timer[1] = foundTimer[1]
+                        }
+                        return timer
+                    }))
                 }
-                props.setCurrent(current => [...current, foundTimer[0]])
-                // currentTimers.push(foundTimer[0])
+                else {
+                    debug && console.log('No Changes', foundTimer)
+                }
+                // props.setCurrent(current => [...current, foundTimer[0]])
             }
             else {
                 debug && console.log('Updating Removed Timer', foundTimer)
@@ -286,6 +265,8 @@ export const getTimers = (props) => {
  */
 
 export const getTimersProject = (props) => {
+    let currentTimers = []
+    debug && console.log('Getting Timers... ')
     gun.get('timers').get(props.projectId).map().on((timerValue, timerKey) => {
         if (!timerValue || !timerKey) {
             debug && console.log('No Timer Found ')
@@ -293,74 +274,38 @@ export const getTimersProject = (props) => {
         }
         const foundTimer = [timerKey, trimSoul(timerValue)]
         debug && console.log('Found Timer', foundTimer)
-
         if (foundTimer[1].status === 'done') {
-            let check = props.current.some(id => id === foundTimer[0])
+            // let check = current.some(id => id === foundTimer[0])
+            debug && console.log(currentTimers)
+            let check = currentTimers.some(id => id === foundTimer[0])
             if (!check) {
                 debug && console.log('Listing Timer', foundTimer)
                 props.setTimers(timers => [...timers, foundTimer])
+                currentTimers.push(foundTimer[0])
             }
-            else { 
+            else if (foundTimer[1].edited.length > 0) {
                 debug && console.log('Updating Existing Timer', foundTimer)
-                props.setTimers(timers => timers.map((timer, index) => timer[0] === foundTimer[0] ? timer[1] = foundTimer[1] : timer))
+                props.setTimers(timers => timers.map((timer, index) => {
+                    if (timer[0] === foundTimer[0]) {
+                        debug && console.log('Updating Timer', timer)
+                        timer[1] = foundTimer[1]
+                    }
+                    return timer
+                }))
             }
-            props.setCurrent(current => [...current, foundTimer[0]])
+            else {
+                debug && console.log('No Changes', foundTimer)
+            }
+            // props.setCurrent(current => [...current, foundTimer[0]])
         }
         else {
             debug && console.log('Updating Removed Timer', foundTimer)
             props.setTimers(timers => timers.filter(timer => timer[0] === foundTimer[0]))
         }
     }, { change: true })
-
     return () => gun.get('timers').off()
 }
 
-// export const getTimersProject = (props) => {
-//     gun.get('timers').get(props.projectId).on((timerKeys, projectId) => {
-//         debug && console.log('TimerKeys', timerKeys, projectId)
-//         let currentKeys = Object.keys(timerKeys)
-//         currentKeys.map(key => {
-//             if (key === '_') return false
-//             debug && console.log('TimerKey', key)
-//             gun.get('timers').get(projectId).get(key).on((timerValue, timerKey) => {
-//                 if (!timerValue || !timerKey) {
-//                     debug && console.log('No Timer Found ')
-//                     return false
-//                 }
-//                 const foundTimer = [timerKey, trimSoul(timerValue)]
-//                 debug && console.log('Found Timer', foundTimer)
-//                 // props.setTimers(timers => [...timers, foundTimer])
-//                 props.setTimers(timers => {
-//                     let newTimers = timers
-//                     if (timers.length === 0 && foundTimer[1].status === 'done') {
-//                         debug && console.log('Listing New Timer', foundTimer)
-//                         newTimers.push(foundTimer)
-//                     }
-//                     else {
-//                         timers.map((timer, index) => {
-//                             if (timer[0] === foundTimer[0]) {
-//                                 if (foundTimer[1].status === 'done') {
-//                                     debug && console.log('Updating Existing Timer', foundTimer)
-//                                     newTimers.splice(index)
-//                                     newTimers.push(foundTimer)
-//                                 } else {
-//                                     debug && console.log('Updating Removed Timer', foundTimer)
-//                                     newTimers.splice(index)
-//                                 }
-//                             }
-//                             else if (foundTimer[1].status === 'done') {
-//                                 debug && console.log('Listing New Timer', foundTimer)
-//                                 newTimers.push(foundTimer)
-//                             }
-//                         })
-//                     }
-//                     return newTimers
-//                 })
-//             }, { change: true })
-//         })
-//     }, { change: true })
-//     return () => gun.get('timers').off()
-// }
 
 /**
  * 

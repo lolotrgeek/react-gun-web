@@ -20,7 +20,7 @@ export default function TimelineScreen({ useParams, useHistory }) {
   useEffect(() => getProjects({ setProjects }), [online])
   useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online])
   useEffect(() => getRunningProject({ setRunningProject, runningTimer }), [runningTimer])
-  useEffect(() => getTimers({ current, setCurrent, setTimers }), [online]);
+  useEffect(() => getTimers({ current, timers, setCurrent, setTimers }), [online]);
 
   const startTimer = (projectId) => {
     return createTimer(projectId) ? history.push(timerRunninglink()) : projectId
