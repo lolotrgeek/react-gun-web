@@ -2,7 +2,7 @@ import { gun } from './Store'
 import { elapsedTime, trimSoul, totalTime } from './Functions'
 import { isRunning, isTimer } from './Validators'
 
-const debug = true
+const debug = false
 
 const parent = gun.get('app')
 
@@ -178,7 +178,8 @@ export const getTimers = (props) => {
                 debug && console.log('No Timer Found ')
                 return false
             }
-            const foundTimer = [timerKey, trimSoul(timerValue)]
+            const foundTimer = [timerKey, trimSoul(typeof timerValue === 'string' ? JSON.parse(timerValue) : timerValue)]
+
             debug && console.log('Found Timer', foundTimer)
             if (foundTimer[1].status === 'done') {
                 // let check = current.some(id => id === foundTimer[0])
@@ -212,6 +213,13 @@ export const getTimers = (props) => {
     }, { change: true })
     return () => gun.get('timers').off()
 }
+
+
+export const updateState = (props) => {
+    let refresh = setTimeout(props.setOnline(online => online ? online + 1 : 0), 1000)
+    return () => clearTimeout(refresh) 
+}
+
 /**
  * 
  * @param {*} props 
@@ -228,7 +236,7 @@ export const getTimersProject = (props) => {
             debug && console.log('No Timer Found ')
             return false
         }
-        const foundTimer = [timerKey, typeof timerValue === 'string' ? trimSoul(JSON.parse(timerValue)) : trimSoul(timerValue)]
+        const foundTimer = [timerKey, trimSoul(typeof timerValue === 'string' ? JSON.parse(timerValue) : timerValue)]
         debug && console.log('Found Timer', foundTimer)
         if (foundTimer[1].status === 'done') {
             // let check = current.some(id => id === foundTimer[0])
@@ -262,30 +270,33 @@ export const getTimersProject = (props) => {
     return () => gun.get('timers').off()
 }
 
+/**
+ * REFERENCE https://stackoverflow.com/questions/57140482/how-to-trigger-on
+ * timers > projectId > timerId > timerKey > timervalue
+ * @param {*} props 
+ */
 export const getTimersProjectDestructured = (props) => {
     let currentTimers = []
     debug && console.log('Getting Timers... ')
-    // timers > projectId > timerId > timerKey > timervalue
+    // timers > projectId > timerId
     gun.get('timers').get(props.projectId, ack => {
-        if (currentTimers.length > 0)
-            debug && console.log('GET ACK', ack)
-    }).map().on((timerId, timerGunKey) => {
-        debug && console.log('Getting Nodes...')
+        debug && console.log('GET ACK', ack)
+    }).map().on((timerStrange, timerId) => {
+        debug && console.log('Getting Nodes for', timerId)
+        // debug && console.log('Found Values?', timerStrange)
         if (!timerId) {
             debug && console.log('No Timer Found ')
             return false
         }
         let foundValues = {}
         let foundTimer = [timerId, foundValues]
-        gun('timers').get(props.projectId).get(timerId).map().on((timerKey, timerGunKey) => {
-            debug && console.log('Restructuring Data...')
-            gun('timers').get(props.projectId).get(timerId).get(timerKey).on((timerValue, timerGunKey) => {
-                if (!timerKey) {
-                    debug && console.log('No TimerValue Found ')
-                    return false
-                }
-                foundValues.timerKey = trimSoul(timerValue)
-            }, { change: true })
+        // timers > projectId > timerId > timerKey
+        gun.get('timers').get(props.projectId).get(timerId).map().on((timerValue, timerGunKey) => {
+            if (!timerValue) {
+                debug && console.log('No TimerValue Found ')
+                return false
+            }
+            foundValues[timerGunKey] = timerValue
         }, { change: true })
         debug && console.log('Found Timer', foundTimer)
         if (foundTimer[1].status === 'done') {
@@ -378,7 +389,7 @@ export const getTimerForEdit = (props) => {
             props.history.push((props.projectlink(props.projectId)))
         }
         else {
-            let foundTimer = [props.timerId, trimSoul(timerValue)]
+            const foundTimer = [props.timerId, trimSoul(typeof timerValue === 'string' ? JSON.parse(timerValue) : timerValue)]
             props.setStarted(new Date(foundTimer[1].started))
             props.setEnded(new Date(foundTimer[1].ended))
             props.setMood(foundTimer[1].mood)

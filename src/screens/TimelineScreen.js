@@ -4,7 +4,7 @@ import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import Timeline from '../components/templates/Timeline'
-import { getProjects, getRunningTimer, getRunningProject, getTimers } from '../constants/Effects'
+import { getProjects, getRunningTimer, getRunningProject, getTimers, updateState } from '../constants/Effects'
 
 export default function TimelineScreen({ useParams, useHistory }) {
   const [online, setOnline] = useState(false)
@@ -20,7 +20,7 @@ export default function TimelineScreen({ useParams, useHistory }) {
   useEffect(() => getProjects({ setProjects }), [online])
   useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online])
   useEffect(() => getRunningProject({ setRunningProject, runningTimer }), [runningTimer])
-  useEffect(() => getTimers({ current, timers, setCurrent, setTimers }), [online]);
+  useEffect(() => getTimers({ current, timers, setCurrent, setTimers }), [online])
 
   const startTimer = (projectId) => {
     return createTimer(projectId) ? history.push(timerRunninglink()) : projectId
