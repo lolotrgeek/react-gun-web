@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { createTimer, finishTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
@@ -7,7 +7,7 @@ import Timeline from '../components/templates/Timeline'
 import { getProjects, getRunningTimer, getRunningProject, getTimers, updateState } from '../constants/Effects'
 
 export default function TimelineScreen({ useParams, useHistory }) {
-  const [online, setOnline] = useState(false)
+  const [online, setOnline] = useState(0)
   const [projects, setProjects] = useState([])
   const [timers, setTimers] = useState([])
   const [current, setCurrent] = useState([])
@@ -16,6 +16,17 @@ export default function TimelineScreen({ useParams, useHistory }) {
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles()
   const history = useHistory()
+
+  // const countRef = useRef(online);
+  // countRef.current = online;
+  // const getCountTimeout = () => {
+  //   let timer = setInterval(() => {
+  //     setOnline(countRef.current)
+  //     console.log(countRef.current)
+  //   }, 2000);
+  //   return () => clearInterval(timer)
+  // };
+  // useEffect(() => getCountTimeout(), [] )
 
   useEffect(() => getProjects({ setProjects }), [online])
   useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online])

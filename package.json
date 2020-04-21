@@ -43,10 +43,13 @@
     "react-native-sqlite-storage": "^5.0.0",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "^0.12.2",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-router-native": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-use": "^13.26.1",
+    "redux": "^4.0.5",
+    "redux-actions": "^2.6.5",
     "use-resize-observer": "^6.0.0"
   },
   "scripts": {

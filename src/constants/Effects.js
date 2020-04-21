@@ -2,7 +2,7 @@ import { gun } from './Store'
 import { elapsedTime, trimSoul, totalTime } from './Functions'
 import { isRunning, isTimer } from './Validators'
 
-const debug = false
+const debug = true
 
 const parent = gun.get('app')
 
@@ -231,7 +231,9 @@ export const updateState = (props) => {
 export const getTimersProject = (props) => {
     let currentTimers = []
     debug && console.log('Getting Timers... ')
-    gun.get('timers').get(props.projectId).map().on((timerValue, timerKey) => {
+    gun.get('timers').get(props.projectId, ack => {
+        debug && console.log('GET ACK', ack.put)
+    }).map().on((timerValue, timerKey) => {
         if (!timerValue || !timerKey) {
             debug && console.log('No Timer Found ')
             return false
