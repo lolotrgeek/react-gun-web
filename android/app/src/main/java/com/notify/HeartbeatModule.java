@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import android.app.PendingIntent;
@@ -48,10 +49,6 @@ public class HeartbeatModule extends ReactContextBaseJavaModule {
         // Toast.makeText(this.reactContext,STATUS,Toast.LENGTH_SHORT).show();
     }
 
-    public String getStatus() {
-        return STATUS;
-    }
-
     public void notificationPaused() {
         // set Intent for what happens when tapping notification
         Intent notificationIntent = new Intent(this.reactContext, MainActivity.class);
@@ -87,6 +84,11 @@ public class HeartbeatModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void configService(String title) {
         TITLE = title;
+    }
+
+    @ReactMethod
+    public String getStatus() {
+        return STATUS;
     }
 
     @ReactMethod

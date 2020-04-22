@@ -2,7 +2,7 @@ import { cloneTimer, newProject, doneTimer, newTimer } from './Models'
 import { isRunning, multiDay, newEntryPerDay } from './Functions'
 import { gun } from './Store'
 
-const debug = false
+const debug = true
 const parent = gun.get('app')
 
 /**

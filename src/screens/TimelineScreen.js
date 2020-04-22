@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { createTimer, finishTimer } from '../constants/Data'
 import useCounter from '../hooks/useCounter'
 import { projectlink, projectsListLink, timerRunninglink, projectCreatelink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
@@ -34,7 +33,11 @@ export default function TimelineScreen({ useParams, useHistory }) {
   useEffect(() => getTimers({ current, timers, setCurrent, setTimers }), [online])
 
   const startTimer = (projectId) => {
-    return createTimer(projectId) ? history.push(timerRunninglink()) : projectId
+    return start(projectId)
+  }
+
+  const finishTimer = (timer) => {
+    return stop(timer)
   }
 
   return (
@@ -49,7 +52,6 @@ export default function TimelineScreen({ useParams, useHistory }) {
       stop={stop}
       projectlink={projectlink}
       finishTimer={finishTimer}
-      createTimer={createTimer}
       startTimer={startTimer}
       countButtonAction={() => history.push(timerRunninglink())}
     />

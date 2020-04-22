@@ -1,7 +1,7 @@
 import Gun from 'gun'
 import AsyncStorage from '@react-native-community/async-storage';
 
-const debug = true
+const debug = false
 
 debug && console.log('using native Storage...')
 

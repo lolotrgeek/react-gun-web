@@ -27,7 +27,6 @@ import { useStyles, theme } from '../../themes/DefaultTheme'
  * @param {number} props.count
  * @param {number} props.stop
  * @param {function} props.projectlink
- * @param {function} props.createTimer
  * @param {function} props.countButtonAction
  * 
  */
@@ -54,7 +53,7 @@ export default function Timeline(props) {
                     name={props.runningProject[1] ? props.runningProject[1].name : ''}
                     color={props.runningProject[1] ? props.runningProject[1].color : ''}
                     count={props.count}
-                    stop={() => { props.finishTimer(props.runningTimer); props.stop() }}
+                    stop={() => { props.finishTimer(props.runningTimer)}}
                 />
                 : null}
 
@@ -82,7 +81,7 @@ export default function Timeline(props) {
                                         variant="contained"
                                         color="primary"
                                         onPress={() => {
-                                            if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer); props.stop() };
+                                            if (isRunning(props.runningTimer)) { props.finishTimer(props.runningTimer)};
                                             props.startTimer(item.project)
                                         }}>
                                         {secondsToString(item.total)}

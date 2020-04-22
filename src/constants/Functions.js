@@ -135,7 +135,7 @@ export const sayRunning = timer => timer[1].ended === timer[1].started ? 'runnin
  * 
  * @param {*} timer 
  */
-export const isRunning = timer => timer[1].status === 'running' ? true : false
+export const isRunning = timer => timer && typeof timer[1] === 'object' && timer[1].status === 'running' ? true : false
 /**
  * Get amount of time since entry was started
  * @param {string} started datestring when entry was started
