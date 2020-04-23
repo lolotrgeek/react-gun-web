@@ -6,10 +6,9 @@ import { finishTimer } from '../constants/Data'
 
 const debug = true
 
-const HeartbeatTask = async (timer) => {
-
+const HeartbeatTask = async () => {
   let state = store.getState()
-
+  
   gun.get('running').once((runningTimer, runningTimerKey) => {
     if (!runningTimer || runningTimer.id === 'none') {
       debug && console.log('running Timer not Found')
@@ -24,6 +23,12 @@ const HeartbeatTask = async (timer) => {
           projectValue && typeof projectValue === 'object' && projectValue.status !== 'deleted' ?
             projectValue.name : 'Running Timer'
         )
+      })
+      Heartbeat.getStatus(status => {
+        console.log(status)
+        if(status === 'STOPPED') {
+          finishTimer([runningTimer.id, runningTimer])
+        }
       })
     }
   })

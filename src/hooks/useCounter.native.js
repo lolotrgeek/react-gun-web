@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { NativeEventEmitter } from 'react-native';
-import Heartbeat from './HeartbeatModule';
+import React, { useEffect, useState } from 'react'
+import { NativeEventEmitter } from 'react-native'
+import Heartbeat from './HeartbeatModule'
 import { createTimer, finishTimer } from '../constants/Data'
 
 
@@ -16,6 +16,9 @@ export default function useCounter(countdown) {
       deviceEmitter.addListener("Heartbeat", event => {
         debug && console.log('device Event: ', event)
         if (event) setCount(event)
+      })
+      deviceEmitter.addListener("STATUS", event => {
+        debug && console.log('STATUS Event: ', event)
       })
     }
     return () => { setCount(0); console.log('stop listening') }
