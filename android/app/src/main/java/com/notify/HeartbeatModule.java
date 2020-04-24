@@ -129,6 +129,11 @@ public class HeartbeatModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void stopAction() {
+        this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ACTION", "stop");
+    }
+
+    @ReactMethod
     public void notificationUpdate(String tick) {
         TICK = tick;
         // send tick event

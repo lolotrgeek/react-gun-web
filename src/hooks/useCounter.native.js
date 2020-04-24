@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { NativeEventEmitter } from 'react-native'
-import Heartbeat from './HeartbeatModule'
+import Heartbeat from '../services/HeartbeatModule'
 import { createTimer, finishTimer } from '../constants/Data'
 
 
-const debug = true
+const debug = false
 const deviceEmitter = new NativeEventEmitter
 
 export default function useCounter(countdown) {

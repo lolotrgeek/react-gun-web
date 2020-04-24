@@ -12,6 +12,7 @@ public class HeartbeatActionReceiver extends BroadcastReceiver {
         Toast.makeText(context,action,Toast.LENGTH_SHORT).show();
 
         if (action.equals("stop")) {
+            // emit 'stop' event, let js call stopService
             stop();
         } else if (action.equals("start")) {
             start();
@@ -23,7 +24,8 @@ public class HeartbeatActionReceiver extends BroadcastReceiver {
     }
 
     public void stop() {
-        HeartbeatModule.getInstance().stopService();
+        // HeartbeatModule.getInstance().stopService();
+        HeartbeatModule.getInstance().stopAction();
     }
 
     public void start() {
