@@ -119,6 +119,7 @@ public class HeartbeatModule extends ReactContextBaseJavaModule {
         if(STATUS == "STARTED") {
             try {
                 this.reactContext.stopService(new Intent(this.reactContext, HeartbeatService.class));
+                // HeartbeatService.getInstance().pause();
                 STATUS = "STOPPED";
                 notificationPaused();
                 this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("STATUS", STATUS);

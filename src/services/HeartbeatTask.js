@@ -1,5 +1,5 @@
 import Heartbeat from './HeartbeatModule'
-import { setHeartBeat, setProject, setTimer, setStatus, store } from './store'
+import { setHeartBeat, setProject, setTimer, store, setStatus } from './store'
 import { doneTimer, cloneTimer, newTimer } from '../constants/Models'
 import { isRunning, multiDay, newEntryPerDay } from '../constants/Functions'
 import { gun } from '../constants/Store'
@@ -52,23 +52,23 @@ const finishTimer = (timer) => {
   } else { return timer }
 }
 
-const stop = (function() {
+const stop = (function () {
   var executed = false;
-  return function(runningTimer) {
-      if (!executed) {
-          executed = true;
-          finishTimer(runningTimer)
-      }
+  return function (runningTimer) {
+    if (!executed) {
+      executed = true;
+      finishTimer(runningTimer)
+    }
   };
 })();
 
-const start = (function() {
+const start = (function () {
   var executed = false;
-  return function(runningTimer) {
-      if (!executed) {
-          executed = true;
-          createTimer(runningTimer[1].project)
-      }
+  return function (runningTimer) {
+    if (!executed) {
+      executed = true;
+      createTimer(runningTimer[1].project)
+    }
   };
 })();
 
@@ -79,25 +79,33 @@ const HeartbeatTask = async () => {
   let state = store.getState()
   let runningTimer = state.App.timer
   let runningProject = state.App.project
+  
+  Heartbeat.configService(
+    runningProject && typeof runningProject === 'object' && runningProject.status !== 'deleted' ?
+      runningProject.name : 'Running Timer'
+  )
+  Heartbeat.notificationUpdate('Ready')
 
   if (deviceEmitter) {
     deviceEmitter.addListener("ACTION", event => {
       console.log('ACTION Event: ', event)
       if (event === 'stop' && runningTimer.length === 2) {
         stop(runningTimer)
-        Heartbeat.stopService()
+        store.dispatch(setStatus('STOPPED'))
+        // Heartbeat.stopService()
       }
       else if (event === 'start' && runningTimer.length === 2) {
         start(runningTimer)
-        Heartbeat.startService()
+        store.dispatch(setStatus('STARTED'))
+        // Heartbeat.startService()
       }
     })
   }
 
-  gun.get('running').once((runningTimer, runningTimerKey) => {
+  gun.get('running').on((runningTimer, runningTimerKey) => {
     if (!runningTimer || runningTimer.id === 'none') {
-      debug && console.log('running Timer not Found')
-      Heartbeat.stopService()
+      debug && console.log('SERVICE: running Timer not Found')
+      // Heartbeat.stopService()
       return false
     }
     store.dispatch(setTimer([runningTimer.id, runningTimer]))
@@ -105,23 +113,25 @@ const HeartbeatTask = async () => {
 
   if (isRunning(runningTimer)) {
     debug && console.log('Running Timer Found: ', runningTimer)
-    gun.get('projects').get(runningTimer[1].project).once((projectValue, projectKey) => {
-      debug && console.log('Running Project Found', projectValue)
+    gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
+      debug && console.log('SERVICE: Running Project Found', projectValue)
       store.dispatch(setProject(projectValue))
     })
   }
 
-  Heartbeat.configService(
-    runningProject && typeof runningProject === 'object' && runningProject.status !== 'deleted' ?
-      runningProject.name : 'Running Timer'
-  )
 
-  store.dispatch(setHeartBeat(state.App.heartBeat + 1))
-  let tick = state.App.heartBeat
   debug && console.log('STATE: ', state.App, typeof state.App)
+  
+  if(runningTimer.length === 2 && state.App.status === 'STARTED') {
+    setInterval(() => {
+      store.dispatch(setHeartBeat(state.App.heartBeat + 1))
+      let tick = state.App.heartBeat
+      debug && console.log('STATE: ', state.App, typeof state.App)
+      Heartbeat.notificationUpdate(tick.toString())
+    }, 1000)
+  }
 
-  Heartbeat.notificationUpdate(tick.toString())
-
+  
   // return () => gun.off()
 };
 
