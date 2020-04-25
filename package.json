@@ -20,7 +20,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "date-fns": "^2.10.0",
-    "gun": "^0.2020.401",
+    "gun": "^0.2020.421",
     "hashids": "^2.2.1",
     "jetifier": "^1.6.5",
     "material-colors": "^1.2.6",
