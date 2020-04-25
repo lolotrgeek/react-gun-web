@@ -109,7 +109,7 @@ public class HeartbeatModule extends ReactContextBaseJavaModule {
                 STATUS = "STARTED";
                 this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("STATUS", STATUS);
             } catch (Exception e) {
-                //TODO: handle exception
+                //TODO: handle exception, consider callback
             }
         }
     }
@@ -123,11 +123,15 @@ public class HeartbeatModule extends ReactContextBaseJavaModule {
                 notificationPaused();
                 this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("STATUS", STATUS);
             } catch (Exception e) {
-                //TODO: handle exception
+                //TODO: handle exception, consider callback
             }
         }
     }
 
+    @ReactMethod
+    public void startAction() {
+        this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ACTION", "start");
+    }
     @ReactMethod
     public void stopAction() {
         this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ACTION", "stop");

@@ -1,27 +1,34 @@
 import Heartbeat from './HeartbeatModule'
-import { setHeartBeat, setProject, setTimer, store } from './store'
-import { doneTimer, cloneTimer } from '../constants/Models'
+import { setHeartBeat, setProject, setTimer, setStatus, store } from './store'
+import { doneTimer, cloneTimer, newTimer } from '../constants/Models'
 import { isRunning, multiDay, newEntryPerDay } from '../constants/Functions'
 import { gun } from '../constants/Store'
-// import { createTimer } from '../constants/Data'
 import { NativeEventEmitter } from 'react-native'
 
 const deviceEmitter = new NativeEventEmitter
 const debug = true
 
-export const addTimer = (projectId, value) => {
+const createTimer = (projectId) => {
+  if (!projectId || typeof projectId !== 'string' || projectId.length < 9) return false
+  debug && console.log('Creating Timer', projectId)
+  const timer = newTimer(projectId)
+  debug && console.log('Created Timer', timer)
+  gun.get('running').put(timer[1])
+  gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
+  // gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
+  return true
+}
+const addTimer = (projectId, value) => {
   const timer = cloneTimer(value)
   debug && console.log('Storing Timer', timer)
   gun.get('history').get('timers').get(projectId).get(timer[0]).set(timer[1])
   gun.get('timers').get(projectId).get(timer[0]).put(timer[1])
 }
-
 const endTimer = (timer) => {
   debug && console.log('Ending', timer)
   gun.get('history').get('timers').get(timer[1].project).get(timer[0]).set(timer[1])
   gun.get('timers').get(timer[1].project).get(timer[0]).put(timer[1])
 }
-
 const finishTimer = (timer) => {
   if (isRunning(timer)) {
     debug && console.log('Finishing', timer)
@@ -45,31 +52,47 @@ const finishTimer = (timer) => {
   } else { return timer }
 }
 
+const stop = (function() {
+  var executed = false;
+  return function(runningTimer) {
+      if (!executed) {
+          executed = true;
+          finishTimer(runningTimer)
+      }
+  };
+})();
 
+const start = (function() {
+  var executed = false;
+  return function(runningTimer) {
+      if (!executed) {
+          executed = true;
+          createTimer(runningTimer[1].project)
+      }
+  };
+})();
+
+/**
+ * Task for android service to sync and count timers 
+ */
 const HeartbeatTask = async () => {
   let state = store.getState()
-  let runningTimer =  state.App.timer
+  let runningTimer = state.App.timer
   let runningProject = state.App.project
 
   if (deviceEmitter) {
     deviceEmitter.addListener("ACTION", event => {
       console.log('ACTION Event: ', event)
       if (event === 'stop' && runningTimer.length === 2) {
-        finishTimer(runningTimer)
+        stop(runningTimer)
         Heartbeat.stopService()
+      }
+      else if (event === 'start' && runningTimer.length === 2) {
+        start(runningTimer)
+        Heartbeat.startService()
       }
     })
   }
-  // Heartbeat.getStatus(status => {
-  //   debug && console.log(status)
-  //   if (status === 'STOPPED') {
-  //     finishTimer(runningTimer)
-  //   }
-  //   else if (status === 'STARTED' && !runningTimer) {
-  //     debug && console.log('Creating...')
-  //     createTimer(state.App.projectId)
-  //   }
-  // })
 
   gun.get('running').once((runningTimer, runningTimerKey) => {
     if (!runningTimer || runningTimer.id === 'none') {
@@ -90,7 +113,7 @@ const HeartbeatTask = async () => {
 
   Heartbeat.configService(
     runningProject && typeof runningProject === 'object' && runningProject.status !== 'deleted' ?
-    runningProject.name : 'Running Timer'
+      runningProject.name : 'Running Timer'
   )
 
   store.dispatch(setHeartBeat(state.App.heartBeat + 1))
