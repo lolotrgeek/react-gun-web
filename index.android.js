@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppRegistry, YellowBox } from 'react-native';
-import HeartbeatTask from './src/services/HeartbeatTask'
+import CountTask from './src/services/CountTask'
+import DataTask from './src/services/DataTask'
 
 import { DarkTheme, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import App from './src/App';
@@ -27,5 +28,6 @@ const Root = () => (
     <App />
   </PaperProvider >
 )
-AppRegistry.registerHeadlessTask('Heartbeat', () => HeartbeatTask);
+AppRegistry.registerHeadlessTask('Heartbeat', () => CountTask);
+AppRegistry.registerHeadlessTask('Data', () => DataTask);
 AppRegistry.registerComponent('Notify', () => Root);
