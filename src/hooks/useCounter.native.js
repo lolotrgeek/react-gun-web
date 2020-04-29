@@ -18,7 +18,7 @@ export default function useCounter(countdown) {
     if (state.App.heartBeat > 0) {
       setCount(state.App.heartBeat)
     }
-    console.log('listening...')
+    console.log('Listening for Counter...')
     deviceEmitter.addListener("Heartbeat", event => {
       console.log('Device Event: ', event)
       setCount(event)

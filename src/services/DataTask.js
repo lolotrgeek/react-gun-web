@@ -1,9 +1,9 @@
 import Heartbeat from './HeartbeatModule';
 import { NativeEventEmitter } from 'react-native';
-import { finishTimer, createTimer, createProject } from '../constants/Data'
+import { finishTimer, createTimer, } from '../constants/Data'
 import { gun } from '../constants/Store.native'
 import { isTimer, projectValid, isRunning } from '../constants/Validators'
-import { setHeartBeat, setProject, setTimer, store, setStatus } from './store'
+import { setProject, setTimer, store, } from './store'
 
 const deviceEmitter = new NativeEventEmitter(Heartbeat)
 const debug = true
@@ -40,17 +40,25 @@ const setTitle = (runningProject) => {
  */
 const DataTask = async (name, log) => {
   let state = store.getState()
-  let runningTimer = state.App.timer
-  let runningProject = state.App.project
+  let runningTimerState = state.App.timer
+  let runningProjectState = state.App.project
+  
+  console.log('SERVICE: running')
 
   // Local
   // FIX triggers remote 'on' listener and triggers actionRemote
   // inefficient and introduces circular logic
   deviceEmitter.addListener("ACTION", event => {
-    console.log('Action: ', event)
+    console.log('SERVICE: action - ', event)
     Heartbeat.getCountStatus(status => {
-      if (status === 'RUNNING' && isTimer(runningTimer)) start(runningTimer)
-      else stop(runningTimer)
+      if (status === 'RUNNING' && isTimer(runningTimerState)) {
+        debug && console.log('SERVICE: Starting from Notifcation...')
+        start(runningTimerState)
+      }
+      else {
+        debug && console.log('SERVICE: Stopping from Notifcation...')
+        stop(runningTimerState)
+      }
     })
   })
 
@@ -59,8 +67,9 @@ const DataTask = async (name, log) => {
     if (runningTimer && isRunning(runningTimer)) {
       gun.get('projects').get(runningTimer[1].project).on((projectValue, projectKey) => {
         debug && console.log('SERVICE: Running Project Found', projectValue)
-        setTitle(runningProject)
-        store.dispatch(setProject([projectKey, projectValue]))
+        let foundProject = [projectKey, projectValue]
+        setTitle(foundProject)
+        store.dispatch(setProject(foundProject))
       })
       console.log(' SERVICE: Starting from remote...')
       store.dispatch(setTimer([runningTimer.id, runningTimer]))
