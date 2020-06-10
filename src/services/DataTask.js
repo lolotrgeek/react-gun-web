@@ -42,21 +42,21 @@ const DataTask = async (name, log) => {
   let state = store.getState()
   let runningTimerState = state.App.timer
   let runningProjectState = state.App.project
-  
+
   console.log('SERVICE: running')
 
   // Local
   // FIX triggers remote 'on' listener and triggers actionRemote
   // inefficient and introduces circular logic
   deviceEmitter.addListener("ACTION", event => {
-    console.log('SERVICE: action - ', event)
+    // console.log('SERVICE: ', event)
     Heartbeat.getCountStatus(status => {
-      if (status === 'RUNNING' && isTimer(runningTimerState)) {
-        debug && console.log('SERVICE: Starting from Notifcation...')
+      if (status === 'RUNNING') {
+        debug && console.log('SERVICE: Starting', runningTimerState)
         start(runningTimerState)
       }
       else {
-        debug && console.log('SERVICE: Stopping from Notifcation...')
+        debug && console.log('SERVICE: Stopping', runningTimerState)
         stop(runningTimerState)
       }
     })
