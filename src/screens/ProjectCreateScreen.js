@@ -8,7 +8,6 @@ import ProjectCreate from '../components/templates/ProjectCreate'
 
 const debug = false
 
-
 export default function ProjectCreateScreen({useParams, useHistory}) {
   const [alerted, setAlert] = useState([])
   const [name, setName] = useState('')

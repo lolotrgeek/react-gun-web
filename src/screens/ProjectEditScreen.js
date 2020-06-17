@@ -35,9 +35,9 @@ export default function ProjectEditScreen({ useParams, useHistory }) {
   useEffect(() => getProject({projectId, setProject}), [online])
 
   useEffect(() => {
-    if (projectId && project[1]) {
-      setName(project[1].name)
-      setColor(project[1].color)
+    if (projectId && project) {
+      setName(project.name)
+      setColor(project.color)
     }
     return () => project
   }, [project])

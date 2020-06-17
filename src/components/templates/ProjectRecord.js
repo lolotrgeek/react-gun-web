@@ -37,10 +37,10 @@ export default function ProjectRecord(props) {
             ...props.classes.listRoot
         }}>
             <Popup content='Confirm Delete?' onAccept={() => props.popupAccept()} onReject={() => props.popupReject()} />
-            {props.project && props.project[1] ?
+            {props.project && props.project ?
                 <SubHeader
-                    color={props.project[1].color}
-                    title={props.project[1].name}
+                    color={props.project.color}
+                    title={props.project.name}
                     buttonText='Start Timer'
                     buttonClick={() => {
                         if (isRunning(props.runningTimer)) { props.stop(); props.finishTimer(props.runningTimer) }
@@ -70,16 +70,16 @@ export default function ProjectRecord(props) {
                     debug && console.log(item)
                     let timer = item
                     if (!isTimer(timer)) return (null)
-                    // if (timer[1].status === 'running') return (null)
-                    let ended = new Date(timer[1].ended)
-                    let started = new Date(timer[1].started)
+                    // if (timer.status === 'running') return (null)
+                    let ended = new Date(timer.ended)
+                    let started = new Date(timer.started)
                     return (
-                        <Link key={timer[0]} to={props.timerlink(props.project[0], timer[0])} >
+                        <Link key={timer.id} to={props.timerlink(props.project.id, timer.id)} >
                             <UnEvenGrid
                                 values={[
                                     <TimePeriod start={started} end={ended} />,
-                                    <EnergyDisplay energy={timer[1].energy} />,
-                                    <MoodDisplay mood={timer[1].mood} />,
+                                    <EnergyDisplay energy={timer.energy} />,
+                                    <MoodDisplay mood={timer.mood} />,
                                     <Typography>{secondsToString(totalTime(started, ended))}</Typography>
                                 ]}
                             />

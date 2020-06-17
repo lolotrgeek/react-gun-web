@@ -35,7 +35,7 @@ export default function ProjectHistory(props) {
       {projectValid(props.project) && props.edits && props.edits.length > 0 ?
         <SubHeader
           className={props.classes.space}
-          title={`${props.project[1].name} History`}
+          title={`${props.project.name} History`}
           buttonClick={props.headerButtonAction}
           buttonText='Edit'
         /> : <Stateless />}

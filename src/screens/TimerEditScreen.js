@@ -55,7 +55,7 @@ export default function TimerEditScreen({useParams, useHistory}) {
   }), [online]);
 
   useEffect(() => getProject({projectId, setProject}), [timer])
-  useEffect(() => timer[1] ? setEnergy(timer[1].energy) : timer[1], [timer])
+  useEffect(() => timer ? setEnergy(timer.energy) : timer, [timer])
   useEffect(() => setTotal(totalTime(started, ended)), [started, ended])
 
   const openPopup = () => dispatch({ type: "open" });
@@ -232,7 +232,7 @@ export default function TimerEditScreen({useParams, useHistory}) {
       popupAccept={removeTimer}
       popupReject={closePopup}
       sideMenuOptions={[
-        { name: 'history', action: () => history.push(timerHistorylink(projectId, timer[0])) },
+        { name: 'history', action: () => history.push(timerHistorylink(projectId, timer.id)) },
         { name: 'delete', action: () => openPopup() }
       ]}
       total={total}

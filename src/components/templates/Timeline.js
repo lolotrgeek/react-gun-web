@@ -65,16 +65,16 @@ export default function Timeline(props) {
                 }}
                 renderItem={({ item }) => props.projects.map(project => {
                     if (item.status === 'running') return (null)
-                    if (project[0] === item.project) {
+                    if (project.id === item.project) {
                         return (
-                            <View key={project[0]} style={{
+                            <View key={project.id} style={{
                                 flex: 0,
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                             }} >
                                 <View style={{ marginRight: 100 }}>
-                                    <Title to={props.projectlink(item.project)} variant='h6' color={project[1].color} >{projectValid(project) ? project[1].name : ''}</Title>
+                                    <Title to={props.projectlink(item.project)} variant='h6' color={project.color} >{projectValid(project) ? project.name : ''}</Title>
                                 </View>
                                 <View>
                                     <Button

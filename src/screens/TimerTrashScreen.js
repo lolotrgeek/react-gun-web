@@ -32,15 +32,15 @@ export default function TimerTrashScreen({useParams, useHistory}) {
   }, [alerted])
 
   useEffect(() => getProject({projectId, setProject}), [online])
-  useEffect(() => getDeletedTimers({current, setCurrent, setTimers, projectId}), [online]);
+  useEffect(() => getDeletedTimers({current, setCurrent, setTimers, projectId}), [online])
 
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
 
   function restoreTimerAction(timer) { 
-    restoreTimer([timer[0], timer[1]])
+    restoreTimer([timer.id, timer])
     closePopup()
-    history.push(projectlink(timer[1].project)) 
+    history.push(projectlink(timer.project)) 
   }
 
   return (

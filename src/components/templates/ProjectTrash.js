@@ -32,10 +32,10 @@ export default function ProjectTrash(props) {
       <ScrollView className={props.classes.space}>
         {props.projects.map(project => {
           return (
-            <View key={project[0]} className={props.classes.listClass}>
+            <View key={project.id} className={props.classes.listClass}>
               <UnEvenGrid
                 values={[
-                  <Title color={project[1].color} variant='h6' >{project[1].name}</Title>,
+                  <Title color={project.color} variant='h6' >{project.name}</Title>,
                   <Button variant="contained" color="primary" onPress={() => props.restoreButtonAction(project)}>Restore</Button>
                 ]}
               />

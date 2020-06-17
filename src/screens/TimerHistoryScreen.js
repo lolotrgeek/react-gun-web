@@ -44,9 +44,9 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
   const closePopup = () => dispatch({ type: "close" });
 
   const displayStatusTitle = timer => {
-    if (timer[1].edited || timer[1].edited.length > 0) return 'Edit'
-    if (timer[1].status === 'running') return 'Start'
-    if (timer[1].status === 'done') return 'End'
+    if (timer.edited || timer.edited.length > 0) return 'Edit'
+    if (timer.status === 'running') return 'Start'
+    if (timer.status === 'done') return 'End'
 
   }
   const displayStatusDate = edit => {
@@ -57,14 +57,14 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
   }
   const displayStatus = edit => {
     if (edit[1].status === 'running') return 'Start Entry'
-    else if (JSON.stringify(edit[1]) === JSON.stringify(timer[1])) return 'Current Entry'
+    else if (JSON.stringify(edit[1]) === JSON.stringify(timer)) return 'Current Entry'
     else if(edit[1].deleted && typeof edit[1].deleted === 'string') return 'Restored Entry'
     else if (edit[1].status === 'done' && edit[1].edited.length === 0) return 'End Entry'
     else if (edit[1].status === 'done' && edit[1].edited.length > 0) return 'Edit Entry'
     else return false
   }
   const displayRestoreButton = edit => {
-    if (JSON.stringify(edit[1]) === JSON.stringify(timer[1])) return false
+    if (JSON.stringify(edit[1]) === JSON.stringify(timer)) return false
     else if (edit[1].status === 'done') return true
     else return false
   }

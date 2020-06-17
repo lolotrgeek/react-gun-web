@@ -47,7 +47,7 @@ export default function ProjectList(props) {
                 {props.projects.map(project => {
                     return (
                         <View
-                            key={project[0]}
+                            key={project.id}
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
@@ -56,8 +56,8 @@ export default function ProjectList(props) {
 
                             }} >
                             <View style={{ width: 100 }}>
-                                <Title to={props.projectlink(project[0])} color={project[1].color} variant='h6'>
-                                    {projectValid(project) ? project[1].name : ''}
+                                <Title to={props.projectlink(project.id)} color={project.color} variant='h6'>
+                                    {projectValid(project) ? project.name : ''}
                                 </Title>
                             </View>
 

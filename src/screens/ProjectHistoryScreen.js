@@ -44,8 +44,8 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
   }
 
   const displayStatus = edit => {
-    // debug && console.log(edit[1], project[1])
-    if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
+    // debug && console.log(edit[1], project)
+    if (JSON.stringify(edit[1]) === JSON.stringify(project)) return 'Current Entry'
     else if (edit[1].deleted && typeof edit[1].deleted === 'string') return 'Deleted Entry'
     else if (!edit[1].edited && edits.length > 1) return 'Original Entry'
     // else if (edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
@@ -54,7 +54,7 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
   }
 
   const displayRestoreButton = edit => {
-    if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return false
+    if (JSON.stringify(edit[1]) === JSON.stringify(project)) return false
     else if (!edit[1].edited && edits.length > 1) return true
     else if (edit[1].edited && edit[1].edited.length > 0) return true
     else return false
@@ -67,7 +67,7 @@ export default function ProjectHistoryScreen({useParams, useHistory}) {
       classes={classes}
       project={project}
       edits={edits}
-      headerButtonAction={() => history.push(projectEditlink(project[0]))}
+      headerButtonAction={() => history.push(projectEditlink(project.id))}
       displayStatus={displayStatus}
       displayStatusDate={displayStatusDate}
       displayRestoreButton={displayRestoreButton}

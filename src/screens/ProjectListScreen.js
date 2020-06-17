@@ -27,7 +27,7 @@ export default function ProjectListScreen({ useParams, useHistory }) {
   useEffect(() => getRunningProject({ setRunningProject, runningTimer }), [runningTimer])
 
   const startTimer = (project) => {
-    createTimer(project[0])
+    createTimer(project.id)
     history.push(timerRunninglink())
   }
 

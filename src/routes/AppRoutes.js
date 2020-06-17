@@ -15,8 +15,8 @@ import TimerRunningScreen from '../screens/TimerRunningScreen'
 import ProjectCreateScreen from '../screens/ProjectCreateScreen'
 import ProjectEditScreen from '../screens/ProjectEditScreen'
 import ProjectTrashScreen from '../screens/ProjectTrashScreen'
-import ProjectRecordScreen from '../screens/ProjectRecordScreen';
-import ProjectHistoryScreen from '../screens/ProjectHistoryScreen';
+import ProjectRecordScreen from '../screens/ProjectRecordScreen'
+import ProjectHistoryScreen from '../screens/ProjectHistoryScreen'
 
 
 export default function AppRoutes() {

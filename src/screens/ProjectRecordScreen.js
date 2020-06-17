@@ -38,7 +38,7 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
 
   // useEffect(() => {
   //   if (runningTimer) {
-  //     let filteredTimers = timers.filter(timer => timer[0] !== runningTimer[0])
+  //     let filteredTimers = timers.filter(timer => timer.id !== runningTimer[0])
   //     setTimers(filteredTimers)
   //   }
   // }, [runningTimer])
@@ -59,7 +59,7 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
   const closePopup = () => dispatch({ type: "close" });
 
   const startTimer = (project) => {
-    createTimer(project[0])
+    createTimer(project.id)
     history.push(timerRunninglink())
   }
 

@@ -1,4 +1,4 @@
-import { isValid, isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO, format } from 'date-fns'
+import { isValid, isSameDay, isDate, differenceInSeconds, startOfToday, compareAsc, isToday, isYesterday, addSeconds, endOfDay, addMinutes, parseISO, format, subHours, subMinutes, subSeconds, addHours } from 'date-fns'
 import moment from 'moment'
 
 const debug = false
@@ -16,16 +16,71 @@ export const trimSoul = data => {
     return data
 }
 
+/**
+ * 
+ * @param {*} input
+ * @returns {object | undefined} 
+ */
+export const parse = (input) => {
+    let output
+    if (typeof input === 'string') {
+        try { output = JSON.parse(input) }
+        catch (error) { console.error(error) }
+    } else if (typeof input === 'object') {
+        output = input
+    }
+    return output
+}
+
 // TIME FUNCTIONS
 /**
- * Create a date String of Today
+ * Create a datetime String of Today
  */
-export const dateCreator = () => {
+export const datetimeCreator = () => {
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     return date + ' ' + time;
 }
+
+/**
+ * Create a date String of date
+ * `MM-DD-YYYY`
+ */
+export const dateSimple = date => {
+    let parsedDate = date ? typeof date === 'string' ? new Date(date) : date : new Date()
+    // const date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+    return moment(parsedDate).format('DD-MM-YYYY')
+}
+
+export const dateTestGen = () => {
+    let randHour = Math.floor(Math.random() * 3)
+    let randMin = Math.floor(Math.random() * 59)
+    let randSec = Math.floor(Math.random() * 59)
+    let today = new Date()
+    return subHours(subMinutes(subSeconds(today, randSec), randMin), randHour)
+}
+
+export const startRandTestGen = () => {
+    const start = new Date(2019, 1, 1)
+    const end = new Date()
+    // let endHour = Math.floor(Math.random() * 23) // 0 - 23
+    // let startHour = Math.floor(Math.random() * endHour) // 0 - end
+    let endHour = 22
+    let startHour = 0
+    var date = new Date(+start + Math.random() * (end - start));
+    var hour = startHour + Math.random() * (endHour - startHour) | 0;
+    date.setHours(hour);
+    return date;
+}
+
+export const endRandTestGen = (start) => {
+    let hours = start.getHours()
+    let range = 23 - hours 
+    let end = addHours(start, Math.random() * range)
+    return end
+}
+
 /**
  * Convert seconds to string `hh : mm : ss`
  * @param {number} seconds 
@@ -60,7 +115,7 @@ export const fullDay = date => format(date, "EEE MMM d yyyy")
 /**
  * 
  */
-export const listDay = timers => timers.map(timer => new Date(timer[1].started))
+export const listDay = timers => timers.map(timer => new Date(timer.started))
 /**
  * 
  * @param {*} start 
@@ -130,12 +185,12 @@ export const formatTime = t => {
  * 
  * @param {*} timer 
  */
-export const sayRunning = timer => timer[1].ended === timer[1].started ? 'running' : timer[1].ended
+export const sayRunning = timer => timer.ended === timer.started ? 'running' : timer.ended
 /**
- * 
+ * validator...
  * @param {*} timer 
  */
-export const isRunning = timer => timer && typeof timer[1] === 'object' && timer[1].status === 'running' ? true : false
+export const isRunning = timer => timer && typeof timer === 'object' && timer.status === 'running' ? true : false
 /**
  * Get amount of time since entry was started
  * @param {string} started datestring when entry was started
@@ -155,7 +210,7 @@ export const runningFind = async days => new Promise((resolve, reject) => {
  */
 export const findRunning = timers => {
     const foundRunning = timers.filter(timer => {
-        if (timer[1].status === 'running') {
+        if (timer.status === 'running') {
             return true
         } else {
             return false
@@ -260,7 +315,7 @@ export const dayHeaders = timerlist => {
     const output = [] // [days...]
     // organize timers by day
     const timerdays = timerlist.map(timer => {
-        return { day: simpleDateOld(new Date(timer[1].started)), timer: timer }
+        return { day: simpleDateOld(new Date(timer.started)), timer: timer }
     })
     // //// debug && console.log(pagename + '- DAYHEADERS - TIMERDAYS : ', timerdays)
     timerdays.forEach(timerday => {
@@ -301,29 +356,29 @@ export const sumProjectTimers = dayheaders => {
             // ... group timer entries by project
             if (projects.length === 0) {
                 // debug && console.log('first timer: ', )
-                // // debug && console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
-                let total = totalTime(timer[1].started, timer[1].ended)
-                projects.push({ project: timer[1].project, totals: [total], total: total, status: timer[1].status, timers: [timer[0]] })
+                // // debug && console.log('ticked : ',  timer.total, 'calculated : ', totalTime(timer.started, timer.ended))
+                let total = totalTime(timer.started, timer.ended)
+                projects.push({ project: timer.project, totals: [total], total: total, status: timer.status, timers: [timer.id] })
             }
             // for each project get all timer entries and sum the totals
-            const match = projects.find(inProjects => inProjects.project === timer[1].project)
+            const match = projects.find(inProjects => inProjects.project === timer.project)
             // // debug && console.log('projects : ', projects)
             if (match) {
-                if (projects[0].timers[0] === timer[0]) {
+                if (projects[0].timers.id === timer.id) {
                     // debug && console.log('existing match')
                 } else {
-                    // // debug && console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
-                    let total = totalTime(timer[1].started, timer[1].ended)
+                    // // debug && console.log('ticked : ',  timer.total, 'calculated : ', totalTime(timer.started, timer.ended))
+                    let total = totalTime(timer.started, timer.ended)
                     match.totals = [...match.totals, total]
                     // debug && console.log('new match')
                     match.total = match.totals.reduce((acc, val) => acc + val) // sum the totals
                 }
             }
             else {
-                // debug && console.log('last timer: ', timer[0])
-                // // debug && console.log('ticked : ',  timer[1].total, 'calculated : ', totalTime(timer[1].started, timer[1].ended))
-                let total = totalTime(timer[1].started, timer[1].ended)
-                projects.push({ project: timer[1].project, totals: [total], total: total, status: timer[1].status })
+                // debug && console.log('last timer: ', timer.id)
+                // // debug && console.log('ticked : ',  timer.total, 'calculated : ', totalTime(timer.started, timer.ended))
+                let total = totalTime(timer.started, timer.ended)
+                projects.push({ project: timer.project, totals: [total], total: total, status: timer.status })
             }
             // debug && console.log(projects)
             return projects

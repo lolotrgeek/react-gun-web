@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const timerRunninglink = () => `/timer/`
 export const timerlink = (projectId, timerId) => `/timers/${projectId}/${timerId}`
 export const timerListlink = () => `/timers`

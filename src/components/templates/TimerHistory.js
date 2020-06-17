@@ -44,15 +44,15 @@ export default function TimerHistory(props) {
             alignItems: 'center',
             ...classes.listRoot
         }}>
-            {props.project && props.project[1] ?
+            {props.project && props.project ?
                 <SubHeader
-                    color={props.project[1].color}
-                    title={nameValid(props.project[1].name) ? props.project[1].name : null}
+                    color={props.project.color}
+                    title={nameValid(props.project.name) ? props.project.name : null}
                 />
                 : <Stateless />}
 
             <Typography className={props.classes.spaceBelow} variant='h4'>
-                {props.timer[1] && nameValid(props.timer[1].name) && isTimer(props.timer) ? props.timer[1].name : 'Timer History '}
+                {props.timer && nameValid(props.timer.name) && isTimer(props.timer) ? props.timer.name : 'Timer History '}
             </Typography>
             <ScrollView>
                 {props.edits.map((edit) => {

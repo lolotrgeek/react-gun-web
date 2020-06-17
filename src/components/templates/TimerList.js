@@ -25,16 +25,16 @@ export default function TimerList(props) {
             }
             {props.timers.map(timer => {
                 return (
-                    <Grid key={timer[0]} className={props.classes.listClass} >
-                        <Link key={timer[0]} to={props.timerlink(timer[1].project, timer[0])}>
+                    <Grid key={timer.id} className={props.classes.listClass} >
+                        <Link key={timer.id} to={props.timerlink(timer.project, timer.id)}>
                             <UnEvenGrid
                                 values={[
                                     // simpleDate(creation),
-                                    // timeString(new Date(timer[1].started)) ,'-', timeString(new Date(timer[1].ended)),
-                                    <TimePeriod start={new Date(timer[1].started)} end={new Date(timer[1].ended)} />,
-                                    <EnergyDisplay energy={timer[1].energy} />,
-                                    <MoodDisplay mood={timer[1].mood} />,
-                                    secondsToString(totalTime(new Date(timer[1].started), new Date(timer[1].ended))),
+                                    // timeString(new Date(timer.started)) ,'-', timeString(new Date(timer.ended)),
+                                    <TimePeriod start={new Date(timer.started)} end={new Date(timer.ended)} />,
+                                    <EnergyDisplay energy={timer.energy} />,
+                                    <MoodDisplay mood={timer.mood} />,
+                                    secondsToString(totalTime(new Date(timer.started), new Date(timer.ended))),
                                 ]} />
                         </Link>
                     </Grid>

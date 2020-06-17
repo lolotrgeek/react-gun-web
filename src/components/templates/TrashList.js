@@ -34,10 +34,10 @@ export default function TrashList(props) {
       justifyContent: 'flex-start',
       alignItems: 'center',
     }}>
-      {props.project && props.project[1] ?
+      {props.project && props.project ?
         <SubHeader
-          color={props.project[1].color}
-          title={nameValid(props.project[1].name) ? props.project[1].name : null}
+          color={props.project.color}
+          title={nameValid(props.project.name) ? props.project.name : null}
         />
         : <Stateless />}
 
@@ -45,20 +45,20 @@ export default function TrashList(props) {
       <ScrollView>
         {props.timers.map(timer => {
           if (!isTimer(timer)) return (null)
-          if (timer[1].status === 'running') return (null)
-          let started = new Date(timer[1].started)
-          let ended = new Date(timer[1].ended)
-          let deleted = new Date(timer[1].deleted)
+          if (timer.status === 'running') return (null)
+          let started = new Date(timer.started)
+          let ended = new Date(timer.ended)
+          let deleted = new Date(timer.deleted)
           return (
-            <Card key={timer[0]} className={props.classes.card}>
+            <Card key={timer.id} className={props.classes.card}>
               <Popup content='Confirm Restore?' onAccept={() => props.popupAccept(timer)} onReject={() => props.popupReject()} />
               <CardContent>
                 <Typography variant='h6'>{fullDate(deleted)}</Typography>
                 <Typography variant='subtitle1'>{'Deleted'}</Typography>
                 <Grid className={props.classes.space3} container direction='row' justify='space-evenly' alignItems='flex-start'>
                   <Grid item xs={3}><TimePeriod start={started} end={ended} /></Grid>
-                  <Grid item xs={1}><EnergyDisplay energy={timer[1].energy} /></Grid>
-                  <Grid item xs={1}><MoodDisplay mood={timer[1].mood} /></Grid>
+                  <Grid item xs={1}><EnergyDisplay energy={timer.energy} /></Grid>
+                  <Grid item xs={1}><MoodDisplay mood={timer.mood} /></Grid>
                   <Grid item xs={2}>{secondsToString(totalTime(started, ended))}</Grid>
                 </Grid>
               </CardContent>

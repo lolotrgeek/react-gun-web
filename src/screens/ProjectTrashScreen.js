@@ -17,15 +17,15 @@ export default function ProjectTrashScreen({useParams, useHistory}) {
   useEffect(() => getDeletedProjects({setProjects}), [online]);
 
   // const displayStatus = edit => {
-  //   debug && console.log(edit[1], project[1])
-  //   if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return 'Current Entry'
+  //   debug && console.log(edit[1], project)
+  //   if (JSON.stringify(edit[1]) === JSON.stringify(project)) return 'Current Entry'
   //   else if (!edit[1].edited && edits.length > 1) return 'Original Entry'
   //   else if (edit[1].edited && edit[1].edited.length > 0) return fullDate(new Date(edit[1].edited))
   //   else return ''
   // }
 
   // const displayRestoreButton = edit => {
-  //   if (JSON.stringify(edit[1]) === JSON.stringify(project[1])) return false
+  //   if (JSON.stringify(edit[1]) === JSON.stringify(project)) return false
   //   else if (!edit[1].edited && edits.length > 1) return true
   //   else if (edit[1].edited && edit[1].edited.length > 0) return true
   //   else return false
@@ -33,7 +33,7 @@ export default function ProjectTrashScreen({useParams, useHistory}) {
 
   const restoreButtonAction = (project) => {
     restoreProject(project);
-    history.push(projectlink(project[0]))
+    history.push(projectlink(project.id))
   }
 
   return (
