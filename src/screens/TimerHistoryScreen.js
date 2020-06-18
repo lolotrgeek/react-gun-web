@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { restoreTimer } from '../constants/Data'
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import { restoreTimer, getRunningTimer, getProject, getProjectHistoryTimers, getTimerHistory} from '../Data/Data'
 import { isRunning,} from '../constants/Validators'
 import { elapsedTime, fullDay, trimSoul } from '../constants/Functions'
 import useCounter from '../hooks/useCounter'
@@ -8,7 +8,9 @@ import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TimerHistory from '../components/templates/TimerHistory'
-import { getRunningTimer, getProject, getProjectHistoryTimers, getTimerHistory } from '../constants/Effects'
+import { projectHandler, runningHandler, projectHistoryHandler, timerHandler, timerHistoryHandler } from '../Data/Handlers'
+import * as chain from '../Data/Chains'
+import messenger from '../constants/Messenger'
 
 const debug = false
 
@@ -21,6 +23,7 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
   const [project, setProject] = useState([])
   const [runningTimer, setRunningTimer] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
+  const running = useRef({ id: 'none', name: 'none', project: 'none' })
   const alert = useAlert()
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
@@ -34,11 +37,31 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
     }
     return () => alerted
   }, [alerted])
-  
-  useEffect(() => getRunningTimer({setCount, start, stop, setRunningTimer}), [online]);
-  useEffect(() => getProject({projectId, setProject}), [timer])
-  useEffect(() => getProjectHistoryTimers({timerId, projectId, setAlert, projectlink, history, setTimer}), [online]);
-  useEffect(() => getTimerHistory({setEdits, projectId, timerId}), [online]);
+
+  useEffect(() => {
+    //TODO need browser count/running implementation here
+    messenger.addListener("count", event => setCount(event))
+    return () => messenger.removeAllListeners("count")
+  }, [])
+
+  useEffect(() => {
+    messenger.addListener(chain.project(projectId), event => projectHandler(event, {project, setProject}))
+    messenger.addListener(chain.projectHistory(projectId), event => projectHistoryHandler(event, {edits, setEdits}))
+    messenger.addListener("running", event => runningHandler(event, {running: running}))
+    messenger.addListener(chain.timer(timerId), event => timerHandler(event, {timer, setTimer}))
+    messenger.addListener(chain.timerHistory(timerId), event => timerHistoryHandler(event, {edits, setEdits}))
+    getProject(projectId)
+    return () => {
+      messenger.removeAllListeners(chain.project(projectId))
+      messenger.removeAllListeners(chain.projectHistory(projectId))
+      messenger.removeAllListeners("running")
+      messenger.removeAllListeners(chain.timer(timerId))
+      messenger.removeAllListeners(chain.timerHistory(timerId))
+    }
+  },[online])
+
+  // TODO re-implement project history timers?
+  // useEffect(() => getProjectHistoryTimers({timerId, projectId, setAlert, projectlink, history, setTimer}), [online]);
 
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
@@ -50,26 +73,26 @@ export default function TimerHistoryScreen({useParams, useHistory}) {
 
   }
   const displayStatusDate = edit => {
-    if (edit[1].edited || edit[1].edited.length > 0) return fullDay(new Date(edit[1].edited))
-    if (edit[1].status === 'running') return fullDay(new Date(edit[1].created))
-    if (edit[1].status === 'done') return fullDay(new Date(edit[1].ended))
+    if (edit.edited || edit.edited.length > 0) return fullDay(new Date(edit.edited))
+    if (edit.status === 'running') return fullDay(new Date(edit.created))
+    if (edit.status === 'done') return fullDay(new Date(edit.ended))
 
   }
   const displayStatus = edit => {
-    if (edit[1].status === 'running') return 'Start Entry'
-    else if (JSON.stringify(edit[1]) === JSON.stringify(timer)) return 'Current Entry'
-    else if(edit[1].deleted && typeof edit[1].deleted === 'string') return 'Restored Entry'
-    else if (edit[1].status === 'done' && edit[1].edited.length === 0) return 'End Entry'
-    else if (edit[1].status === 'done' && edit[1].edited.length > 0) return 'Edit Entry'
+    if (edit.status === 'running') return 'Start Entry'
+    else if (JSON.stringify(edit) === JSON.stringify(timer)) return 'Current Entry'
+    else if(edit.deleted && typeof edit.deleted === 'string') return 'Restored Entry'
+    else if (edit.status === 'done' && edit.edited.length === 0) return 'End Entry'
+    else if (edit.status === 'done' && edit.edited.length > 0) return 'Edit Entry'
     else return false
   }
   const displayRestoreButton = edit => {
-    if (JSON.stringify(edit[1]) === JSON.stringify(timer)) return false
-    else if (edit[1].status === 'done') return true
+    if (JSON.stringify(edit) === JSON.stringify(timer)) return false
+    else if (edit.status === 'done') return true
     else return false
   }
   const editRestore = edit => {
-    restoreTimer([edit[0], edit[1]])
+    restoreTimer([edit.id, edit])
     closePopup()
   }
 

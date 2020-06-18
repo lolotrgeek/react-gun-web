@@ -56,9 +56,9 @@ export default function TimerHistory(props) {
             </Typography>
             <ScrollView>
                 {props.edits.map((edit) => {
-                    debug && console.log('EDIT', edit[1])
-                    let started = new Date(edit[1].started)
-                    let ended = new Date(edit[1].ended)
+                    debug && console.log('EDIT', edit)
+                    let started = new Date(edit.started)
+                    let ended = new Date(edit.ended)
                     return (
                         <View key={edit[2]} style={{
                             flex: 1,
@@ -85,8 +85,8 @@ export default function TimerHistory(props) {
                                             marginBottom: theme.spacing(2),
                                         }}>
                                             <TimePeriod start={started} end={ended} />
-                                            <EnergyDisplay energy={edit[1].energy} />
-                                            <MoodDisplay mood={edit[1].mood} />
+                                            <EnergyDisplay energy={edit.energy} />
+                                            <MoodDisplay mood={edit.mood} />
                                             <Typography>{secondsToString(totalTime(started, ended))}</Typography>
                                         </View>
                                     </View>

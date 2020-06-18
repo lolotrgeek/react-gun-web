@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { trimSoul } from '../constants/Functions'
-import { gun } from '../constants/Data'
+import { getTimers } from '../Data/Data'
 import { timerlink } from '../routes/routes'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerList from '../components/templates/TimerList'
-import { getTimers } from '../constants/Effects'
+import { timersHandler } from '../Data/Handlers'
+import * as chain from '../Data/Chains'
+import messenger from '../constants/Messenger'
 
 const debug = false
 
-export default function TimerScreen({useParams, useHistory}) {
+export default function TimerScreen({ useParams, useHistory }) {
   const [online, setOnline] = useState(false)
   const [timers, setTimers] = useState([])
-  const [current, setCurrent] = useState([])
   const classes = useStyles()
 
-  useEffect(() => getTimers({setCurrent, current, setTimers }), [online]);
+  useEffect(() => {
+    messenger.addListener(chain.timers(), event => timersHandler({ timers, setTimers }))
+    getTimers()
+  }, [online]);
 
   return (
     <TimerList

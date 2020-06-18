@@ -51,8 +51,8 @@ export default function ProjectHistory(props) {
               <Card>
                 <CardContent>
                   {edit.length === 3 ?
-                    <Title color={edit[1].color} variant='h6' >
-                      {edit.length === 3 ? edit[1].name : ''}
+                    <Title color={edit.color} variant='h6' >
+                      {edit.length === 3 ? edit.name : ''}
                     </Title>
                     : null}
                   <Typography>{props.displayStatus(edit)}</Typography>

@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import useCounter from '../hooks/useCounter'
-import { finishTimer, createTimer, deleteProject } from '../constants/Data'
+import { finishTimer, createTimer, deleteProject, getProject, getTimersProject, getProjectTimers } from '../Data/Data'
 import { projectsListLink, projectEditlink, projectHistorylink, timerlink, timerRunninglink, timerTrashlink } from '../routes/routes'
 import { useAlert } from '../hooks/useAlert'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectRecord from '../components/templates/ProjectRecord'
-import { getProject, getTimersProject, getRunningTimer, getRunningProject } from '../constants/Effects'
+import { runningHandler, timersHandler, projectHandler } from '../Data/Handlers'
+import * as chain from '../Data/Chains'
+import messenger from '../constants/Messenger'
 
 const debug = true
 
@@ -18,13 +20,12 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
   const [timers, setTimers] = useState([])
   const [current, setCurrent] = useState([])
   const [alerted, setAlert] = useState([])
-  const [runningTimer, setRunningTimer] = useState('')
-  const [runningProject, setRunningProject] = useState('')
   const { count, setCount, start, stop } = useCounter(1000, false)
   const classes = useStyles();
   const alert = useAlert()
   let history = useHistory()
   let { state, dispatch } = useContext(PopupContext)
+  const running = useRef({ id: 'none', name: 'none', project: 'none' })
 
 
   useEffect(() => {
@@ -36,17 +37,21 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
-  // useEffect(() => {
-  //   if (runningTimer) {
-  //     let filteredTimers = timers.filter(timer => timer.id !== runningTimer[0])
-  //     setTimers(filteredTimers)
-  //   }
-  // }, [runningTimer])
+  useEffect(() => {
+    messenger.addListener("count", event => setCount(event))
+    return () => messenger.removeAllListeners("count")
+  }, [])
 
-  useEffect(() => getProject({ projectId, setProject }), [online]);
-  useEffect(() => getTimersProject({ projectId, current, setCurrent, setTimers }), [online])
-  useEffect(() => getRunningTimer({ setCount, start, stop, setRunningTimer }), [online])
-  useEffect(() => getRunningProject({ runningTimer, setRunningProject }), [runningTimer])
+  useEffect(() => {
+    messenger.addListener(chain.project(projectId), event => projectHandler(event, { project, setProject }))
+    messenger.addListener(chain.projectTimers(projectId), event => timersHandler(event, { timers, setTimers, running }))
+    getProject(projectId)
+    getProjectTimers(projectId)
+    return () => {
+      messenger.removeAllListeners(chain.project(projectId))
+      messenger.removeAllListeners(chain.projectTimers(projectId))
+    }
+  }, [online])
 
   const removeProject = () => {
     deleteProject(project)
@@ -68,8 +73,8 @@ export default function ProjectRecordScreen({ useParams, useHistory }) {
       classes={classes}
       project={project}
       timers={timers}
-      runningProject={runningProject}
-      runningTimer={runningTimer}
+      runningProject={running}
+      runningTimer={running}
       count={count}
       stop={stop}
       timerlink={timerlink}

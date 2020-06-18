@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { trimSoul } from '../constants/Functions'
-import { gun, createProject, updateProject, deleteProject } from '../constants/Data'
+import { getProject, createProject, updateProject, deleteProject } from '../Data/Data'
 import { colorValid, nameValid, projectValid } from '../constants/Validators'
 import { useAlert } from '../hooks/useAlert'
 import { projectsListLink, projectlink } from '../routes/routes'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import ProjectEdit from '../components/templates/ProjectEdit'
-import {getProject} from '../constants/Effects'
+import { projectHandler } from '../Data/Handlers'
+import * as chain from '../Data/Chains'
+import messenger from '../constants/Messenger'
 
 export default function ProjectEditScreen({ useParams, useHistory }) {
   const { projectId, } = useParams()
@@ -32,7 +34,11 @@ export default function ProjectEditScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => getProject({projectId, setProject}), [online])
+  useEffect(() => {
+    messenger.addListener(chain.project(projectId), event => projectHandler(event, { project, setProject }))
+    getProject(projectId)
+    return () => messenger.removeAllListeners(chain.project(projectId))
+  }, [online])
 
   useEffect(() => {
     if (projectId && project) {

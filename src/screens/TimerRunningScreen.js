@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { deleteTimer, finishTimer } from '../constants/Data'
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import { deleteTimer, finishTimer , getProjects, getRunningTimer, getRunningProject, getTimers, getTimerRunning} from '../Data/Data'
 import { timeRules, totalTime, trimSoul } from '../constants/Functions'
 import { isTimer } from '../constants/Validators'
 import { useAlert } from '../hooks/useAlert'
@@ -9,7 +9,9 @@ import useCounter from '../hooks/useCounter'
 import { elapsedTime } from '../constants/Functions'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerRunning from '../components/templates/TimerRunning'
-import { getProjects, getRunningTimer, getRunningProject, getTimers, getTimerRunning } from '../constants/Effects'
+import { runningHandler } from '../Data/Handlers'
+import * as chain from '../Data/Chains'
+import messenger from '../constants/Messenger'
 
 const debug = false
 
@@ -20,6 +22,7 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
   const [mood, setMood] = useState('')
   const [energy, setEnergy] = useState(0)
   const [alerted, setAlert] = useState([])
+  const running = useRef({ id: 'none', name: 'none', project: 'none' })
   const { count, setCount, start, stop } = useCounter(1000, false)
   const alert = useAlert()
   let history = useHistory()
@@ -32,8 +35,15 @@ export default function TimerRunningScreen({ useParams, useHistory }) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => getTimerRunning({setMood, setEnergy, setCount, start, stop, setRunningTimer, runningProject, setAlert}), [online]);
-  useEffect(() => getRunningProject({runningTimer, setRunningProject}), [online, runningTimer])
+  useEffect(() => {
+    messenger.addListener("count", event => setCount(event))
+    return () => messenger.removeAllListeners("count")
+  }, [])
+
+  useEffect (() => {
+    messenger.addListener("running" , event => runningHandler(event, {running, setEnergy, setMood}))
+    return () => messenger.removeAllListeners("running")
+  },[online])
 
   //TODO - nice to have: update mood and energy slider realtime
   // useEffect(() => {

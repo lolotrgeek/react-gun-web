@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { trimSoul } from '../constants/Functions'
-import { gun, restoreTimer } from '../constants/Data'
+import { getDeletedTimers, getProject, restoreTimer, getTimers } from '../Data/Data'
 import { useStyles } from '../themes/DefaultTheme'
 import { PopupContext } from '../contexts/PopupContext'
 import { useAlert } from '../hooks/useAlert'
 import { projectlink } from '../routes/routes'
 import TrashList from '../components/templates/TrashList'
-import { getDeletedTimers, getProject } from '../constants/Effects'
+import { projectHandler, timersDeletedHandler } from '../Data/Handlers'
+import * as chain from '../Data/Chains'
+import messenger from '../constants/Messenger'
 
 const debug = false
 
-export default function TimerTrashScreen({useParams, useHistory}) {
+export default function TimerTrashScreen({ useParams, useHistory }) {
   const { projectId } = useParams()
   const [online, setOnline] = useState(false)
   const [alerted, setAlert] = useState([])
   const [timers, setTimers] = useState([])
-  const [current, setCurrent] = useState([])
   const [project, setProject] = useState([])
   const alert = useAlert()
   let history = useHistory()
@@ -31,16 +32,24 @@ export default function TimerTrashScreen({useParams, useHistory}) {
     return () => alerted
   }, [alerted])
 
-  useEffect(() => getProject({projectId, setProject}), [online])
-  useEffect(() => getDeletedTimers({current, setCurrent, setTimers, projectId}), [online])
+  useEffect(() => {
+    messenger.addListener(chain.project(projectId), event => projectHandler(event, { project, setProject }))
+    messenger.addListener(chain.timers(), event => timersDeletedHandler(event, { timers, setTimers }))
+    getProject(projectId)
+    getTimers()
+    return () => {
+      messenger.removeAllListeners(chain.project(projectId))
+      messenger.removeAllListeners(chain.timers())
+    }
+  }, [online])
 
   const openPopup = () => dispatch({ type: "open" });
   const closePopup = () => dispatch({ type: "close" });
 
-  function restoreTimerAction(timer) { 
+  function restoreTimerAction(timer) {
     restoreTimer([timer.id, timer])
     closePopup()
-    history.push(projectlink(timer.project)) 
+    history.push(projectlink(timer.project))
   }
 
   return (

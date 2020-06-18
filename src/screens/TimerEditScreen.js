@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { gun, updateTimer, deleteTimer } from '../constants/Data'
+import { gun, updateTimer, deleteTimer, getTimerForEdit, getProject, getTimer } from '../Data/Data'
 import { addMinutes, isValid, sub, add, getMonth, getYear, getHours, getMinutes, getSeconds, getDate } from 'date-fns'
-import { timeRules, dateRules, totalTime, trimSoul } from '../constants/Functions'
+import { timeRules, dateRules, totalTime } from '../constants/Functions'
 import { isRunning, isTimer } from '../constants/Validators'
 import { useAlert } from '../hooks/useAlert'
 import { projectlink, projectsListLink, timerHistorylink } from '../routes/routes'
 import { PopupContext } from '../contexts/PopupContext'
 import { useStyles } from '../themes/DefaultTheme'
 import TimerEdit from '../components/templates/TimerEdit'
-import { getTimerForEdit, getProject } from '../constants/Effects'
+import { projectHandler, timerForEditHandler } from '../Data/Handlers'
+import * as chain from '../Data/Chains'
+import messenger from '../constants/Messenger'
 
 const debug = false
 
-export default function TimerEditScreen({useParams, useHistory}) {
+export default function TimerEditScreen({ useParams, useHistory }) {
   const { projectId, timerId } = useParams()
   const [online, setOnline] = useState(false)
   const [project, setProject] = useState([])
@@ -54,7 +56,31 @@ export default function TimerEditScreen({useParams, useHistory}) {
     ended
   }), [online]);
 
-  useEffect(() => getProject({projectId, setProject}), [timer])
+  useEffect(() => {
+    messenger.addListener(chain.project(projectId), event => projectHandler(event, { project, setProject }))
+    messenger.addListener(chain.timer(timerId), event => timerForEditHandler(event, {
+      setAlert,
+      setStarted,
+      setEnded,
+      setEnergy,
+      setMood,
+      setTotal,
+      setTimer,
+      projectlink,
+      projectId,
+      timerId,
+      history,
+      started,
+      ended
+    }))
+    getTimer(timerId)
+    return () => {
+      messenger.removeAllListeners(chain.project(projectId))
+      messenger.removeAllListeners(chain.timer(timerId))
+    }
+  }, [online])
+
+  useEffect(() => getProject(projectId), [timer])
   useEffect(() => timer ? setEnergy(timer.energy) : timer, [timer])
   useEffect(() => setTotal(totalTime(started, ended)), [started, ended])
 
@@ -63,28 +89,28 @@ export default function TimerEditScreen({useParams, useHistory}) {
 
   const chooseNewStart = newTime => {
     if (!timeRules(newTime, ended)) {
-      
+
       setAlert([
         'Error',
         'Cannot Start after End.',
       ])
     }
     else if (!timeRules(newTime, new Date())) {
-      
+
       setAlert([
         'Error',
         'Cannot Start before now.',
       ])
     }
     else if (newTime && !dateRules(newTime)) {
-      
+
       setAlert([
         'Error',
         'Cannot Pick Date before Today.',
       ])
     }
     else {
-      
+
       setAlert(false)
       return isValid(newTime) ? setStarted(newTime) : false
     }
@@ -92,28 +118,28 @@ export default function TimerEditScreen({useParams, useHistory}) {
 
   const chooseNewEnd = newTime => {
     if (!timeRules(started, newTime)) {
-      
+
       setAlert([
         'Error',
         'Cannot Start after End.',
       ])
     }
     else if (!timeRules(newTime, new Date())) {
-      
+
       setAlert([
         'Error',
         'Cannot End before now.',
       ])
     }
     else if (newTime && !dateRules(newTime)) {
-      
+
       setAlert([
         'Error',
         'Cannot Pick Date before Today.',
       ])
     }
     else {
-      
+
       setAlert(false)
       return isValid(newTime) ? setEnded(newTime) : false
     }
@@ -121,7 +147,7 @@ export default function TimerEditScreen({useParams, useHistory}) {
 
   const chooseNewDate = newDate => {
     if (dateRules(newDate)) {
-      
+
       if (isValid(newDate)) {
         let newStart = new Date(getYear(newDate), getMonth(newDate), getDate(newDate), getHours(started), getMinutes(started), getSeconds(started))
         setStarted(newStart)
@@ -130,7 +156,7 @@ export default function TimerEditScreen({useParams, useHistory}) {
       }
       else return false
     } else {
-      
+
       setAlert([
         'Error',
         'Cannot Pick Date before Today.'
@@ -254,6 +280,6 @@ export default function TimerEditScreen({useParams, useHistory}) {
       saveButtonAction={editComplete}
       noTimersAction={() => history.push(projectsListLink())}
     />
-    
+
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { createProject } from '../constants/Data'
+import { createProject } from '../Data/Data'
 import { colorValid, nameValid } from '../constants/Validators'
 import { useAlert } from '../hooks/useAlert'
 import { projectsListLink } from '../routes/routes'
